@@ -37,7 +37,7 @@ public class MazeUI extends javax.swing.JFrame {
         menuPanel.add(CreateMazeMenu(), "mazeP");
 
         
-        card.show(menuPanel, "main");
+        card.show(menuPanel, "mazeP");
 
 
         getContentPane().add(menuPanel);
@@ -256,8 +256,8 @@ public class MazeUI extends javax.swing.JFrame {
         // Table data
         Object[][] data = {
             // Currently test data
-            {"Maze1", "50x50", "Steve", "2022-07-07"},
-            {"Maze2", "55x55", "Steve", "2022-07-08"},
+            {"Maze1", "50x50", "Name1", "2022-07-07"},
+            {"Maze2", "55x55", "Name2", "2022-07-08"},
         };
 
         JTable mazeTable = new JTable(data, columnNames);
