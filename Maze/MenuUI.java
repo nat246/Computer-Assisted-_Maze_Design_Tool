@@ -7,12 +7,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
-public class MenuUI extends javax.swing.JFrame {
+public class MenuUI extends JFrame {
     private CardLayout card;
     private JPanel menuPanel;
 
@@ -267,7 +269,25 @@ public class MenuUI extends javax.swing.JFrame {
         backButton.addActionListener(e -> card.show(menuPanel, "main"));
 
         //== Create button Listener
-            // TO DO
+        createButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditorUI editor = UIHandler.CreateEditor("User1");
+                setVisible(false);
+                editor.setVisible(true);
+                
+                editor.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e)
+                    {
+                        setVisible(true);
+                        e.getWindow().dispose();
+                    }
+                });
+            }
+            
+        });
 
         // Add to Panel
         generationP.add(blankRadio);
