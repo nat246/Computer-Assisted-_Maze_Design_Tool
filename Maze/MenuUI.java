@@ -5,12 +5,16 @@ import java.awt.Font;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
 public class MenuUI extends javax.swing.JFrame {
+    private CardLayout card;
+    private JPanel menuPanel;
 
     public MenuUI() {
         super("Maze Creator");
@@ -21,6 +25,7 @@ public class MenuUI extends javax.swing.JFrame {
     private void initGUI() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(600, 360));
+        setResizable(false);
         pack();
 
         setLocationRelativeTo(null);
@@ -28,8 +33,8 @@ public class MenuUI extends javax.swing.JFrame {
 
     private void MenuComponents() {
         // Creates a new Panel to fit all Card Components
-        CardLayout card = new CardLayout();
-        JPanel menuPanel = new JPanel();
+        card = new CardLayout();
+        menuPanel = new JPanel();
         menuPanel.setLayout(card);
 
         menuPanel.add(MainMenu(), "main");
@@ -56,12 +61,43 @@ public class MenuUI extends javax.swing.JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Select User
-        JComboBox<String> selectUser = new JComboBox<>(new String[] {" Select User...", " (Create New User)"} );
+        JComboBox<String> selectUser = new JComboBox<>(new String[] {" Select User...", " User1", " (Create New User)"} ); // User1 is here to test (Remove later)
         selectUser.setMaximumSize(new Dimension(240, 50));
 
         // Continue Button
         JButton contButton = new JButton("Continue");
         contButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        // Action Listen
+        
+        //== Continue Button Listener
+        contButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (selectUser.getSelectedItem().toString()) {
+                    case " Select User...":
+                        System.out.println("No selected user");
+                        break;
+                    case " (Create New User)":
+                        card.show(menuPanel, "userP");
+                        break;
+                    default:
+                        try {
+                            System.out.format("Selected: %s \n", selectUser.getSelectedItem().toString());
+                            card.show(menuPanel, "mazeP");
+                        }
+                        catch (Exception exception) {
+                            System.out.println(exception);
+                        }
+                        break;
+                }
+                
+            }
+
+        });
+
         
         // Add to Panel
         mainPanel.add(title);
@@ -70,7 +106,6 @@ public class MenuUI extends javax.swing.JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         mainPanel.add(contButton);
         mainPanel.add(Box.createVerticalGlue());
-
         return mainPanel;
     }
 
@@ -79,7 +114,7 @@ public class MenuUI extends javax.swing.JFrame {
         // Main Panel
         JPanel newUserPanel = new JPanel();
         newUserPanel.setLayout(new BoxLayout(newUserPanel, BoxLayout.PAGE_AXIS));
-        newUserPanel.add(Box.createVerticalGlue());
+        
 
         // Title
         JLabel title = new JLabel("New User");
@@ -95,11 +130,9 @@ public class MenuUI extends javax.swing.JFrame {
         // Input Text Field
         JTextField nameField = new JTextField();
         nameField.setPreferredSize(new Dimension(200, 20));
-        nameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Button Panel
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Back Button
         JButton backButton = new JButton("Back");
@@ -108,7 +141,29 @@ public class MenuUI extends javax.swing.JFrame {
         JButton createButton = new JButton("Create");
 
 
+        // Action Listeners
+
+        //== Back button Listener
+        backButton.addActionListener(e -> card.show(menuPanel, "main"));
+
+        //== Create button Listener
+        createButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (nameField.getText().length() >= 1) {
+                    System.out.format("Created new user '%s' \n", nameField.getText());
+                    card.show(menuPanel, "mazeP");
+                }
+                else {
+                    System.out.println("Please enter a name.");
+                }
+            }
+            
+        });
+
         // Add to Panel
+        newUserPanel.add(Box.createVerticalGlue());
         namePanel.add(nameLabel);
         namePanel.add(nameField);
 
@@ -120,6 +175,7 @@ public class MenuUI extends javax.swing.JFrame {
         newUserPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         newUserPanel.add(namePanel);
         newUserPanel.add(buttonPanel);
+        newUserPanel.add(Box.createVerticalGlue());
 
         return newUserPanel;
     }
@@ -133,7 +189,6 @@ public class MenuUI extends javax.swing.JFrame {
         // Tabbed Pane
         JTabbedPane tabPane = new JTabbedPane();
 
-        
 
         tabPane.addTab("New Maze", NewMazePanel());
         tabPane.addTab("Open Maze", OpenMazePanel());
@@ -206,6 +261,14 @@ public class MenuUI extends javax.swing.JFrame {
         // Create Button
         JButton createButton = new JButton("Create Maze");
 
+        // Action Listeners
+
+        //== Back button Listener
+        backButton.addActionListener(e -> card.show(menuPanel, "main"));
+
+        //== Create button Listener
+            // TO DO
+
         // Add to Panel
         generationP.add(blankRadio);
         generationP.add(randomRadio);
@@ -230,9 +293,10 @@ public class MenuUI extends javax.swing.JFrame {
         panelGroup2.add(createButton);
         
         
-        
+        newMazeP.add(Box.createVerticalGlue());
         newMazeP.add(panelGroup1);
         newMazeP.add(panelGroup2);
+        
         
 
 
@@ -282,6 +346,14 @@ public class MenuUI extends javax.swing.JFrame {
         // Open Button
         JButton openButton = new JButton("Open Maze");
 
+        // Action Listeners
+
+        //== Back button Listener
+        backButton.addActionListener(e -> card.show(menuPanel, "main"));
+
+        //== Open button Listener
+            // TO DO
+
 
         // Add to Panels
         tablePanel.add(scrollPane);
@@ -290,7 +362,7 @@ public class MenuUI extends javax.swing.JFrame {
         buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
         buttonPanel.add(openButton);
 
-
+        openPanel.add(Box.createVerticalGlue());
         openPanel.add(tablePanel);
         openPanel.add(buttonPanel);
 
