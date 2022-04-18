@@ -10,9 +10,9 @@ import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
-public class MazeUI extends javax.swing.JFrame {
+public class MenuUI extends javax.swing.JFrame {
 
-    public MazeUI() {
+    public MenuUI() {
         super("Maze Creator");
         initGUI();
         MenuComponents();
@@ -37,7 +37,7 @@ public class MazeUI extends javax.swing.JFrame {
         menuPanel.add(CreateMazeMenu(), "mazeP");
 
         
-        card.show(menuPanel, "mazeP");
+        card.show(menuPanel, "main");
 
 
         getContentPane().add(menuPanel);

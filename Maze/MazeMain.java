@@ -9,6 +9,6 @@ public class MazeMain {
 
     // Creates a new MazeUI Class that starts the User Interface.
     private static void initUI() {
-        new MazeUI().setVisible(true);
+        new MenuUI().setVisible(true);
     }
 }
