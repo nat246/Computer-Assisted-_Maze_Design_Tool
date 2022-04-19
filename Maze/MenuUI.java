@@ -19,7 +19,7 @@ public class MenuUI extends JFrame {
     private JPanel menuPanel;
 
     public MenuUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        super("Maze Creator");
+        super("Maze Maker");
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         initGUI();
         MenuComponents();
@@ -60,7 +60,7 @@ public class MenuUI extends JFrame {
         mainPanel.add(Box.createVerticalGlue());
 
         // Title
-        JLabel title = new JLabel("Maze Creator");
+        JLabel title = new JLabel("Maze Maker");
         title.setFont(new Font("Monospaced", Font.PLAIN, 25));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -86,11 +86,12 @@ public class MenuUI extends JFrame {
                         break;
                     case "(Create New User)":
                         card.show(menuPanel, "userP");
+                        setTitle("Maze Maker");
                         break;
                     default:
                         try {
                             System.out.format("Selected: %s \n", selectUser.getSelectedItem().toString());
-                            setTitle(String.format("Maze Creator (%s)", selectUser.getSelectedItem().toString()));
+                            setTitle(String.format("Maze Maker (%s)", selectUser.getSelectedItem().toString()));
                             card.show(menuPanel, "mazeP");
                         }
                         // Also try an exception to catch if the user does not exist like if it's deleted.
@@ -164,7 +165,7 @@ public class MenuUI extends JFrame {
                 // Checks if there is at least 1 character in the text box
                 else if (nameField.getText().length() >= 1) {
                     System.out.format("Created new user '%s' \n", nameField.getText());
-                    setTitle(String.format("Maze Creator (%s)", nameField.getText()));
+                    setTitle(String.format("Maze Maker (%s)", nameField.getText()));
                     card.show(menuPanel, "mazeP");
                 }
                 // Displays a popup when there is no name
@@ -215,7 +216,7 @@ public class MenuUI extends JFrame {
     private JPanel NewMazePanel() {
         // New Maze Panel
         JPanel newMazeP = new JPanel();
-        newMazeP.setLayout(new BoxLayout(newMazeP, BoxLayout.PAGE_AXIS));
+        newMazeP.setLayout(new BoxLayout(newMazeP, BoxLayout.Y_AXIS));
 
         // Panel Group 1 (Settings)
         JPanel panelGroup1 = new JPanel();
