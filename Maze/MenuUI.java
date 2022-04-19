@@ -18,13 +18,15 @@ public class MenuUI extends JFrame {
     private CardLayout card;
     private JPanel menuPanel;
 
-    public MenuUI() {
+    public MenuUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         super("Maze Creator");
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         initGUI();
         MenuComponents();
     }
 
     private void initGUI() {
+        
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(600, 360));
         setResizable(false);
@@ -63,7 +65,7 @@ public class MenuUI extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Select User
-        JComboBox<String> selectUser = new JComboBox<>(new String[] {" Select User...", " User1", " (Create New User)"} ); // User1 is here to test (Remove later)
+        JComboBox<String> selectUser = new JComboBox<>(new String[] {"Select User...", "User1", "(Create New User)"} ); // User1 is here to test (Remove later)
         selectUser.setMaximumSize(new Dimension(240, 50));
 
         // Continue Button
@@ -79,17 +81,19 @@ public class MenuUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (selectUser.getSelectedItem().toString()) {
-                    case " Select User...":
+                    case "Select User...":
                         System.out.println("No selected user");
                         break;
-                    case " (Create New User)":
+                    case "(Create New User)":
                         card.show(menuPanel, "userP");
                         break;
                     default:
                         try {
                             System.out.format("Selected: %s \n", selectUser.getSelectedItem().toString());
+                            setTitle(String.format("Maze Creator (%s)", selectUser.getSelectedItem().toString()));
                             card.show(menuPanel, "mazeP");
                         }
+                        // Also try an exception to catch if the user does not exist like if it's deleted.
                         catch (Exception exception) {
                             System.out.println(exception);
                         }
@@ -153,12 +157,19 @@ public class MenuUI extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (nameField.getText().length() >= 1) {
+                // Name too long. Must be 50 characters long or under.
+                if (nameField.getText().length() > 50) {
+                    JOptionPane.showConfirmDialog(menuPanel, "Please enter a name shorter than 50 characters.", "Name too long", JOptionPane.CLOSED_OPTION);
+                }
+                // Checks if there is at least 1 character in the text box
+                else if (nameField.getText().length() >= 1) {
                     System.out.format("Created new user '%s' \n", nameField.getText());
+                    setTitle(String.format("Maze Creator (%s)", nameField.getText()));
                     card.show(menuPanel, "mazeP");
                 }
+                // Displays a popup when there is no name
                 else {
-                    System.out.println("Please enter a name.");
+                    JOptionPane.showConfirmDialog(menuPanel, "Please enter a name.", "Name not found", JOptionPane.CLOSED_OPTION);
                 }
             }
             
@@ -302,8 +313,11 @@ public class MenuUI extends JFrame {
 
         //== Add to Panel Group 1
         panelGroup1.add(generationP);
+        panelGroup1.add(Box.createRigidArea(new Dimension(10, 0)));
         panelGroup1.add(includeLogoP);
+        panelGroup1.add(Box.createRigidArea(new Dimension(10, 0)));
         panelGroup1.add(mazeSizeP);
+        panelGroup1.add(Box.createRigidArea(new Dimension(10, 0)));
         panelGroup1.add(mazePath);
 
 
