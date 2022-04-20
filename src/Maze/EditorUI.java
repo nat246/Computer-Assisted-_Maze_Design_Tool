@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 
 public class EditorUI extends JFrame {
     private String user; // Change to User Class after Database and User Class has been created
@@ -30,8 +31,8 @@ public class EditorUI extends JFrame {
 
     private void initEditor() {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setPreferredSize(new Dimension(1000, 750)); // 16:12 Aspect Ratio
-        setMinimumSize(new Dimension(500, 375));
+        setPreferredSize(new Dimension(1300, 975)); // 16:12 Aspect Ratio
+        setMinimumSize(new Dimension(1300, 975));
         pack();
 
         setLocationRelativeTo(null);
@@ -87,12 +88,13 @@ public class EditorUI extends JFrame {
     private void informationPanel() {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setMinimumSize(new Dimension(125, 175));
         infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 
-        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", 100, 100)); // temp size
-        JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", 50));
-        JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", 4));
-        JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong> %b</html>", true));
+        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong><br> [ X: %d, Y: %d ]</html>", 100, 100)); // temp size
+        JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong><br> %d%%</html>", 50));
+        JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong><br> %d</html>", 4));
+        JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong><br> %b</html>", true));
 
         // Add to Panel
         infoPanel.add(gridSize);
@@ -105,23 +107,40 @@ public class EditorUI extends JFrame {
     }
 
     private void editorPanel() {
+        int testSize = 10;
+
         JPanel mazePanel = new JPanel();
-        mazePanel.setBorder(BorderFactory.createTitledBorder("Maze Editor"));
-        mazePanel.setLayout(new GridLayout(2, 2));
-
-        JLabel panelTitle = new JLabel("Maze");
-        panelTitle.setSize(300, 10);
-
-        
-        mazePanel.add(panelTitle);
+        mazePanel.setMinimumSize(new Dimension(910, 910));
+        mazePanel.setPreferredSize(new Dimension(1000, 1000));
+        mazePanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        mazePanel.setLayout(new GridLayout(testSize, testSize));
 
         
-        outer.add(UIHandler.NewGridItem(mazePanel, gridLayout, gridBag, 2, 0, 1, 1));
+        // addComponentListener(new ComponentAdapter() {
+        //     public void componentResized(ComponentEvent event) {
+        //         mazePanel.setSize(new Dimension((getBounds().height / 15), getBounds().height / 15));
+        //     }
+        // });
+        
+        
+        
+
+   
+        for (int i = 0; i < testSize*testSize; i++) {
+            mazePanel.add(newCell());
+        }
+
+        // JScrollPane mazeScroll = new JScrollPane(mazePanel);
+
+        
+        outer.add(UIHandler.NewGridItem(mazePanel, gridLayout, gridBag, 3, 0, 1, 1));
     }
 
     private JPanel newCell() {
         JPanel cellPanel = new JPanel();
-        
+
+        cellPanel.setPreferredSize(new Dimension(100, 100));
+        cellPanel.setBackground(new Color((int)(Math.random() * 0x1000000)));
 
         return cellPanel;
     }
