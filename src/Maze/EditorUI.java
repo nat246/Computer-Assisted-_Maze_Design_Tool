@@ -38,6 +38,7 @@ public class EditorUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // Menu Bar 
     private void topBar() {
         JMenuBar bar = new JMenuBar();
 
@@ -71,6 +72,7 @@ public class EditorUI extends JFrame {
         setJMenuBar(bar);
     }
 
+    // Panel that contains the information and the maze editor
     private void outerPanel() {
         outer = new JPanel();
         gridLayout = new GridBagLayout();
@@ -85,6 +87,7 @@ public class EditorUI extends JFrame {
 
     }
 
+    // Displays the information about the maze (E.g. Size, Exploration Percentage, Number of Dead cells, etc.)
     private void informationPanel() {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -136,6 +139,7 @@ public class EditorUI extends JFrame {
         outer.add(UIHandler.NewGridItem(mazePanel, gridLayout, gridBag, 3, 0, 1, 1));
     }
 
+    // Method for each cell in the maze
     private JPanel newCell() {
         JPanel cellPanel = new JPanel();
 
