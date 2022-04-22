@@ -4,38 +4,30 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.*;
+import java.awt.Font;
 
 import javax.swing.*;
-
-import javax.swing.SwingUtilities;
 
 public class EditorUI extends JFrame {
     private String user; // Change to User Class after Database and User Class has been created
 
     JPanel outer;
-    GridBagLayout gridLayout;
-    GridBagConstraints gridBag;
 
     public EditorUI(String user) {
         super("Editor");
         
         this.user = user;
         initEditor();
-        outerPanel();
         topBar();
-        informationPanel();
-        editorPanel();
+        outerPanel();
+        
     }
 
+    // Initiate Editor window
     private void initEditor() {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        // setPreferredSize(new Dimension(1380, 1035)); // 16:12 Aspect Ratio
-        // setMinimumSize(new Dimension(1380, 1035));
-
         setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
 
@@ -51,15 +43,20 @@ public class EditorUI extends JFrame {
         // File menu
         JMenu fileMenu = new JMenu("File");
 
+        JMenuItem exitB = new JMenuItem("Exit to menu");
+
+        // Events
+        exitB.addActionListener(e -> this.dispose());
+
+        // Add to Menu Bar
         fileMenu.add("New Maze");
-        fileMenu.add("Open Maze...");
         fileMenu.add(new JSeparator());
         fileMenu.add("Save");
         fileMenu.add("Save as...");
         fileMenu.add(new JSeparator());
         fileMenu.add("Export as PNG");
         fileMenu.add(new JSeparator());
-        fileMenu.add("Exit");
+        fileMenu.add(exitB);
 
         // Edit menu
         JMenu editMenu = new JMenu("Edit");
@@ -80,43 +77,60 @@ public class EditorUI extends JFrame {
 
     // Panel that contains the information and the maze editor
     private void outerPanel() {
-        outer = new JPanel();
-        gridLayout = new GridBagLayout();
-        gridBag = new GridBagConstraints();
-
-        gridBag.gridwidth = 2;
-        gridBag.gridheight = 1;
-
-        outer.setLayout(gridLayout);
-        
-        getContentPane().add(outer);
-
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(), sidePanel());
+        splitPane.setContinuousLayout(true);
+        splitPane.setResizeWeight(0.9);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setDividerSize(10);
+        getContentPane().add(splitPane);
     }
 
     // Displays the information about the maze (E.g. Size, Exploration Percentage, Number of Dead cells, etc.)
-    private void informationPanel() {
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setMinimumSize(new Dimension(125, 175));
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
+    private JPanel sidePanel() {
+        JPanel sectionPanel = new JPanel();
+        sectionPanel.setLayout(new BoxLayout(sectionPanel, BoxLayout.PAGE_AXIS));
+        sectionPanel.setMinimumSize(new Dimension(175, 10));
 
-        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong><br> [ X: %d, Y: %d ]</html>", 100, 100)); // temp size
-        JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong><br> %d%%</html>", 50));
-        JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong><br> %d</html>", 4));
-        JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong><br> %b</html>", true));
+        // Information
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
+        
+        JLabel infoTitle = new JLabel("<html><h1>Maze Information</h1></html>");
+        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", 10, 10)); // temp size
+        JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", 50));
+        JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", 4));
+        JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong> %b</html>", true));
+
+        // Options
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
+
+        JLabel optionsTitle = new JLabel("<html><br><h1>Options</h1></html>");
+        optionsTitle.setFont(new Font("SanSerif", Font.PLAIN, 20));
+
+        JCheckBox solutionCheckBox = new JCheckBox("Show Solution");
 
         // Add to Panel
+        infoPanel.add(infoTitle);
         infoPanel.add(gridSize);
         infoPanel.add(cellExplore);
         infoPanel.add(deadendNum);
         infoPanel.add(isSolvable);
 
-        outer.add(UIHandler.NewGridItem(infoPanel, gridLayout, gridBag, 0, 0, 0, 0));
-        
+        optionsPanel.add(optionsTitle);
+        optionsPanel.add(solutionCheckBox);
+
+        sectionPanel.add(infoPanel);
+        sectionPanel.add(optionsPanel);
+
+        return sectionPanel;
     }
 
-    private void editorPanel() {
+    // Panel where the maze is to be edited
+    private JPanel editorPanel() {
         int testSize = 10;
+
+        JPanel sectionPanel = new JPanel();
 
         JPanel mazePanel = new JPanel();
         mazePanel.setMinimumSize(new Dimension(1050, 1050));
@@ -127,9 +141,9 @@ public class EditorUI extends JFrame {
             mazePanel.add(createCell);
         }
 
+        sectionPanel.add(mazePanel);
 
-        
-        outer.add(UIHandler.NewGridItem(mazePanel, gridLayout, gridBag, 3, 0, 0, 0));
+        return sectionPanel;
     }
 
     // Method for each cell in the maze

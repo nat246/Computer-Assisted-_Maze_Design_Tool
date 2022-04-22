@@ -6,7 +6,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MazeMain {
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() ->{
+        SwingUtilities.invokeLater(() -> {
             try {
                 initUI();
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
