@@ -133,10 +133,10 @@ public class EditorUI extends JFrame {
         JPanel sectionPanel = new JPanel();
 
         JPanel mazePanel = new JPanel();
-        mazePanel.setMinimumSize(new Dimension(1050, 1050));
+        mazePanel.setPreferredSize(new Dimension(1050, 1050));
         mazePanel.setLayout(new GridLayout(testSize, testSize));
         
-        for (int i = 0; i < testSize*testSize; i++) {
+        for (int i = 0; i < testSize * testSize; i++) {
             JPanel createCell = newCell();
             mazePanel.add(createCell);
         }
