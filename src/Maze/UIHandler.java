@@ -1,17 +1,47 @@
 package Maze;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
+
 import javax.swing.*;
 
 
 public final class UIHandler {
 
-    public static void SwitchCard(CardLayout card, JPanel panel, String panelName) {
-        card.show(panel, panelName);
-    }
-
     public static EditorUI CreateEditor(String user) {
         return new EditorUI(user);
+    }
+
+    // Import to Cell Object soon
+    public static JPanel CreateWall(Dimension size) {
+        JPanel newWall = new JPanel();
+
+        newWall.setPreferredSize(size);
+        newWall.setBackground(Color.BLACK);
+
+        newWall.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                newWall.setBackground(Color.ORANGE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                newWall.setBackground(Color.BLACK);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // TO DO
+            }
+            
+            
+        });
+
+        return newWall;
     }
 
 
@@ -24,6 +54,9 @@ public final class UIHandler {
         
         gridBag.gridx = gridx;
         gridBag.gridy = gridy;
+
+        gridBag.weightx = weightx;
+        gridBag.weighty = weighty;
 
         layout.setConstraints(component, gridBag);
         

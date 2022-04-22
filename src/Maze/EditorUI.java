@@ -1,6 +1,7 @@
 package Maze;
 
 import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagLayout;
@@ -9,7 +10,8 @@ import java.awt.GridBagConstraints;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
+
+import javax.swing.SwingUtilities;
 
 public class EditorUI extends JFrame {
     private String user; // Change to User Class after Database and User Class has been created
@@ -31,8 +33,12 @@ public class EditorUI extends JFrame {
 
     private void initEditor() {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setPreferredSize(new Dimension(1300, 975)); // 16:12 Aspect Ratio
-        setMinimumSize(new Dimension(1300, 975));
+        // setPreferredSize(new Dimension(1380, 1035)); // 16:12 Aspect Ratio
+        // setMinimumSize(new Dimension(1380, 1035));
+
+        setExtendedState(MAXIMIZED_BOTH);
+        setUndecorated(true);
+
         pack();
 
         setLocationRelativeTo(null);
@@ -105,7 +111,7 @@ public class EditorUI extends JFrame {
         infoPanel.add(deadendNum);
         infoPanel.add(isSolvable);
 
-        outer.add(UIHandler.NewGridItem(infoPanel, gridLayout, gridBag, 0, 0, 1, 1));
+        outer.add(UIHandler.NewGridItem(infoPanel, gridLayout, gridBag, 0, 0, 0, 0));
         
     }
 
@@ -113,44 +119,42 @@ public class EditorUI extends JFrame {
         int testSize = 10;
 
         JPanel mazePanel = new JPanel();
-        mazePanel.setMinimumSize(new Dimension(910, 910));
-        mazePanel.setPreferredSize(new Dimension(1000, 1000));
-        mazePanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        mazePanel.setMinimumSize(new Dimension(1050, 1050));
         mazePanel.setLayout(new GridLayout(testSize, testSize));
-
         
-        // addComponentListener(new ComponentAdapter() {
-        //     public void componentResized(ComponentEvent event) {
-        //         mazePanel.setSize(new Dimension((getBounds().height / 15), getBounds().height / 15));
-        //     }
-        // });
-        
-        
-        
-
-   
         for (int i = 0; i < testSize*testSize; i++) {
-            mazePanel.add(newCell());
+            JPanel createCell = newCell();
+            mazePanel.add(createCell);
         }
 
-        // JScrollPane mazeScroll = new JScrollPane(mazePanel);
 
         
-        outer.add(UIHandler.NewGridItem(mazePanel, gridLayout, gridBag, 3, 0, 1, 1));
+        outer.add(UIHandler.NewGridItem(mazePanel, gridLayout, gridBag, 3, 0, 0, 0));
     }
 
     // Method for each cell in the maze
     private JPanel newCell() {
         JPanel cellPanel = new JPanel();
-
+        cellPanel.setLayout(new BorderLayout());
         cellPanel.setPreferredSize(new Dimension(100, 100));
-        cellPanel.setBackground(new Color((int)(Math.random() * 0x1000000)));
+
+        // Create Walls
+        SwingUtilities.invokeLater(() -> {
+            // TOP
+            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10)), BorderLayout.NORTH);
+
+            // BOTTOM
+            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10)), BorderLayout.SOUTH);
+
+            // LEFT
+            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight())), BorderLayout.LINE_START);
+
+            // RIGHT
+            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight())), BorderLayout.LINE_END);
+        });
 
         return cellPanel;
     }
 
-    
-
-    
     
 }

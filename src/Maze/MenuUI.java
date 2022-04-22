@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
@@ -25,8 +24,8 @@ public class MenuUI extends JFrame {
         MenuComponents();
     }
 
+    // Initiate Menu
     private void initGUI() {
-        
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(600, 360));
         setResizable(false);
@@ -35,6 +34,7 @@ public class MenuUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // Creates Menu components
     private void MenuComponents() {
         // Creates a new Panel to fit all Card Components
         card = new CardLayout();
@@ -47,8 +47,6 @@ public class MenuUI extends JFrame {
 
         
         card.show(menuPanel, "main");
-
-
         getContentPane().add(menuPanel);
     }
 
@@ -285,18 +283,21 @@ public class MenuUI extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorUI editor = UIHandler.CreateEditor("User1");
-                setVisible(false);
-                editor.setVisible(true);
-                
-                editor.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e)
-                    {
-                        setVisible(true);
-                        e.getWindow().dispose();
-                    }
+                SwingUtilities.invokeLater(() -> {
+                    EditorUI editor = UIHandler.CreateEditor("User1");
+                    setVisible(false);
+                    editor.setVisible(true);
+
+                    editor.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            setVisible(true);
+                            e.getWindow().dispose();
+                        }
+                    });
                 });
+
+                
             }
             
         });
