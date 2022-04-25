@@ -18,6 +18,10 @@ public class Maze {
         this.Cells = new HashMap<>();
     }
 
+    public Maze() {
+        this.Cells = new HashMap<>();
+    }
+
     public int[] GetSize() {
         return Size;
     }
