@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
 public class MenuUI extends JFrame {
+    private User user;
     private CardLayout card;
     private JPanel menuPanel;
 
@@ -88,8 +89,14 @@ public class MenuUI extends JFrame {
                         break;
                     default:
                         try {
-                            System.out.format("Selected: %s \n", selectUser.getSelectedItem().toString());
-                            setTitle(String.format("Maze Maker (%s)", selectUser.getSelectedItem().toString()));
+                            // Create new User class
+                            user = new User();
+                            user.setName(selectUser.getSelectedItem().toString());
+
+                            System.out.format("Selected: %s \n", user.getName());
+                            setTitle(String.format("Maze Maker (%s)", user.getName()));
+
+
                             card.show(menuPanel, "mazeP");
                         }
                         // Also try an exception to catch if the user does not exist like if it's deleted.
@@ -162,8 +169,11 @@ public class MenuUI extends JFrame {
                 }
                 // Checks if there is at least 1 character in the text box
                 else if (nameField.getText().length() >= 1) {
-                    System.out.format("Created new user '%s' \n", nameField.getText());
-                    setTitle(String.format("Maze Maker (%s)", nameField.getText()));
+                    user = new User();
+                    user.setName(nameField.getText());
+
+                    System.out.format("Created new user '%s' \n", user.getName());
+                    setTitle(String.format("Maze Maker (%s)", user.getName()));
                     card.show(menuPanel, "mazeP");
                 }
                 // Displays a popup when there is no name
@@ -284,8 +294,8 @@ public class MenuUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> {
-                    Maze newMaze = new Maze(new int[] {(int) horizontalSpinner.getValue(), (int) verticalSpinner.getValue()}, "change later");
-                    EditorUI editor = new EditorUI("change later", newMaze);
+                    Maze newMaze = new Maze(new int[] {(int) horizontalSpinner.getValue(), (int) verticalSpinner.getValue()}, user.getName());
+                    EditorUI editor = new EditorUI(user, newMaze);
                     setVisible(false);
                     editor.setVisible(true);
 

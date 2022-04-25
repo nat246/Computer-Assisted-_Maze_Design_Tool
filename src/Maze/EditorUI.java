@@ -12,11 +12,11 @@ import javax.swing.*;
 
 public class EditorUI extends JFrame {
     private Maze maze;
-    private String user; // Change to User Class after Database and User Class has been created
+    private User user; // Change to User Class after Database and User Class has been created
 
     JPanel outer;
 
-    public EditorUI(String user, Maze maze) {
+    public EditorUI(User user, Maze maze) {
         super("Editor");
         
         this.user = user;
@@ -99,7 +99,7 @@ public class EditorUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
         
         JLabel infoTitle = new JLabel("<html><h1>Maze Information</h1></html>");
-        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", 10, 10)); // temp size
+        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", maze.GetSize()[0], maze.GetSize()[1])); // temp size
         JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", 50));
         JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", 4));
         JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong> %b</html>", true));
