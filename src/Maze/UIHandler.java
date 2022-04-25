@@ -10,9 +10,6 @@ import javax.swing.*;
 
 public final class UIHandler {
 
-    public static EditorUI CreateEditor(String user) {
-        return new EditorUI(user);
-    }
 
     // Import to Cell Object soon
     public static JPanel CreateWall(Dimension size) {

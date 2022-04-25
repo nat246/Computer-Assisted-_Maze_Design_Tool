@@ -251,11 +251,11 @@ public class MenuUI extends JFrame {
         horizontalSize.add(horizontalSpinner);
 
         //== Maze Size Y
-        JPanel VerticalSize = new JPanel();
-        JLabel VerticalLabel = new JLabel("Y: ");
-        JSpinner VerticalSpinner = new JSpinner(spinModel2);
-        VerticalSize.add(VerticalLabel);
-        VerticalSize.add(VerticalSpinner);
+        JPanel verticalSize = new JPanel();
+        JLabel verticalLabel = new JLabel("Y: ");
+        JSpinner verticalSpinner = new JSpinner(spinModel2);
+        verticalSize.add(verticalLabel);
+        verticalSize.add(verticalSpinner);
 
         // Maze Path
         JPanel mazePath = new JPanel();
@@ -284,7 +284,8 @@ public class MenuUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> {
-                    EditorUI editor = UIHandler.CreateEditor("User1");
+                    Maze newMaze = new Maze(new int[] {(int) horizontalSpinner.getValue(), (int) verticalSpinner.getValue()}, "change later");
+                    EditorUI editor = new EditorUI("change later", newMaze);
                     setVisible(false);
                     editor.setVisible(true);
 
@@ -308,7 +309,7 @@ public class MenuUI extends JFrame {
         includeLogoP.add(logoCheckbox);
 
         mazeSizeP.add(horizontalSize);
-        mazeSizeP.add(VerticalSize);
+        mazeSizeP.add(verticalSize);
 
         mazePath.add(pathCheckbox);
 
@@ -350,13 +351,13 @@ public class MenuUI extends JFrame {
         
 
         // Create Table
-        String[] columnNames = {"Maze Title", "Size", "Author", "Date Created"};
+        String[] columnNames = {"Maze Title", "Size", "Author", "Date Created", "Last Modified"};
 
         // Table data
         Object[][] data = {
             // Currently test data
-            {"Maze1", "50x50", "Name1", "2022-07-07"},
-            {"Maze2", "55x55", "Name2", "2022-07-08"},
+            {"Maze1", "50x50", "Name1", "2022-07-07", "2022-07-07"},
+            {"Maze2", "55x55", "Name2", "2022-07-08", "2022-07-13"},
         };
 
         JTable mazeTable = new JTable(data, columnNames);

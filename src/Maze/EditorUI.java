@@ -11,28 +11,29 @@ import java.awt.Font;
 import javax.swing.*;
 
 public class EditorUI extends JFrame {
+    private Maze maze;
     private String user; // Change to User Class after Database and User Class has been created
 
     JPanel outer;
 
-    public EditorUI(String user) {
+    public EditorUI(String user, Maze maze) {
         super("Editor");
         
         this.user = user;
+        this.maze = maze;
         initEditor();
         topBar();
         outerPanel();
         
     }
 
+
     // Initiate Editor window
     private void initEditor() {
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
-
         pack();
-
         setLocationRelativeTo(null);
     }
 
@@ -75,15 +76,17 @@ public class EditorUI extends JFrame {
         setJMenuBar(bar);
     }
 
+
     // Panel that contains the information and the maze editor
     private void outerPanel() {
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(), sidePanel());
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(maze.GetSize()[0], maze.GetSize()[1]), sidePanel());
         splitPane.setContinuousLayout(true);
         splitPane.setResizeWeight(0.9);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerSize(10);
         getContentPane().add(splitPane);
     }
+
 
     // Displays the information about the maze (E.g. Size, Exploration Percentage, Number of Dead cells, etc.)
     private JPanel sidePanel() {
@@ -127,47 +130,103 @@ public class EditorUI extends JFrame {
     }
 
     // Panel where the maze is to be edited
-    private JPanel editorPanel() {
-        int testSize = 10;
+    private JPanel editorPanel(int w, int h) {
+        // Gets the largest number between the size of the grid
+        int largest = (h >= w) ? h : w;
+        int x = 0, y = 0;
 
         JPanel sectionPanel = new JPanel();
+        sectionPanel.setLayout(new BoxLayout(sectionPanel, BoxLayout.Y_AXIS));
+        sectionPanel.setMinimumSize(new Dimension(1050, 1050));
+        sectionPanel.setPreferredSize(new Dimension(1050, 1050));
+
+        JPanel sectionInner = new JPanel();
 
         JPanel mazePanel = new JPanel();
-        mazePanel.setPreferredSize(new Dimension(1050, 1050));
-        mazePanel.setLayout(new GridLayout(testSize, testSize));
+        mazePanel.setPreferredSize(new Dimension((sectionPanel.getPreferredSize().width / largest) * w, (sectionPanel.getPreferredSize().height / largest) * h));
+        mazePanel.setLayout(new GridLayout(h, w));
         
-        for (int i = 0; i < testSize * testSize; i++) {
-            JPanel createCell = newCell();
+        // Creates the number of cells for the size of the maze
+        for (int i = 0; i < w * h; i++) {
+            // Creates a new cell class and adds it to the maze class
+            Cell cell = new Cell(x, y);
+            maze.AddCell(cell);
+
+            JPanel createCell = newCell(cell);
             mazePanel.add(createCell);
+            
+            // Checks whether the column has reached the end
+            y++;
+            if (y == h) { y = 0; x++; }
         }
 
-        sectionPanel.add(mazePanel);
+        // Centre the maze
+        sectionInner.add(mazePanel);
+        sectionPanel.add(Box.createVerticalGlue());
+        sectionPanel.add(sectionInner, BorderLayout.CENTER);
+        sectionPanel.add(Box.createVerticalGlue());
+
 
         return sectionPanel;
     }
 
+
     // Method for each cell in the maze
-    private JPanel newCell() {
+    private JPanel newCell(Cell cell) {
         JPanel cellPanel = new JPanel();
         cellPanel.setLayout(new BorderLayout());
-        cellPanel.setPreferredSize(new Dimension(100, 100));
-
+        
         // Create Walls
         SwingUtilities.invokeLater(() -> {
             // TOP
-            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10)), BorderLayout.NORTH);
+            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10), "top"), BorderLayout.PAGE_START);
 
             // BOTTOM
-            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10)), BorderLayout.SOUTH);
+            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10), "bottom"), BorderLayout.PAGE_END);
 
             // LEFT
-            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight())), BorderLayout.LINE_START);
+            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight()), "left"), BorderLayout.LINE_START);
 
             // RIGHT
-            cellPanel.add(UIHandler.CreateWall(new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight())), BorderLayout.LINE_END);
+            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight()), "right"), BorderLayout.LINE_END);
+            
         });
 
         return cellPanel;
+    }
+
+
+    // Creates a singular wall
+    private JPanel createWall(Cell cell, Dimension size, String location) {
+        JPanel newWall = new JPanel();
+        newWall.setPreferredSize(size);
+        newWall.setBackground(Color.BLACK);
+
+
+        newWall.addMouseListener(new MouseAdapter() {
+            Color currentColour = Color.BLACK;
+
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                newWall.setBackground(Color.ORANGE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                newWall.setBackground(currentColour);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (cell.wallStatus(location)) newWall.setOpaque(true);
+                else newWall.setOpaque(false);;
+                cell.setWall(location, !cell.wallStatus(location));
+                System.out.println(cell.wallStatus(location));
+            }
+            
+        });
+        return newWall;
     }
 
     

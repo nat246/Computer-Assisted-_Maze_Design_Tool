@@ -1,30 +1,32 @@
 package Maze;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Maze {
-
-    private int Size;
-    private int MazeID = 0;
+    private int[] Size;
+    private int MazeID;
     private int Logo;
     private Boolean Solvable;
-    private ArrayList<Object> AuthorName;
-    private ArrayList<Object> MazeName;
-    private ArrayList<Object> DateCreated;
-    private ArrayList<Object> LastEdited;
+    private String AuthorName, MazeName;
+    private String DateCreated, LastEdited;
+    private HashMap<int[], Cell> Cells;
 
+    public Maze(int[] Size, String User) {
+        this.Size = Size;
+        this.AuthorName = User;
+        this.Cells = new HashMap<>();
+    }
 
-    public int GetSize() {
+    public int[] GetSize() {
         return Size;
     }
 
     public int getMazeID() {
-        MazeID++;
         return MazeID;
     }
 
     public int getLogo(){
-
         return Logo;
     }
 
@@ -32,41 +34,49 @@ public class Maze {
         return Solvable;
     }
 
-    public ArrayList<Object> GetMazeAuthor() {
+    public String GetMazeAuthor() {
 
         return AuthorName;
 
     }
-    public ArrayList<Object> GetMazeName() {
+    public String GetMazeName() {
 
         return MazeName;
     }
 
-    public ArrayList<Object> GetMazeDate() {
+    public String GetMazeDate() {
 
         return DateCreated;
     }
 
-    public ArrayList<Object> GetMazeLastEdited() {
-
+    public String GetMazeLastEdited() {
         return LastEdited;
     }
 
-    public void SetMazeAuthor(ArrayList<Object> AuthorName) {
+    public void SetMazeAuthor(String AuthorName) {
 
         this.AuthorName = AuthorName;
     }
 
-    public void SetMazeName(ArrayList<Object> MazeName){
+    public void SetMazeName(String MazeName){
         this.MazeName = MazeName;
     }
 
-    public void SetMazeDateCreated(ArrayList<Object> DateCreated) {
+    public void SetMazeDateCreated(String DateCreated) {
         this.DateCreated = DateCreated;
     }
 
-    public void SetMazeLastEdited(ArrayList<Object> LastEdited) {
+    public void SetMazeLastEdited(String LastEdited) {
         this.LastEdited = LastEdited;
     }
+
+    public Cell GetCell(int[] cellPos) {
+        return this.Cells.get(cellPos);
+    }
+
+    public void AddCell(Cell cell) {
+        this.Cells.put(cell.getPos(), cell);
+    }
+
 }
 

@@ -1,31 +1,33 @@
 package Maze;
 
-import java.awt.*;
-import javax.swing.*;
-
 public abstract class Grid {
+    private int x, y;
+    private int size;
 
-    private int width;
-    private int height;
+    public Grid(int x, int y) {
+        // Set Default Size (1 x 1)
+        this.size = 1;
 
-    public Grid(int w, int h) {
-        width = w;
-        height = h;
+        // Position
+        this.x = x;
+        this.y = y;
     }
 
-    public class GridDimensions extends Grid { //class used for calculating the grid dimensions
-        public GridDimensions(int w, int h) {
-            super(w, h);
-            int area = width * height;
-        }
+    // Gets the Position of the Grid
+    public int[] getPos() {
+        int[] position =  {x, y};
+        return position;
     }
 
-    public class GridWalls extends Grid { //class used for calculating the number of walls in a grid
-        public GridWalls(int w, int h) {
-            super(w, h);
-            int area = width * height;
-            int nWalls;
-        }
+    // Sets the size of the Grid
+    public void setSize(int size) {
+        this.size = size;
     }
+
+    // Gets the size of the Grid
+    public int getSize() {
+        return size;
+    }
+
 }
 
