@@ -12,15 +12,16 @@ public class Maze {
     private String DateCreated, LastEdited;
     private HashMap<int[], Cell> Cells;
 
+    public Maze() {
+        this.Cells = new HashMap<>();
+    }
+
     public Maze(int[] Size, String User) {
         this.Size = Size;
         this.AuthorName = User;
         this.Cells = new HashMap<>();
     }
 
-    public Maze() {
-        this.Cells = new HashMap<>();
-    }
 
     public int[] GetSize() {
         return Size;
