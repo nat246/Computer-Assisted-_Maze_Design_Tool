@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Maze {
+
+    // test
+
+
     private int[] Size;
     private int MazeID;
     private int Logo;
