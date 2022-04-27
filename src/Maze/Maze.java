@@ -5,9 +5,6 @@ import java.util.HashMap;
 
 public class Maze {
 
-    // test
-
-
     private int[] Size;
     private int MazeID;
     private int Logo;
@@ -25,7 +22,6 @@ public class Maze {
         this.AuthorName = User;
         this.Cells = new HashMap<>();
     }
-
 
     public int[] GetSize() {
         return Size;
