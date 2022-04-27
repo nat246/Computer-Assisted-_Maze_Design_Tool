@@ -7,10 +7,17 @@ import java.awt.event.MouseAdapter;
 
 import javax.swing.*;
 
+/**
+ * Handles the UI class and creates a new wall for the maze
+ */
 
 public final class UIHandler {
 
-
+    /**
+     *
+     * @param size user input for creating a new wall
+     * @return newWall returns the wall created using the user input size
+     */
     // Import to Cell Object soon
     public static JPanel CreateWall(Dimension size) {
         JPanel newWall = new JPanel();
@@ -41,7 +48,17 @@ public final class UIHandler {
         return newWall;
     }
 
-
+    /**
+     *
+     * @param component creates a new component
+     * @param layout arranges the layout of the grid
+     * @param gridBag Aligns the layout of the
+     * @param gridx row input values of a grid
+     * @param gridy column input values of a grid
+     * @param weightx
+     * @param weighty
+     * @return
+     */
     
     public static Component NewGridItem(Component component, GridBagLayout layout, GridBagConstraints gridBag, int gridx, int gridy, int weightx, int weighty) {
         /*
