@@ -10,12 +10,21 @@ import java.awt.Font;
 
 import javax.swing.*;
 
+/**
+ * Class responsible for Editing the UI frames and sections
+ */
+
 public class EditorUI extends JFrame {
     private Maze maze;
     private User user; // Change to User Class after Database and User Class has been created
 
     JPanel outer;
 
+    /**
+     *
+     * @param user new user input for creating or accessing a maze
+     * @param maze helps in creating a maze or access a randomly generated maze
+     */
     public EditorUI(User user, Maze maze) {
         super("Editor");
         
@@ -27,6 +36,9 @@ public class EditorUI extends JFrame {
         
     }
 
+    /**
+     *
+     */
 
     // Initiate Editor window
     private void initEditor() {
@@ -37,6 +49,9 @@ public class EditorUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Method used for editing the top section of the UI
+     */
     // Menu Bar 
     private void topBar() {
         JMenuBar bar = new JMenuBar();
@@ -76,6 +91,9 @@ public class EditorUI extends JFrame {
         setJMenuBar(bar);
     }
 
+    /**
+     * Method used for editing the outer panel of the UI
+     */
 
     // Panel that contains the information and the maze editor
     private void outerPanel() {
@@ -87,6 +105,10 @@ public class EditorUI extends JFrame {
         getContentPane().add(splitPane);
     }
 
+    /**
+     *
+     * @return sectionPanel returns the user selection from the editor UI
+     */
 
     // Displays the information about the maze (E.g. Size, Exploration Percentage, Number of Dead cells, etc.)
     private JPanel sidePanel() {
@@ -129,6 +151,13 @@ public class EditorUI extends JFrame {
         return sectionPanel;
     }
 
+    /**
+     *
+     * @param w width dimension of the grid
+     * @param h height dimension of the grid
+     * @return sectionPanel takes in the user selection from the UI options
+     */
+
     // Panel where the maze is to be edited
     private JPanel editorPanel(int w, int h) {
         // Gets the largest number between the size of the grid
@@ -170,6 +199,12 @@ public class EditorUI extends JFrame {
         return sectionPanel;
     }
 
+    /**
+     *
+     * @param cell object takes in the dimensions for creating a new cell in a maze
+     * @return cellPanel dimensions for creating a new cell
+     */
+
 
     // Method for each cell in the maze
     private JPanel newCell(Cell cell) {
@@ -194,6 +229,14 @@ public class EditorUI extends JFrame {
 
         return cellPanel;
     }
+
+    /**
+     *
+     * @param cell create a new cell
+     * @param size input size of the new wall
+     * @param location Location of the new wall to be placed
+     * @return newWall according to the user inputs
+     */
 
 
     // Creates a singular wall
