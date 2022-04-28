@@ -1,16 +1,16 @@
 package Maze;
-
+/**
+ * Creates a new maze
+ */
 public class MazeDataHandler {
-    /**
-     * Creates a new maze
-     */
+
     public static void newMaze() {
 
     }
 
     /**
      * Gets the maze from the database
-     * @param mazeID
+     * @param mazeID Unique ID given for each maze
      * @return maze from specific ID
      */
     public static Maze getMaze(int mazeID) {

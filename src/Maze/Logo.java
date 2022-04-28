@@ -2,6 +2,10 @@ package Maze;
 
 import java.util.ArrayList;
 
+/**
+ * Class responsible for setting up a logo in a maze
+ */
+
 public class Logo {
 
     private int dimensions;

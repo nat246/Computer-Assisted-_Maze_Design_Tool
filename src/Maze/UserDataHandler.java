@@ -1,17 +1,17 @@
 package Maze;
-
+/**
+ * Adds a new user to the database
+ */
 public class UserDataHandler {
 
-    /**
-     * Adds a new user to the database
-     */
+
     public static void newUser(){
 
     }
 
     /**
      * Gets the user details
-     * @param userID
+     * @param userID gives a unique user Id for every user
      * @return user details
      */
     public static User getUser(int userID){

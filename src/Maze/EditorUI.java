@@ -12,7 +12,7 @@ import javax.swing.*;
 
 /**
  * Class responsible for Editing the UI frames and sections
- *///
+ */
 
 public class EditorUI extends JFrame {
     private Maze maze;

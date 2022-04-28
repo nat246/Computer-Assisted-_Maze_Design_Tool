@@ -2,6 +2,10 @@ package Maze;
 
 import java.util.ArrayList;
 
+/**
+ * Class responsible for handling the user input details including name and unique user ID
+ */
+
 public class User {
     private String name;
     private int userId;
