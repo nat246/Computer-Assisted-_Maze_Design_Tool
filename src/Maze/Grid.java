@@ -13,7 +13,6 @@ public abstract class Grid {
      * @param x dimension 1 input for the maze
      * @param y dimension 2 input for the maze
      */
-
     public Grid(int x, int y) {
         // Set Default Size (1 x 1)
         this.size = 1;
@@ -24,30 +23,27 @@ public abstract class Grid {
     }
 
     /**
-     *
+     * Gets the Position of the Grid
      * @return position the current postion of the grid on the maze
      */
-    // Gets the Position of the Grid
     public int[] getPos() {
         int[] position =  {x, y};
         return position;
     }
 
     /**
-     *
+     * Sets the size of the Grid
      * @param size sets the size of the grid according to the user input
      */
-
-    // Sets the size of the Grid
     public void setSize(int size) {
         this.size = size;
     }
 
-    /**
-     * Getter method for setting the size of the grid
-     */
 
-    // Gets the size of the Grid
+    /**
+     * Gets the size of the Grid
+     * @return size
+     */
     public int getSize() {
         return size;
     }

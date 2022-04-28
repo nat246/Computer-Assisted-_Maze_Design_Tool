@@ -36,10 +36,8 @@ public class EditorUI extends JFrame {
     }
 
     /**
-     *
+     * Initiate Editor window
      */
-
-    // Initiate Editor window
     private void initEditor() {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(MAXIMIZED_BOTH);
@@ -49,9 +47,8 @@ public class EditorUI extends JFrame {
     }
 
     /**
-     * Method used for editing the top section of the UI
+     * Menu Bar
      */
-    // Menu Bar 
     private void topBar() {
         JMenuBar bar = new JMenuBar();
 
@@ -91,10 +88,8 @@ public class EditorUI extends JFrame {
     }
 
     /**
-     * Method used for editing the outer panel of the UI
+     * Panel that contains the information and the maze editor
      */
-
-    // Panel that contains the information and the maze editor
     private void outerPanel() {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(maze.getSize()[0], maze.getSize()[1]), sidePanel());
         splitPane.setContinuousLayout(true);
@@ -105,11 +100,9 @@ public class EditorUI extends JFrame {
     }
 
     /**
-     *
+     * Displays the information about the maze (E.g. Size, Exploration Percentage, Number of Dead cells, etc.)
      * @return sectionPanel returns the user selection from the editor UI
      */
-
-    // Displays the information about the maze (E.g. Size, Exploration Percentage, Number of Dead cells, etc.)
     private JPanel sidePanel() {
         JPanel sectionPanel = new JPanel();
         sectionPanel.setLayout(new BoxLayout(sectionPanel, BoxLayout.PAGE_AXIS));
@@ -151,13 +144,11 @@ public class EditorUI extends JFrame {
     }
 
     /**
-     *
+     * Panel where the maze is to be edited
      * @param w width dimension of the grid
      * @param h height dimension of the grid
      * @return sectionPanel takes in the user selection from the UI options
      */
-
-    // Panel where the maze is to be edited
     private JPanel editorPanel(int w, int h) {
         // Gets the largest number between the size of the grid
         int largest = (h >= w) ? h : w;
@@ -199,13 +190,10 @@ public class EditorUI extends JFrame {
     }
 
     /**
-     *
+     * Method for each cell in the maze
      * @param cell object takes in the dimensions for creating a new cell in a maze
      * @return cellPanel dimensions for creating a new cell
      */
-
-
-    // Method for each cell in the maze
     private JPanel newCell(Cell cell) {
         JPanel cellPanel = new JPanel();
         cellPanel.setLayout(new BorderLayout());
@@ -230,15 +218,12 @@ public class EditorUI extends JFrame {
     }
 
     /**
-     *
+     * Creates a singular wall
      * @param cell create a new cell
      * @param size input size of the new wall
      * @param location Location of the new wall to be placed
      * @return newWall according to the user inputs
      */
-
-
-    // Creates a singular wall
     private JPanel createWall(Cell cell, Dimension size, String location) {
         JPanel newWall = new JPanel();
         newWall.setPreferredSize(size);

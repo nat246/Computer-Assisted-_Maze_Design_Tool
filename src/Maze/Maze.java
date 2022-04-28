@@ -160,8 +160,8 @@ public class Maze {
     }
 
     /**
-     *
-     * @param cellPos cell postion of the maze
+     * Gets the cell position
+     * @param cellPos cell position of the maze
      * @return cellPos
      */
     public Cell getCell(int[] cellPos) {
@@ -169,7 +169,7 @@ public class Maze {
     }
 
     /**
-     *
+     * Adds a cell
      * @param cell adds a new cell for the maze
      */
 

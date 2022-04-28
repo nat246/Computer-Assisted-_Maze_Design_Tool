@@ -40,15 +40,22 @@ public class Cell extends Grid {
      * @param wall represents the user input used for setting up a wall
      * @param state boolean value of the state of the wall
      */
-
     public void setWall(String wall, boolean state) {
         walls.replace(wall, state);
     }
 
+    /**
+     *
+     * @param type
+     */
     public void setType(int type) {
         this.cellType = type;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getType() {
         return this.cellType;
     }

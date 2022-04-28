@@ -28,7 +28,6 @@ public class MenuUI extends JFrame {
      * @throws IllegalAccessException
      * @throws UnsupportedLookAndFeelException
      */
-
     public MenuUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         super("Maze Maker");
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -39,8 +38,6 @@ public class MenuUI extends JFrame {
     /**
      * Initiates the menu options
      */
-
-    // Initiate Menu
     private void initGUI() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(600, 360));
@@ -53,8 +50,6 @@ public class MenuUI extends JFrame {
     /**
      * Displays the main menu options of the UI
      */
-
-    // Creates Menu components
     private void MenuComponents() {
         // Creates a new Panel to fit all Card Components
         card = new CardLayout();
@@ -71,11 +66,9 @@ public class MenuUI extends JFrame {
     }
 
     /**
-     *
+     * The Main Menu where the User is to Select User
      * @return mainPanel with the user choice from the menu options
      */
-
-    // The Main Menu where the User is to Select User
     private JPanel MainMenu() {
         // Panel
         JPanel mainPanel = new JPanel();
@@ -146,10 +139,9 @@ public class MenuUI extends JFrame {
     }
 
     /**
-     *
+     * The menu to create a new user.
      * @return newUserPanel creates a new user
      */
-    // The menu to create a new user.
     private JPanel CreateUserMenu() {
         // Main Panel
         JPanel newUserPanel = new JPanel();
@@ -231,10 +223,9 @@ public class MenuUI extends JFrame {
     }
 
     /**
-     *
+     * The menu for importing a saved maze or create a new maze.
      * @return newMenuPanel creates a new maze or opens an existing maze
      */
-    // The menu for importing a saved maze or create a new maze.
     private JPanel CreateMazeMenu() {
         // Main Panel
         JPanel newMenuPanel = new JPanel();
@@ -253,10 +244,9 @@ public class MenuUI extends JFrame {
     }
 
     /**
-     *
+     * Create New Maze Pane
      * @return newMazeP creates a new maze using user input dimensions or generates a random maze
      */
-    // Create New Maze Pane
     private JPanel NewMazePanel() {
         // New Maze Panel
         JPanel newMazeP = new JPanel();
@@ -386,10 +376,9 @@ public class MenuUI extends JFrame {
     }
 
     /**
-     *
+     * Opens an existing maze from the Database
      * @return openPanel for accessing various menu options of a maze
      */
-    // Opens an existing maze from the Database
     private JPanel OpenMazePanel() {
         JPanel openPanel = new JPanel();
 
