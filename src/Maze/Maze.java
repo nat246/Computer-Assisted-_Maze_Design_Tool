@@ -1,6 +1,5 @@
 package Maze;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -9,16 +8,16 @@ import java.util.HashMap;
 public class Maze {
 
 
-    private int[] Size;
-    private int MazeID;
-    private int Logo;
-    private Boolean Solvable;
-    private String AuthorName, MazeName;
-    private String DateCreated, LastEdited;
-    private HashMap<int[], Cell> Cells;
+    private int[] size;
+    private int mazeID;
+    private int logo;
+    private Boolean solvable;
+    private String authorName, mazeName;
+    private String dateCreated, lastEdited;
+    private HashMap<int[], Cell> cells;
 
     public Maze() {
-        this.Cells = new HashMap<>();
+        this.cells = new HashMap<>();
     }
 
     /**
@@ -27,79 +26,137 @@ public class Maze {
      * @param User prints the name of the Author of the maze
      */
     public Maze(int[] Size, String User) {
-        this.Size = Size;
-        this.AuthorName = User;
-        this.Cells = new HashMap<>();
+        this.size = Size;
+        this.authorName = User;
+        this.cells = new HashMap<>();
     }
 
-    public int[] GetSize() {
-        return Size;
+    /**
+     * Gets the size of the maze
+     * @return size
+     */
+    public int[] getSize() {
+        return size;
     }
 
+    /**
+     * Sets the size of the maze
+     * @param size
+     */
+    public void setSize(int[] size) {
+        this.size = size;
+    }
+
+    /**
+     * Gets the mazeID
+     * @return mazeID
+     */
     public int getMazeID() {
-        return MazeID;
-    }
-
-    public int getLogo(){
-        return Logo;
-    }
-
-    public Boolean MazeSolvable(Boolean Solvable) {
-        return Solvable;
+        return mazeID;
     }
 
     /**
-     *
-     * @return AuthorName
+     * Sets the ID of the maze
+     * @param mazeID
      */
-    public String GetMazeAuthor() {
-
-        return AuthorName;
-
+    public void setMazeID(int mazeID) {
+        this.mazeID = mazeID;
     }
 
     /**
-     *
-     * @return MazeName
+     * Gets the logo
+     * @return
      */
-    public String GetMazeName() {
-
-        return MazeName;
+    public int getLogo() {
+        return logo;
     }
 
     /**
-     *
-     * @return DateCreated
+     * Sets the maze logo
+     * @param logo
      */
-
-    public String GetMazeDate() {
-
-        return DateCreated;
+    public void setLogo(int logo) {
+        this.logo = logo;
     }
 
     /**
-     *
-     * @return LastEdited
+     * Gets if the maze is solvable or not
+     * @return true or false if maze is solvable
      */
-    public String GetMazeLastEdited() {
-        return LastEdited;
+    public Boolean getSolvable() {
+        return solvable;
     }
 
-    public void SetMazeAuthor(String AuthorName) {
-
-        this.AuthorName = AuthorName;
+    /**
+     * Set if the maze is solvable or not
+     * @param solvable
+     */
+    public void setSolvable(Boolean solvable) {
+        this.solvable = solvable;
     }
 
-    public void SetMazeName(String MazeName){
-        this.MazeName = MazeName;
+    /**
+     * Gets the Author's name of the Maze
+     * @return authorName
+     */
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void SetMazeDateCreated(String DateCreated) {
-        this.DateCreated = DateCreated;
+    /**
+     * Sets the Author's name of the Maze
+     * @param authorName
+     */
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
-    public void SetMazeLastEdited(String LastEdited) {
-        this.LastEdited = LastEdited;
+    /**
+     * Gets the Maze's name/title
+     * @return mazeName
+     */
+    public String getMazeName() {
+        return mazeName;
+    }
+
+    /**
+     * Sets the Maze's name/title
+     * @param mazeName
+     */
+    public void setMazeName(String mazeName) {
+        this.mazeName = mazeName;
+    }
+
+    /**
+     * Gets the creation date of the Maze
+     * @return dateCreated
+     */
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    /**
+     * Sets the created date of the Maze
+     * @param dateCreated
+     */
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    /**
+     *Gets the last edited date of the maze
+     * @return lastEdited
+     */
+    public String getLastEdited() {
+        return lastEdited;
+    }
+
+    /**
+     * Sets the last edited date of the maze
+     * @param lastEdited
+     */
+    public void setLastEdited(String lastEdited) {
+        this.lastEdited = lastEdited;
     }
 
     /**
@@ -107,8 +164,8 @@ public class Maze {
      * @param cellPos cell postion of the maze
      * @return cellPos
      */
-    public Cell GetCell(int[] cellPos) {
-        return this.Cells.get(cellPos);
+    public Cell getCell(int[] cellPos) {
+        return this.cells.get(cellPos);
     }
 
     /**
@@ -116,8 +173,8 @@ public class Maze {
      * @param cell adds a new cell for the maze
      */
 
-    public void AddCell(Cell cell) {
-        this.Cells.put(cell.getPos(), cell);
+    public void addCell(Cell cell) {
+        this.cells.put(cell.getPos(), cell);
     }
 
 }

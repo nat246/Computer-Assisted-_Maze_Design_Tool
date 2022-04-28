@@ -3,7 +3,6 @@ package Maze;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.awt.Font;
@@ -97,7 +96,7 @@ public class EditorUI extends JFrame {
 
     // Panel that contains the information and the maze editor
     private void outerPanel() {
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(maze.GetSize()[0], maze.GetSize()[1]), sidePanel());
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(maze.getSize()[0], maze.getSize()[1]), sidePanel());
         splitPane.setContinuousLayout(true);
         splitPane.setResizeWeight(0.9);
         splitPane.setOneTouchExpandable(true);
@@ -121,7 +120,7 @@ public class EditorUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
         
         JLabel infoTitle = new JLabel("<html><h1>Maze Information</h1></html>");
-        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", maze.GetSize()[0], maze.GetSize()[1])); // temp size
+        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", maze.getSize()[0], maze.getSize()[1])); // temp size
         JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", 50));
         JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", 4));
         JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong> %b</html>", true));
@@ -179,7 +178,7 @@ public class EditorUI extends JFrame {
         for (int i = 0; i < w * h; i++) {
             // Creates a new cell class and adds it to the maze class
             Cell cell = new Cell(x, y);
-            maze.AddCell(cell);
+            maze.addCell(cell);
 
             JPanel createCell = newCell(cell);
             mazePanel.add(createCell);
