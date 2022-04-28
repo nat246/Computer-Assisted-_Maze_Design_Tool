@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
-/**
+/**.
  * UI class responsible for creating the menu options
  */
 public class MenuUI extends JFrame {
