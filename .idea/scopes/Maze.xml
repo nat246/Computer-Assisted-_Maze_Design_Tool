@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="Maze" pattern="src:Maze.Cell||src:Maze.Data||src:Maze.Grid||src:Maze.ImageExporter||src:Maze.ImageImporter||src:Maze.Logo||src:Maze.Maze||src:Maze.MazeCreator||src:Maze.MazeDataHandler||src:Maze.MazeDB||src:Maze.MazeGallery||src:Maze.MazeRandomCreator||src:Maze.MazeSolver||src:Maze.User||src:Maze.UserDataHandler" />
+  <scope name="Maze" pattern="src:Maze.Cell||src:Maze.Data||src:Maze.Grid||src:Maze.ImageExporter||src:Maze.ImageImporter||src:Maze.Logo||src:Maze.Maze||src:Maze.MazeCreator||src:Maze.MazeDataHandler||src:Maze.MazeDB||src:UI.MazeGallery||src:Maze.MazeRandomCreator||src:Maze.MazeSolver||src:User.User||src:User.UserDataHandler" />
 </component>
