@@ -10,7 +10,7 @@ public class Maze {
 
     private int[] size;
     private int mazeID;
-    private int logo;
+    private String logo;
     private Boolean solvable;
     private String authorName, mazeName;
     private String dateCreated, lastEdited;
@@ -55,19 +55,12 @@ public class Maze {
         return mazeID;
     }
 
-    /**
-     * Sets the ID of the maze
-     * @param mazeID
-     */
-    public void setMazeID(int mazeID) {
-        this.mazeID = mazeID;
-    }
 
     /**
      * Gets the logo
      * @return
      */
-    public int getLogo() {
+    public String getLogo() {
         return logo;
     }
 
@@ -75,7 +68,7 @@ public class Maze {
      * Sets the maze logo
      * @param logo
      */
-    public void setLogo(int logo) {
+    public void setLogo(String logo) {
         this.logo = logo;
     }
 

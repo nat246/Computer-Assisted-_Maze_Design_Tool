@@ -3,8 +3,6 @@ package Maze;
  * Adds a new user to the database
  */
 public class UserDataHandler {
-
-
     public static void newUser(){
 
     }

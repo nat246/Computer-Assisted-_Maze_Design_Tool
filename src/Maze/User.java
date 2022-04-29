@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class User {
     private String name;
     private int userId;
-    private ArrayList<Object> userMazes;
 
     /**
      * Gets the name of the User
@@ -41,22 +40,6 @@ public class User {
      */
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    /**
-     * Gets all the mazes created by the user
-     * @return userMazes
-     */
-    public ArrayList<Object> getUserMazes() {
-        return userMazes;
-    }
-
-    /**
-     * Adds the mazes to the user's profile
-     * @param userMazes
-     */
-    public void addUserMazes(ArrayList<Object> userMazes) {
-        this.userMazes = userMazes;
     }
 
     /**
