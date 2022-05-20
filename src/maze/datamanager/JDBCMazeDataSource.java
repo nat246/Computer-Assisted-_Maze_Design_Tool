@@ -96,6 +96,15 @@ public class JDBCMazeDataSource implements Data {
         }
     }
 
+    public void getUserID(User u) {
+        try {
+            getUserID.setString(1, u.getName());
+            getUserID.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void close() {
         try {
             connection.close();
