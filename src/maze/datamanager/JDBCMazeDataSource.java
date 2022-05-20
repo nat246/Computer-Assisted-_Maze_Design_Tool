@@ -81,7 +81,14 @@ public class JDBCMazeDataSource implements Data {
     }
 
     public void addUser(User u) {
-
+        try {
+            addUser.setString(1, u.getName());
+            addUser.setString(2, u.getPassword());
+            addUser.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
     }
+
 }
 
