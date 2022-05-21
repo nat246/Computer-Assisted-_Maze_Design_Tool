@@ -1,5 +1,6 @@
 package maze.datamanager;
 
+import maze.Maze;
 import org.mariadb.jdbc.MariaDbConnection;
 import user.User;
 
@@ -41,8 +42,8 @@ public class JDBCMazeDataSource implements Data {
     private static final String GET_MAZE = "SELECT * FROM mazes WHERE mazeName=?";
     private static final String GET_MAZENAME = "SELECT mazeName FROM mazes WHERE mazeName=?";
     private static final String GET_MAZECREATOR = "SELECT mazeCreator FROM mazes WHERE mazeName=?";
-    private static final String GET_MAZECREATEDATE = "SELECT mazeCreationTime FROM mazes";
-    private static final String GET_MAZEEDITDATE = "SELECT mazeLastEdited FROM mazes";
+    private static final String GET_MAZECREATEDATE = "SELECT mazeCreationTime FROM mazes WHERE mazeName=?";
+    private static final String GET_MAZEEDITDATE = "SELECT mazeLastEdited FROM mazes WHERE mazeName=?";
     private static final String DELETE_MAZE = "DELETE FROM maze WHERE mazeName =?";
 
     private Connection connection;
@@ -100,6 +101,107 @@ public class JDBCMazeDataSource implements Data {
         try {
             getUserID.setString(1, u.getName());
             getUserID.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getUsername(User u) {
+        try {
+            getUsername.setString(1, u.getName());
+            getUsername.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    public void getPassword(User u) {
+        try {
+            getPassword.setString(1, u.getName());
+            getPassword.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void deleteUser(User u) {
+        try {
+            deleteUser.setString(1, u.getName());
+            deleteUser.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void addMaze(Maze m) {
+        try {
+            addMaze.setString(1, m.getMazeName());
+            addMaze.setString(2, m.getAuthorName());
+            addMaze.setString(3, m.getDateCreated());
+            addMaze.setString(4, m.getLastEdited());
+            addMaze.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getMazeID(Maze m) {
+        try {
+            getMazeID.setString(1, m.getMazeName());
+            getMazeID.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getMaze(Maze m) {
+        try {
+            getMaze.setString(1, m.getMazeName());
+            getMaze.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getMazeName(Maze m) {
+        try {
+            getMazeName.setString(1, m.getMazeName());
+            getMazeName.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getMazeCreator(Maze m) {
+        try {
+            getMazeCreator.setString(1, m.getMazeName());
+            getMazeCreator.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getMazeCreationDate(Maze m) {
+        try {
+            getMazeCreationDate.setString(1, m.getMazeName());
+            getMazeCreationDate.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getMazeLastEdited(Maze m) {
+        try {
+            getMazeLastEdited.setString(1, m.getMazeName());
+            getMazeLastEdited.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void deleteMaze(Maze m) {
+        try {
+            deleteMaze.setString(1, m.getMazeName());
+            deleteMaze.execute();
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
