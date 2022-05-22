@@ -1,22 +1,18 @@
 package maze.datamanager;
 
 import maze.Maze;
-import org.mariadb.jdbc.MariaDbConnection;
 import user.User;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Set;
-import java.util.TreeSet;
 
-public class JDBCMazeDataSource implements Data {
+/**
+ * Class for retrieving data from the XML file holding the user and maze informaiton.
+ */
+
+public class JDBCMazeDataSource implements Data{
 
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE IF NOT EXISTS users ("
