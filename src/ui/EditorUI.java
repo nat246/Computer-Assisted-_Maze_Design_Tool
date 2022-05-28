@@ -117,7 +117,7 @@ public class EditorUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
         
         JLabel infoTitle = new JLabel("<html><h1>Maze Information</h1></html>");
-        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", maze.getSize()[0], maze.getSize()[1])); // temp size
+        JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", maze.getSize()[0], maze.getSize()[1]));
         JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", 50));
         JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", 4));
         JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong> %b</html>", true));
@@ -166,8 +166,8 @@ public class EditorUI extends JFrame {
         JPanel sectionInner = new JPanel();
 
         JPanel mazePanel = new JPanel();
-        mazePanel.setPreferredSize(new Dimension((sectionPanel.getPreferredSize().width / largest) * w, (sectionPanel.getPreferredSize().height / largest) * h));
-        mazePanel.setLayout(new GridLayout(h, w));
+        mazePanel.setPreferredSize(new Dimension((sectionPanel.getPreferredSize().height / largest) * h, (sectionPanel.getPreferredSize().width / largest) * w));
+        mazePanel.setLayout(new GridLayout(w, h));
         
         // Creates the number of cells for the size of the maze
         for (int i = 0; i < w * h; i++) {
@@ -260,6 +260,7 @@ public class EditorUI extends JFrame {
                 else newWall.setOpaque(false);;
                 cell.setWall(location, !cell.wallStatus(location));
                 System.out.println(cell.wallStatus(location));
+                System.out.println(String.format("pos: (%d, %d)", cell.getPos()[0], cell.getPos()[1]));
             }
             
         });
@@ -275,13 +276,13 @@ public class EditorUI extends JFrame {
                 if (cell.getPos()[0] != 0) return (verticalSize / 2) ;
                 else return verticalSize;
             case "bottom":
-                if (cell.getPos()[0] != maze.getSize()[1] - 1) return (verticalSize / 2);
+                if (cell.getPos()[0] != maze.getSize()[0] - 1) return (verticalSize / 2);
                 else return verticalSize;
             case "left":
                 if (cell.getPos()[1] != 0) return (horiztonalSize) / 2;
                 else return horiztonalSize;
             case "right":
-                if (cell.getPos()[1] != maze.getSize()[0] - 1) return (horiztonalSize / 2);
+                if (cell.getPos()[1] != maze.getSize()[1] - 1) return (horiztonalSize / 2);
                 else return horiztonalSize;
         }
 
