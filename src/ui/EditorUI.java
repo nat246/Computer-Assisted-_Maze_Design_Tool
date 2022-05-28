@@ -174,7 +174,7 @@ public class EditorUI extends JFrame {
             // Creates a new cell class and adds it to the maze class
             Cell cell = new Cell(x, y);
             maze.addCell(cell);
-
+            System.out.println(String.format("Position: %d, %d", cell.getPos()[0], cell.getPos()[1]));;
             JPanel createCell = newCell(cell);
             mazePanel.add(createCell);
             
@@ -200,21 +200,30 @@ public class EditorUI extends JFrame {
      */
     private JPanel newCell(Cell cell) {
         JPanel cellPanel = new JPanel();
-        cellPanel.setLayout(new BorderLayout());
-        
+        cellPanel.setLayout(null);
+
         // Create Walls
         SwingUtilities.invokeLater(() -> {
+
             // TOP
-            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10), "top"), BorderLayout.PAGE_START);
+            JPanel topWall = createWall(cell, "top");
+            cellPanel.add(topWall);
+            topWall.setBounds(0, 0, cellPanel.getWidth(), determineSize(cell, cellPanel, "top"));
 
             // BOTTOM
-            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth(), cellPanel.getHeight() / 10), "bottom"), BorderLayout.PAGE_END);
+            JPanel bottomWall = createWall(cell, "bottom");
+            cellPanel.add(bottomWall);
+            bottomWall.setBounds(0, (0 + (cellPanel.getHeight() - determineSize(cell, cellPanel, "bottom"))), cellPanel.getWidth(), determineSize(cell, cellPanel, "bottom"));
 
             // LEFT
-            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight()), "left"), BorderLayout.LINE_START);
+            JPanel leftWall = createWall(cell, "left");
+            cellPanel.add(leftWall);
+            leftWall.setBounds(0, 0, determineSize(cell, cellPanel, "left"), cellPanel.getHeight());
 
             // RIGHT
-            cellPanel.add(createWall(cell, new Dimension(cellPanel.getWidth() / 10, cellPanel.getHeight()), "right"), BorderLayout.LINE_END);
+            JPanel rightWall = createWall(cell, "right");
+            cellPanel.add(rightWall);
+            rightWall.setBounds((0 + (cellPanel.getWidth() - determineSize(cell, cellPanel, "right"))), 0, determineSize(cell, cellPanel, "right"), cellPanel.getHeight());
             
         });
 
@@ -228,15 +237,12 @@ public class EditorUI extends JFrame {
      * @param location Location of the new wall to be placed
      * @return newWall according to the user inputs
      */
-    private JPanel createWall(Cell cell, Dimension size, String location) {
+    private JPanel createWall(Cell cell, String location) {
         JPanel newWall = new JPanel();
-        newWall.setPreferredSize(size);
         newWall.setBackground(Color.BLACK);
-
 
         newWall.addMouseListener(new MouseAdapter() {
             Color currentColour = Color.BLACK;
-
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -258,6 +264,28 @@ public class EditorUI extends JFrame {
             
         });
         return newWall;
+    }
+
+    private int determineSize(Cell cell, JPanel panel, String position) {
+        int horiztonalSize = panel.getWidth() / 10;
+        int verticalSize = panel.getWidth() / 10;
+
+        switch (position) {
+            case "top":
+                if (cell.getPos()[0] != 0) return (verticalSize / 2) ;
+                else return verticalSize;
+            case "bottom":
+                if (cell.getPos()[0] != maze.getSize()[1] - 1) return (verticalSize / 2);
+                else return verticalSize;
+            case "left":
+                if (cell.getPos()[1] != 0) return (horiztonalSize) / 2;
+                else return horiztonalSize;
+            case "right":
+                if (cell.getPos()[1] != maze.getSize()[0] - 1) return (horiztonalSize / 2);
+                else return horiztonalSize;
+        }
+
+        return 0;
     }
 
     
