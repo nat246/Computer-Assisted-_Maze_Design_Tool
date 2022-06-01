@@ -6,6 +6,7 @@ package user;
 
 public class User {
     private String name;
+    private String password;
     private int userId;
 
     /**
@@ -31,6 +32,12 @@ public class User {
     public int getUserId() {
         return userId;
     }
+
+    /**
+     * Gets the password of the user
+     * @return userPassword
+     */
+    public String getPassword() {return password;}
 
     /**
      * Sets the user id of the user

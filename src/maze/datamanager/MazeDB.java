@@ -3,7 +3,6 @@ package maze.datamanager;
  * Class inherited from Data class used for storing all the created maze and user details in an external database
  */
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MazeDB implements Data{
+public class MazeDB implements Data {
 
     private static Connection instance = null;
 
