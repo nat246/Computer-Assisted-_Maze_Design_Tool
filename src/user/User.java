@@ -18,7 +18,7 @@ public class User {
     }
 
     /**
-     * Sets the name if the User
+     * Sets the name of the User
      * @param name
      */
     public void setName(String name) {
@@ -38,6 +38,12 @@ public class User {
      * @return userPassword
      */
     public String getPassword() {return password;}
+
+    /**
+     * Sets the password of the User
+     * @param password
+     */
+    public void setPassword(String password) {this.password = password;}
 
     /**
      * Sets the user id of the user

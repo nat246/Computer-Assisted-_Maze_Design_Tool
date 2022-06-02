@@ -28,7 +28,7 @@ public class JDBCMazeDataSource implements Data{
                  + "CreationTime VARCHAR(30) , "
                  + "LastEdited (VARCHAR(30) );";
 
-    private static final String INSERT_USER = "INSERT INTO users (userName, userPassword) VALUES (?, ?)";
+    private static final String INSERT_USER = "INSERT IF NOT EXISTS INTO users (userName, userPassword) VALUES (?, ?)";
     private static final String GET_USERID = "SELECT id FROM users WHERE userName=?";
     private static final String GET_USERNAME = "SELECT userName FROM users WHERE userName=?";
     private static final String GET_USERPASSWORD = "SELECT userPassword FROM users WHERE userName=?";

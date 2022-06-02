@@ -148,7 +148,6 @@ public class MenuUI extends JFrame {
         // Main Panel
         JPanel newUserPanel = new JPanel();
         newUserPanel.setLayout(new BoxLayout(newUserPanel, BoxLayout.PAGE_AXIS));
-        
 
         // Title
         JLabel title = new JLabel("New User");
@@ -164,6 +163,16 @@ public class MenuUI extends JFrame {
         // Input Text Field
         JTextField nameField = new JTextField();
         nameField.setPreferredSize(new Dimension(200, 20));
+
+        // Input Panel
+        JPanel passPanel = new JPanel();
+
+        // Input Label
+        JLabel passLabel = new JLabel("Password: ");
+
+        // Input Test Field
+        JTextField passField = new JTextField();
+        passField.setPreferredSize(new Dimension(200, 20));
 
         // Button Panel
         JPanel buttonPanel = new JPanel();
@@ -194,22 +203,34 @@ public class MenuUI extends JFrame {
                     user = new User();
                     user.setName(nameField.getText());
 
-                    System.out.format("Created new user '%s' \n", user.getName());
-                    setTitle(String.format("Maze Maker (%s)", user.getName()));
-                    card.show(menuPanel, "mazeP");
+                    // Password too long. Must be 50 characters or under)
+                    if (passField.getText().length() > 50)  {
+                        JOptionPane.showConfirmDialog(menuPanel, "Please enter a password shorted than 50 characters", "Password too long", JOptionPane.CLOSED_OPTION);
+                    }
+                    else if (passField.getText().length() >= 1) {
+                        user.setPassword(passField.getText());
+                        System.out.format("Created new user '%s' \n", user.getName());
+                        setTitle(String.format("Maze Maker (%s)", user.getName()));
+                        card.show(menuPanel, "mazeP");
+                    }
+                    else {
+                        JOptionPane.showConfirmDialog(menuPanel, "Please enter a password.", "Password not found", JOptionPane.CLOSED_OPTION);
+                    }
                 }
                 // Displays a popup when there is no name
                 else {
                     JOptionPane.showConfirmDialog(menuPanel, "Please enter a name.", "Name not found", JOptionPane.CLOSED_OPTION);
                 }
             }
-            
         });
 
         // Add to Panel
         newUserPanel.add(Box.createVerticalGlue());
         namePanel.add(nameLabel);
         namePanel.add(nameField);
+        passPanel.add(passLabel);
+        passPanel.add(passField);
+
 
         buttonPanel.add(backButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -218,8 +239,13 @@ public class MenuUI extends JFrame {
         newUserPanel.add(title);
         newUserPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         newUserPanel.add(namePanel);
-        newUserPanel.add(buttonPanel);
         newUserPanel.add(Box.createVerticalGlue());
+
+        newUserPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        newUserPanel.add(passPanel);
+        newUserPanel.add(Box.createVerticalGlue());
+
+        newUserPanel.add(buttonPanel);
 
         return newUserPanel;
     }
