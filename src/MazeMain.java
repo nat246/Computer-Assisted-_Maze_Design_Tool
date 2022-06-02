@@ -5,7 +5,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class MazeMain {
 
-    // test
+    int test = 0;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
