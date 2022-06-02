@@ -1,6 +1,7 @@
 package maze;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Responsible for Creating and storing various maze details such as size, MazeID, AuthorName etc
@@ -14,7 +15,7 @@ public class Maze {
     private Boolean solvable;
     private String authorName, mazeName;
     private String dateCreated, lastEdited;
-    private HashMap<int[], Cell> cells;
+    private HashMap<List<Integer>, Cell> cells;
 
     public Maze() {
         this.cells = new HashMap<>();
@@ -157,7 +158,7 @@ public class Maze {
      * @param cellPos cell position of the maze
      * @return cellPos
      */
-    public Cell getCell(int[] cellPos) {
+    public Cell getCell(List<Integer> cellPos) {
         return this.cells.get(cellPos);
     }
 

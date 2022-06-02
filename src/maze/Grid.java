@@ -1,5 +1,8 @@
 package maze;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Abstract class used for creating cells and walls of the maze
  */
@@ -26,8 +29,8 @@ public abstract class Grid {
      * Gets the Position of the Grid
      * @return position the current postion of the grid on the maze
      */
-    public int[] getPos() {
-        int[] position =  {x, y};
+    public List<Integer> getPos() {
+        List<Integer> position =  new ArrayList<>(List.of(x, y));
         return position;
     }
 

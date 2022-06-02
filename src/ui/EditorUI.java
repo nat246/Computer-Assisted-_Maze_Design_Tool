@@ -9,6 +9,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Font;
 
 import javax.swing.*;
@@ -174,7 +176,6 @@ public class EditorUI extends JFrame {
             // Creates a new cell class and adds it to the maze class
             Cell cell = new Cell(x, y);
             maze.addCell(cell);
-            System.out.println(String.format("Position: %d, %d", cell.getPos()[0], cell.getPos()[1]));;
             JPanel createCell = newCell(cell);
             mazePanel.add(createCell);
             
@@ -207,21 +208,25 @@ public class EditorUI extends JFrame {
 
             // TOP
             JPanel topWall = createWall(cell, "top");
+            cell.setWallPanel("top", topWall);
             cellPanel.add(topWall);
             topWall.setBounds(0, 0, cellPanel.getWidth(), determineSize(cell, cellPanel, "top"));
 
             // BOTTOM
             JPanel bottomWall = createWall(cell, "bottom");
+            cell.setWallPanel("bottom", bottomWall);
             cellPanel.add(bottomWall);
             bottomWall.setBounds(0, (0 + (cellPanel.getHeight() - determineSize(cell, cellPanel, "bottom"))), cellPanel.getWidth(), determineSize(cell, cellPanel, "bottom"));
 
             // LEFT
             JPanel leftWall = createWall(cell, "left");
+            cell.setWallPanel("left", leftWall);
             cellPanel.add(leftWall);
             leftWall.setBounds(0, 0, determineSize(cell, cellPanel, "left"), cellPanel.getHeight());
 
             // RIGHT
             JPanel rightWall = createWall(cell, "right");
+            cell.setWallPanel("right", rightWall);
             cellPanel.add(rightWall);
             rightWall.setBounds((0 + (cellPanel.getWidth() - determineSize(cell, cellPanel, "right"))), 0, determineSize(cell, cellPanel, "right"), cellPanel.getHeight());
             
@@ -242,25 +247,84 @@ public class EditorUI extends JFrame {
         newWall.setBackground(Color.BLACK);
 
         newWall.addMouseListener(new MouseAdapter() {
-            Color currentColour = Color.BLACK;
+            float currentTransparency = 1f;
+            Color hoverColour = Color.ORANGE; //new Color((float)(255/255), (float)(185/255), (float)(60/255), 1f);
+            Color defaultColour = new Color(0, 0, 0, currentTransparency);
+            
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                newWall.setBackground(Color.ORANGE);
+                newWall.setBackground(hoverColour);
+                JPanel wall;
+
+                try {
+                    switch (location) {
+                        case "top":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
+                            wall.setBackground(hoverColour);
+                            break;
+                        case "bottom":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
+                            wall.setBackground(hoverColour);
+                            break;
+                        case "left":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
+                            wall.setBackground(hoverColour);
+                            break;
+                        case "right":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
+                            wall.setBackground(hoverColour);
+                            break;
+                    }
+                } catch (NullPointerException error) {
+                    System.out.println("wall not found");
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                newWall.setBackground(currentColour);
+                newWall.setBackground(defaultColour);
+                JPanel wall;
+
+                try {
+                    switch (location) {
+                        case "top":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
+                            wall.setBackground(defaultColour);
+                            break;
+                        case "bottom":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
+                            wall.setBackground(defaultColour);
+                            break;
+                        case "left":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
+                            wall.setBackground(defaultColour);
+                            break;
+                        case "right":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
+                            wall.setBackground(defaultColour);
+                            break;
+                    }
+                } catch (NullPointerException error) {
+                    System.out.println("wall not found");
+                }
             }
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (cell.wallStatus(location)) newWall.setOpaque(true);
-                else newWall.setOpaque(false);;
+                if (cell.wallStatus(location)) {
+                    currentTransparency = 0.2f;
+                    newWall.setBackground(new Color(0, 0, 0, currentTransparency));
+                    System.out.println(currentTransparency);
+                }
+                else {
+                    currentTransparency = 0f;
+                    newWall.setBackground(new Color(0, 0, 0, currentTransparency));
+                    System.out.println(currentTransparency);
+                }
                 cell.setWall(location, !cell.wallStatus(location));
                 System.out.println(cell.wallStatus(location));
-                System.out.println(String.format("pos: (%d, %d)", cell.getPos()[0], cell.getPos()[1]));
+                System.out.println(String.format("pos: (%d, %d)", cell.getPos().get(0), cell.getPos().get(1)));
             }
             
         });
@@ -268,22 +332,22 @@ public class EditorUI extends JFrame {
     }
 
     private int determineSize(Cell cell, JPanel panel, String position) {
-        int horiztonalSize = panel.getWidth() / 10;
+        int horizontalSize = panel.getWidth() / 10;
         int verticalSize = panel.getWidth() / 10;
 
         switch (position) {
             case "top":
-                if (cell.getPos()[0] != 0) return (verticalSize / 2) ;
+                if (cell.getPos().get(0) != 0) return (verticalSize / 2) ;
                 else return verticalSize;
             case "bottom":
-                if (cell.getPos()[0] != maze.getSize()[0] - 1) return (verticalSize / 2);
+                if (cell.getPos().get(0) != maze.getSize()[0] - 1) return (verticalSize / 2);
                 else return verticalSize;
             case "left":
-                if (cell.getPos()[1] != 0) return (horiztonalSize) / 2;
-                else return horiztonalSize;
+                if (cell.getPos().get(1) != 0) return (horizontalSize) / 2;
+                else return horizontalSize;
             case "right":
-                if (cell.getPos()[1] != maze.getSize()[1] - 1) return (horiztonalSize / 2);
-                else return horiztonalSize;
+                if (cell.getPos().get(1) != maze.getSize()[1] - 1) return (horizontalSize / 2);
+                else return horizontalSize;
         }
 
         return 0;
