@@ -71,6 +71,8 @@ public class MenuUI extends JFrame {
      * The Main Menu where the User is to Select User
      * @return mainPanel with the user choice from the menu options
      */
+
+    /**
     private JPanel MainMenu() {
         // Panel
         JPanel mainPanel = new JPanel();
@@ -129,7 +131,6 @@ public class MenuUI extends JFrame {
 
         });
 
-        
         // Add to Panel
         mainPanel.add(title);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -137,6 +138,105 @@ public class MenuUI extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         mainPanel.add(contButton);
         mainPanel.add(Box.createVerticalGlue());
+        return mainPanel;
+    }
+    */
+    private JPanel MainMenu() {
+        // Panel
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+        mainPanel.add(Box.createVerticalGlue());
+
+        // Title
+        JLabel title = new JLabel("Maze Maker");
+        title.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Login information input
+        // Input Panel
+        JPanel namePanel = new JPanel();
+
+        // Input Label
+        JLabel nameLabel = new JLabel("Username: ");
+
+        // Input Text Field
+        JTextField nameField = new JTextField();
+        nameField.setPreferredSize(new Dimension(200, 20));
+
+        // Input Panel
+        JPanel passPanel = new JPanel();
+
+        // Input Label
+        JLabel passLabel = new JLabel("Password: ");
+
+        // Input Test Field
+        JTextField passField = new JTextField();
+        passField.setPreferredSize(new Dimension(200, 20));
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel();
+
+        // Create user button
+        JButton logInButton = new JButton("Log in");
+
+        // Register menu
+        JButton registerButton = new JButton("Register");
+
+
+        // Action Listen
+        //== Log in Button Listener
+        logInButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (nameField.getText().length() < 1 && passField.getText().length() < 1) {
+                        JOptionPane.showConfirmDialog(menuPanel, "Please enter your username and password.", "Credentials missing", JOptionPane.CLOSED_OPTION);
+                    } else if (nameField.getText().length() >= 1 && passField.getText().length() < 1) {
+                        JOptionPane.showConfirmDialog(menuPanel, "Please enter your password.", "Password missing", JOptionPane.CLOSED_OPTION);
+                    } else if (nameField.getText().length() < 1 && passField.getText().length() >= 1) {
+                        JOptionPane.showConfirmDialog(menuPanel, "Please enter your username.", "Username missing", JOptionPane.CLOSED_OPTION);
+                    } else {
+                        card.show(menuPanel, "mazeP");
+                    }
+                } catch (Exception exception) {
+                    System.out.println(exception);
+                }
+            }
+        } );
+
+        //== Register Button Listener
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                card.show(menuPanel, "userP");
+                setTitle("Maze Maker");
+            }
+        });
+
+        //Add to panel
+        mainPanel.add(Box.createVerticalGlue());
+
+        namePanel.add(nameLabel);
+        namePanel.add(nameField);
+        passPanel.add(passLabel);
+        passPanel.add(passField);
+
+        buttonPanel.add(logInButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        buttonPanel.add(registerButton);
+
+        mainPanel.add(title);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        mainPanel.add(namePanel);
+        mainPanel.add(Box.createVerticalGlue());
+
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        mainPanel.add(passPanel);
+        mainPanel.add(Box.createVerticalGlue());
+
+        mainPanel.add(buttonPanel);
+
         return mainPanel;
     }
 
