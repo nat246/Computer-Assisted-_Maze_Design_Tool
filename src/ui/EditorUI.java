@@ -23,6 +23,8 @@ public class EditorUI extends JFrame {
     private Maze maze;
     private User user; // Change to User Class after Database and User Class has been created
 
+    private int mazeRowLength, mazeColLength;
+
     JPanel outer;
 
     /**
@@ -35,6 +37,8 @@ public class EditorUI extends JFrame {
         
         this.user = user;
         this.maze = maze;
+        this.mazeRowLength = maze.getSize()[0];
+        this.mazeColLength = maze.getSize()[1];
         initEditor();
         topBar();
         outerPanel();
@@ -97,7 +101,7 @@ public class EditorUI extends JFrame {
      * Panel that contains the information and the maze editor
      */
     private void outerPanel() {
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(maze.getSize()[0], maze.getSize()[1]), sidePanel());
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorPanel(), sidePanel());
         splitPane.setContinuousLayout(true);
         splitPane.setResizeWeight(0.9);
         splitPane.setOneTouchExpandable(true);
@@ -151,14 +155,11 @@ public class EditorUI extends JFrame {
 
     /**
      * Panel where the maze is to be edited
-     * @param w width dimension of the grid
-     * @param h height dimension of the grid
      * @return sectionPanel takes in the user selection from the UI options
      */
-    private JPanel editorPanel(int w, int h) {
+    private JPanel editorPanel() {
         // Gets the largest number between the size of the grid
-        int largest = (h >= w) ? h : w;
-        int x = 0, y = 0;
+        int largest = Math.max(mazeColLength, mazeRowLength);
 
         JPanel sectionPanel = new JPanel();
         sectionPanel.setLayout(new BoxLayout(sectionPanel, BoxLayout.Y_AXIS));
@@ -168,20 +169,29 @@ public class EditorUI extends JFrame {
         JPanel sectionInner = new JPanel();
 
         JPanel mazePanel = new JPanel();
-        mazePanel.setPreferredSize(new Dimension((sectionPanel.getPreferredSize().height / largest) * h, (sectionPanel.getPreferredSize().width / largest) * w));
-        mazePanel.setLayout(new GridLayout(w, h));
-        
+        int preferredWidth = (sectionPanel.getPreferredSize().height / largest) * mazeColLength;
+        int preferredHeight = (sectionPanel.getPreferredSize().width / largest) * mazeRowLength;
+
+        mazePanel.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+        mazePanel.setLayout(new GridLayout(mazeRowLength, mazeColLength));
+
+
+        int rowIndex = 0, colIndex = 0;
+        int totalNumCells = mazeRowLength * mazeColLength;
         // Creates the number of cells for the size of the maze
-        for (int i = 0; i < w * h; i++) {
+        for (int i = 0; i < totalNumCells; i++) {
             // Creates a new cell class and adds it to the maze class
-            Cell cell = new Cell(x, y);
+            Cell cell = new Cell(rowIndex, colIndex);
+
+            // Store new cell to maze
             maze.addCell(cell);
-            JPanel createCell = newCell(cell);
-            mazePanel.add(createCell);
-            
+
+            // Add new cell panel to the overall maze panel
+            mazePanel.add(new CellComponent(cell, maze).newCellPanel());
+
             // Checks whether the column has reached the end
-            y++;
-            if (y == h) { y = 0; x++; }
+            colIndex++;
+            if (colIndex == mazeColLength) { colIndex = 0; rowIndex++; }
         }
 
         // Centre the maze
@@ -193,165 +203,5 @@ public class EditorUI extends JFrame {
 
         return sectionPanel;
     }
-
-    /**
-     * Method for each cell in the maze
-     * @param cell object takes in the dimensions for creating a new cell in a maze
-     * @return cellPanel dimensions for creating a new cell
-     */
-    private JPanel newCell(Cell cell) {
-        JPanel cellPanel = new JPanel();
-        cellPanel.setLayout(null);
-
-        // Create Walls
-        SwingUtilities.invokeLater(() -> {
-
-            // TOP
-            JPanel topWall = createWall(cell, "top");
-            cell.setWallPanel("top", topWall);
-            cellPanel.add(topWall);
-            topWall.setBounds(0, 0, cellPanel.getWidth(), determineSize(cell, cellPanel, "top"));
-
-            // BOTTOM
-            JPanel bottomWall = createWall(cell, "bottom");
-            cell.setWallPanel("bottom", bottomWall);
-            cellPanel.add(bottomWall);
-            bottomWall.setBounds(0, (0 + (cellPanel.getHeight() - determineSize(cell, cellPanel, "bottom"))), cellPanel.getWidth(), determineSize(cell, cellPanel, "bottom"));
-
-            // LEFT
-            JPanel leftWall = createWall(cell, "left");
-            cell.setWallPanel("left", leftWall);
-            cellPanel.add(leftWall);
-            leftWall.setBounds(0, 0, determineSize(cell, cellPanel, "left"), cellPanel.getHeight());
-
-            // RIGHT
-            JPanel rightWall = createWall(cell, "right");
-            cell.setWallPanel("right", rightWall);
-            cellPanel.add(rightWall);
-            rightWall.setBounds((0 + (cellPanel.getWidth() - determineSize(cell, cellPanel, "right"))), 0, determineSize(cell, cellPanel, "right"), cellPanel.getHeight());
-            
-        });
-
-        return cellPanel;
-    }
-
-    /**
-     * Creates a singular wall
-     * @param cell create a new cell
-     * @param size input size of the new wall
-     * @param location Location of the new wall to be placed
-     * @return newWall according to the user inputs
-     */
-    private JPanel createWall(Cell cell, String location) {
-        JPanel newWall = new JPanel();
-        newWall.setBackground(Color.BLACK);
-
-        newWall.addMouseListener(new MouseAdapter() {
-            float currentTransparency = 1f;
-            Color hoverColour = Color.ORANGE; //new Color((float)(255/255), (float)(185/255), (float)(60/255), 1f);
-            Color defaultColour = new Color(0, 0, 0, currentTransparency);
-            
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                newWall.setBackground(hoverColour);
-                JPanel wall;
-
-                try {
-                    switch (location) {
-                        case "top":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
-                            wall.setBackground(hoverColour);
-                            break;
-                        case "bottom":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
-                            wall.setBackground(hoverColour);
-                            break;
-                        case "left":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
-                            wall.setBackground(hoverColour);
-                            break;
-                        case "right":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
-                            wall.setBackground(hoverColour);
-                            break;
-                    }
-                } catch (NullPointerException error) {
-                    System.out.println("wall not found");
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                newWall.setBackground(defaultColour);
-                JPanel wall;
-
-                try {
-                    switch (location) {
-                        case "top":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
-                            wall.setBackground(defaultColour);
-                            break;
-                        case "bottom":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
-                            wall.setBackground(defaultColour);
-                            break;
-                        case "left":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
-                            wall.setBackground(defaultColour);
-                            break;
-                        case "right":
-                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
-                            wall.setBackground(defaultColour);
-                            break;
-                    }
-                } catch (NullPointerException error) {
-                    System.out.println("wall not found");
-                }
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (cell.wallStatus(location)) {
-                    currentTransparency = 0.2f;
-                    newWall.setBackground(new Color(0, 0, 0, currentTransparency));
-                    System.out.println(currentTransparency);
-                }
-                else {
-                    currentTransparency = 0f;
-                    newWall.setBackground(new Color(0, 0, 0, currentTransparency));
-                    System.out.println(currentTransparency);
-                }
-                cell.setWall(location, !cell.wallStatus(location));
-                System.out.println(cell.wallStatus(location));
-                System.out.println(String.format("pos: (%d, %d)", cell.getPos().get(0), cell.getPos().get(1)));
-            }
-            
-        });
-        return newWall;
-    }
-
-    private int determineSize(Cell cell, JPanel panel, String position) {
-        int horizontalSize = panel.getWidth() / 10;
-        int verticalSize = panel.getWidth() / 10;
-
-        switch (position) {
-            case "top":
-                if (cell.getPos().get(0) != 0) return (verticalSize / 2) ;
-                else return verticalSize;
-            case "bottom":
-                if (cell.getPos().get(0) != maze.getSize()[0] - 1) return (verticalSize / 2);
-                else return verticalSize;
-            case "left":
-                if (cell.getPos().get(1) != 0) return (horizontalSize) / 2;
-                else return horizontalSize;
-            case "right":
-                if (cell.getPos().get(1) != maze.getSize()[1] - 1) return (horizontalSize / 2);
-                else return horizontalSize;
-        }
-
-        return 0;
-    }
-
     
 }

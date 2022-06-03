@@ -1,5 +1,6 @@
 package maze;
 
+import java.awt.*;
 import java.util.HashMap;
 
 import javax.swing.JPanel;
@@ -8,10 +9,11 @@ import javax.swing.JPanel;
  * Child class inheriting Grid mainly responsible for creating the walls and cells of a maze
  */
 public class Cell extends Grid {
-    
+
     private HashMap<String, Boolean> walls;
     private HashMap<String, JPanel> wallUI;
     private int cellType; // 0 is normal cell, 1 is start point, 2 is end point
+
 
     /**
      *
@@ -77,6 +79,10 @@ public class Cell extends Grid {
         walls.put("right", false);
         walls.put("left", false);
     }
+
+
+
+
 
     
 }
