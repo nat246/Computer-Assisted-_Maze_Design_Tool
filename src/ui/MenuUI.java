@@ -1,7 +1,10 @@
 package ui;
 
 import maze.Maze;
+import maze.datamanager.JDBCMazeDataSource;
+import maze.datamanager.MazeDataSource;
 import user.User;
+import maze.datamanager.MazeDataHandler;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -23,6 +26,8 @@ public class MenuUI extends JFrame {
     private CardLayout card;
     private JPanel menuPanel;
 
+    MazeDataHandler data;
+
     /**
      *
      * @throws ClassNotFoundException
@@ -32,6 +37,7 @@ public class MenuUI extends JFrame {
      */
     public MenuUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         super("Maze Maker");
+        this.data = data;
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         initGUI();
         MenuComponents();
@@ -197,6 +203,7 @@ public class MenuUI extends JFrame {
                     } else if (nameField.getText().length() < 1 && passField.getText().length() >= 1) {
                         JOptionPane.showConfirmDialog(menuPanel, "Please enter your username.", "Username missing", JOptionPane.CLOSED_OPTION);
                     } else {
+
                         card.show(menuPanel, "mazeP");
                     }
                 } catch (Exception exception) {
@@ -258,7 +265,7 @@ public class MenuUI extends JFrame {
         JPanel namePanel = new JPanel();
         
         // Input Label
-        JLabel nameLabel = new JLabel("Name: ");
+        JLabel nameLabel = new JLabel("Username: ");
 
         // Input Text Field
         JTextField nameField = new JTextField();
@@ -309,6 +316,7 @@ public class MenuUI extends JFrame {
                     }
                     else if (passField.getText().length() >= 1) {
                         user.setPassword(passField.getText());
+
                         System.out.format("Created new user '%s' \n", user.getName());
                         setTitle(String.format("Maze Maker (%s)", user.getName()));
                         card.show(menuPanel, "mazeP");

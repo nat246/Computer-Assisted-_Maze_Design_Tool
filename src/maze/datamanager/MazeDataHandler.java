@@ -1,6 +1,9 @@
 package maze.datamanager;
 
 import maze.Maze;
+import user.User;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,10 +18,47 @@ import java.util.Properties;
  */
 public class MazeDataHandler {
 
-    public static void newMaze() {
+    DefaultListModel userListModel;
+    DefaultListModel mazeListModel;
+    MazeDataSource mazeData;
 
+    public MazeDataHandler() {
+        userListModel = new DefaultListModel();
+        mazeListModel = new DefaultListModel();
+        mazeData = new JDBCMazeDataSource();
+
+        for(String user : mazeData.userSet()) {
+            userListModel.addElement(user);
+        }
+
+        for(String maze: mazeData.mazeSet()) {
+            mazeListModel.addElement(maze);
+        }
     }
 
+    public void addUser(User u) {
+        if (!userListModel.contains(u.getName())) {
+            userListModel.addElement(u.getName());
+            mazeData.addUser(u);
+        }
+    }
+
+    public void removeUser(User u) {
+        userListModel.removeElement(u.getUserId());
+        mazeData.deleteUser(u);
+    }
+
+    public void newMaze(Maze m) {
+        if (!mazeListModel.contains(m.getMazeName())) {
+            mazeListModel.addElement(m.getMazeName());
+            mazeData.addMaze(m);
+        }
+    }
+
+    public void deleteMaze(Maze m) {
+        mazeListModel.removeElement(m.getMazeID());
+        mazeData.deleteMaze(m);
+    }
     /**
      * Gets the maze from the database
      * @param mazeID Unique ID given for each maze

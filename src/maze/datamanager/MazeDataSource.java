@@ -37,6 +37,12 @@ public interface MazeDataSource {
     void deleteUser(User u);
 
     /**
+     *
+     * @return set of users
+     */
+    Set<String> userSet();
+
+    /**
      * Adds a maze to the database
      * @param m Maze to add
      */
@@ -83,6 +89,12 @@ public interface MazeDataSource {
      * @param m Database to delete
      */
     void deleteMaze(Maze m);
+
+    /**
+     *
+     * @return set of mazes
+     */
+    Set<String> mazeSet();
 
     /**
      * Finalises any resources used by the data source and ensures data is persisted
