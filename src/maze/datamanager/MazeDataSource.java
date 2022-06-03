@@ -37,6 +37,13 @@ public interface MazeDataSource {
     void deleteUser(User u);
 
     /**
+     * Gets and returns the user from the database
+     * @param name Name of the user to get
+     * @return User
+     */
+    User getUser(String name);
+
+    /**
      *
      * @return set of users
      */
@@ -53,12 +60,6 @@ public interface MazeDataSource {
      * @param m Maze ID to get
      */
     void getMazeID(Maze m);
-
-    /**
-     * Retrieves the maze from the database to allow users to edit it
-     * @param m Gets the maze
-     */
-    void getMaze(Maze m);
 
     /**
      * Gets the name of the maze
@@ -89,6 +90,13 @@ public interface MazeDataSource {
      * @param m Database to delete
      */
     void deleteMaze(Maze m);
+
+    /**
+     * Gets and returns the maze from the database
+     * @param mazeName Name of the maze to get
+     * @return Maze
+     */
+    Maze getMaze(String mazeName);
 
     /**
      *

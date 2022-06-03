@@ -36,15 +36,16 @@ public class JDBCMazeDataSource implements MazeDataSource{
     private static final String GET_USERNAME = "SELECT name FROM users WHERE name=?";
     private static final String GET_USERPASSWORD = "SELECT password FROM users WHERE name=?";
     private static final String DELETE_USER = "DELETE FROM users WHERE id=?";
+    private static final String GET_USER = "SELECT * FROM users WHERE name=?";
     private static final String GET_USERS = "SELECT name FROM users";
     private static final String INSERT_MAZE = "INSERT INTO mazes (name, creator, creationtime, lastedited) VALUES (?, ?, ?, ?)";
     private static final String GET_MAZEID = "SELECT id FROM mazes WHERE name=?";
-    private static final String GET_MAZE = "SELECT * FROM mazes WHERE mazeName=?";
     private static final String GET_MAZENAME = "SELECT name FROM mazes WHERE name=?";
     private static final String GET_MAZECREATOR = "SELECT creator FROM mazes WHERE name=?";
     private static final String GET_MAZECREATEDATE = "SELECT creationtime FROM mazes WHERE name=?";
     private static final String GET_MAZEEDITDATE = "SELECT lastedited FROM mazes WHERE name=?";
     private static final String DELETE_MAZE = "DELETE FROM maze WHERE id =?";
+    private static final String GET_MAZE = "SELECT * FROM mazes WHERE name=?";
     private static final String GET_MAZES = "SELECT name FROM mazes";
 
     private Connection connection;
@@ -53,15 +54,16 @@ public class JDBCMazeDataSource implements MazeDataSource{
     private PreparedStatement getUsername;
     private PreparedStatement getPassword;
     private PreparedStatement deleteUser;
+    private PreparedStatement getUser;
     private PreparedStatement getUsers;
     private PreparedStatement addMaze;
     private PreparedStatement getMazeID;
-    private PreparedStatement getMaze;
     private PreparedStatement getMazeName;
     private PreparedStatement getMazeCreator;
     private PreparedStatement getMazeCreationDate;
     private PreparedStatement getMazeLastEdited;
     private PreparedStatement deleteMaze;
+    private PreparedStatement getMaze;
     private PreparedStatement getMazes;
 
     public JDBCMazeDataSource() {
@@ -76,16 +78,17 @@ public class JDBCMazeDataSource implements MazeDataSource{
             getUsername = connection.prepareStatement(GET_USERNAME);
             getPassword = connection.prepareStatement(GET_USERPASSWORD);
             deleteUser = connection.prepareStatement(DELETE_USER);
+            getUser = connection.prepareStatement(GET_USER);
             getUsers = connection.prepareStatement(GET_USERS);
 
             addMaze = connection.prepareStatement(INSERT_MAZE);
             getMazeID = connection.prepareStatement(GET_MAZEID);
-            getMaze = connection.prepareStatement(GET_MAZE);
             getMazeName = connection.prepareStatement(GET_MAZENAME);
             getMazeCreator = connection.prepareStatement(GET_MAZECREATOR);
             getMazeCreationDate = connection.prepareStatement(GET_MAZECREATEDATE);
             getMazeLastEdited = connection.prepareStatement(GET_MAZEEDITDATE);
             deleteMaze = connection.prepareStatement(DELETE_MAZE);
+            getMaze = connection.prepareStatement(GET_MAZE);
             getMazes = connection.prepareStatement(GET_MAZES);
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -154,6 +157,26 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
+     * @see maze.datamanager.MazeDataSource#getUser(String) 
+     */
+    public User getUser(String name) {
+        User u = new User();
+        ResultSet rs = null;
+        try {
+            getUser.setString(1, name);
+            rs= getUser.executeQuery();
+            rs.next();
+            u.setUserId(rs.getInt("id"));
+            u.setName(rs.getString("name"));
+            u.setPassword(rs.getString("password"));
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return u;
+    }
+
+    /**
      * @see maze.datamanager.MazeDataSource#userSet()
      */
     public Set<String> userSet() {
@@ -193,18 +216,6 @@ public class JDBCMazeDataSource implements MazeDataSource{
         try {
             getMazeID.setString(1, m.getMazeName());
             getMazeID.execute();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * @see maze.datamanager.MazeDataSource#getMaze(Maze) 
-     */
-    public void getMaze(Maze m) {
-        try {
-            getMaze.setString(1, m.getMazeName());
-            getMaze.execute();
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
@@ -268,6 +279,27 @@ public class JDBCMazeDataSource implements MazeDataSource{
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * @see maze.datamanager.MazeDataSource#getMaze
+     */
+    public Maze getMaze(String mazeName) {
+        Maze m = new Maze();
+        ResultSet rs = null;
+        try {
+            getMaze.setString(1, m.getMazeName());
+            rs = getMaze.executeQuery();
+            rs.next();
+            m.setMazeID(rs.getInt("id"));
+            m.setMazeName(rs.getString("name"));
+            m.setAuthorName(rs.getString("creator"));
+            m.setDateCreated(rs.getString("creationTime"));
+            m.setLastEdited(rs.getString("lastEdited"));
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return m;
     }
 
     /**

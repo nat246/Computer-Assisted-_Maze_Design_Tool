@@ -56,6 +56,11 @@ public class Maze {
         return mazeID;
     }
 
+    /**
+     * Sets the ID of the maze
+     * @param mazeID
+     */
+    public void setMazeID(int mazeID) { this.mazeID = mazeID; }
 
     /**
      * Gets the logo

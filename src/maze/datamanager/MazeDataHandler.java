@@ -48,6 +48,10 @@ public class MazeDataHandler {
         mazeData.deleteUser(u);
     }
 
+    public User getUser(User u) {
+        return mazeData.getUser(u.getName());
+    }
+
     public void newMaze(Maze m) {
         if (!mazeListModel.contains(m.getMazeName())) {
             mazeListModel.addElement(m.getMazeName());
@@ -55,35 +59,34 @@ public class MazeDataHandler {
         }
     }
 
+    /**
+     * Deletes specific maze off the database
+     * @param m
+     */
     public void deleteMaze(Maze m) {
         mazeListModel.removeElement(m.getMazeID());
         mazeData.deleteMaze(m);
     }
     /**
      * Gets the maze from the database
-     * @param mazeID Unique ID given for each maze
+     * @param m
      * @return maze from specific ID
      */
-    public static Maze getMaze(int mazeID) {
-        Maze maze = new Maze();
-
-        return maze;
+    public Maze getMaze(Maze m) {
+        return mazeData.getMaze(m.getMazeName());
     }
 
     /**
      * Saves the maze
-     * @param mazeID
+     * @param m
      */
-    public static void saveMaze(int mazeID) {
+    public void saveMaze(Maze m) {
 
     }
 
-    /**
-     * Deletes specific maze off the database
-     * @param mazeID
-     */
-    public static void deleteMaze(int mazeID){
-
+    public void persist() {
+        mazeData.close();
     }
+
 
 }
