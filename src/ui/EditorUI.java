@@ -187,7 +187,7 @@ public class EditorUI extends JFrame {
             maze.addCell(cell);
 
             // Add new cell panel to the overall maze panel
-            mazePanel.add(new CellComponent(cell, maze).newCellPanel());
+            mazePanel.add(new CellComponent(cell, maze, true).newCellPanel());
 
             // Checks whether the column has reached the end
             colIndex++;
