@@ -448,7 +448,11 @@ public class MenuUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> {
-                    Maze newMaze = new Maze(new int[] {(int) horizontalSpinner.getValue(), (int) verticalSpinner.getValue()}, user.getName());
+
+                    int row = (int) horizontalSpinner.getValue();
+                    int col = (int) verticalSpinner.getValue();
+
+                    Maze newMaze = new Maze(new int[] {row, col}, user.getName());
                     EditorUI editor = new EditorUI(user, newMaze);
                     setVisible(false);
                     editor.setVisible(true);
