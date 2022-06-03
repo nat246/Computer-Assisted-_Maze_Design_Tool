@@ -370,7 +370,6 @@ public class MenuUI extends JFrame {
         // Tabbed Pane
         JTabbedPane tabPane = new JTabbedPane();
 
-
         tabPane.addTab("New Maze", NewMazePanel());
         tabPane.addTab("Open Maze", OpenMazePanel());
 
@@ -508,9 +507,6 @@ public class MenuUI extends JFrame {
         newMazeP.add(Box.createVerticalGlue());
         newMazeP.add(panelGroup1);
         newMazeP.add(panelGroup2);
-        
-        
-
 
         return newMazeP;
     }

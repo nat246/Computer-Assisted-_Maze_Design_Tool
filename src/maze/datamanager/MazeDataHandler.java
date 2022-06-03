@@ -87,6 +87,4 @@ public class MazeDataHandler {
     public void persist() {
         mazeData.close();
     }
-
-
 }
