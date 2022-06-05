@@ -204,6 +204,7 @@ public class MenuUI extends JFrame {
                         JOptionPane.showConfirmDialog(menuPanel, "Please enter your username.", "Username missing", JOptionPane.CLOSED_OPTION);
                     } else {
                         user = new User();
+
                         user.setName(nameField.getText());
                         card.show(menuPanel, "mazeP");
                     }
@@ -240,7 +241,7 @@ public class MenuUI extends JFrame {
         mainPanel.add(passPanel);
 
         mainPanel.add(buttonPanel);
-
+        mainPanel.add(Box.createVerticalGlue());
         return mainPanel;
     }
 
@@ -344,7 +345,7 @@ public class MenuUI extends JFrame {
         newUserPanel.add(namePanel);
         newUserPanel.add(passPanel);
         newUserPanel.add(buttonPanel);
-
+        newUserPanel.add(Box.createVerticalGlue());
         return newUserPanel;
     }
 
