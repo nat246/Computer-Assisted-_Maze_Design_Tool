@@ -71,7 +71,6 @@ public class CellComponent {
         int leftWallWidth = wallThickness(cellPanel, "left");
         int rightWallWidth = wallThickness(cellPanel, "right");
 
-        cell.setWallPanel(wallPosition, wall);
 
         // Set wall size and coordinates
         switch (wallPosition){
@@ -93,6 +92,8 @@ public class CellComponent {
         }
 
 
+        cell.setWallPanel(wallPosition, wall);
+
         return wall;
     }
 
@@ -103,91 +104,95 @@ public class CellComponent {
      */
     private JPanel wallColor(String location) {
         JPanel newWall = new JPanel();
+
+        // get each wall's state/status
+        // if wall on side is true then color black
+
+
         newWall.setBackground(Color.BLACK);
 
-        if (editorMode) {
-            newWall.addMouseListener(new MouseAdapter() {
-                float currentTransparency = 1f;
-                final Color hoverColour = Color.ORANGE; //new Color((float)(255/255), (float)(185/255), (float)(60/255), 1f);
-                final Color defaultColour = new Color(0, 0, 0, currentTransparency);
+        newWall.addMouseListener(new MouseAdapter() {
+            float currentTransparency = 1f;
+            final Color hoverColour = Color.ORANGE; //new Color((float)(255/255), (float)(185/255), (float)(60/255), 1f);
+            final Color defaultColour = new Color(0, 0, 0, currentTransparency);
 
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    newWall.setBackground(hoverColour);
-                    JPanel wall;
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                newWall.setBackground(hoverColour);
+                JPanel wall;
 
-                    try {
-                        switch (location) {
-                            case "top":
-                                wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
-                                wall.setBackground(hoverColour);
-                                break;
-                            case "bottom":
-                                wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
-                                wall.setBackground(hoverColour);
-                                break;
-                            case "left":
-                                wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
-                                wall.setBackground(hoverColour);
-                                break;
-                            case "right":
-                                wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
-                                wall.setBackground(hoverColour);
-                                break;
-                        }
-                    } catch (NullPointerException error) {
-                        System.out.println("wall not found");
+                try {
+                    switch (location) {
+                        case "top":
+                            wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
+                            wall.setBackground(hoverColour);
+                            break;
+                        case "bottom":
+                            wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
+                            wall.setBackground(hoverColour);
+                            break;
+                        case "left":
+                            wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
+                            wall.setBackground(hoverColour);
+                            break;
+                        case "right":
+                            wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
+                            wall.setBackground(hoverColour);
+                            break;
                     }
+                } catch (NullPointerException error) {
+                    System.out.println("wall not found");
                 }
+            }
 
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    newWall.setBackground(defaultColour);
-                    JPanel wall;
+            @Override
+            public void mouseExited(MouseEvent e) {
+                newWall.setBackground(defaultColour);
+                JPanel wall;
 
-                    try {
-                        switch (location) {
-                            case "top":
-                                wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
-                                wall.setBackground(defaultColour);
-                                break;
-                            case "bottom":
-                                wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
-                                wall.setBackground(defaultColour);
-                                break;
-                            case "left":
-                                wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
-                                wall.setBackground(defaultColour);
-                                break;
-                            case "right":
-                                wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
-                                wall.setBackground(defaultColour);
-                                break;
-                        }
-                    } catch (NullPointerException error) {
-                        System.out.println("wall not found");
+                try {
+                    switch (location) {
+                        case "top":
+                            wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
+                            wall.setBackground(defaultColour);
+                            break;
+                        case "bottom":
+                            wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
+                            wall.setBackground(defaultColour);
+                            break;
+                        case "left":
+                            wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
+                            wall.setBackground(defaultColour);
+                            break;
+                        case "right":
+                            wall = maze.getCell(new ArrayList<Integer>(List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
+                            wall.setBackground(defaultColour);
+                            break;
                     }
+                } catch (NullPointerException error) {
+                    System.out.println("wall not found");
                 }
+            }
 
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (cell.wallStatus(location)) {
-                        currentTransparency = 0.2f;
-                        newWall.setBackground(new Color(0, 0, 0, currentTransparency));
-                        System.out.println(currentTransparency);
-                    }
-                    else {
-                        currentTransparency = 0f;
-                        newWall.setBackground(new Color(0, 0, 0, currentTransparency));
-                        System.out.println(currentTransparency);
-                    }
-                    cell.setWall(location, !cell.wallStatus(location));
-                    System.out.println(cell.wallStatus(location));
-                    System.out.println(String.format("pos: (%d, %d)", cell.getPos().get(0), cell.getPos().get(1)));
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (cell.wallStatus(location)) {
+                    currentTransparency = 0.2f;
+                    newWall.setBackground(new Color(0, 0, 0, currentTransparency));
+                    System.out.println(currentTransparency);
                 }
+                else {
+                    currentTransparency = 0f;
+                    newWall.setBackground(new Color(0, 0, 0, currentTransparency));
+                    System.out.println(currentTransparency);
+                }
+                cell.setWall(location, !cell.wallStatus(location));
+                System.out.println(cell.wallStatus(location));
+                System.out.println(String.format("pos: (%d, %d)", cell.getPos().get(0), cell.getPos().get(1)));
+            }
 
-            });
-        }
+        });
+
 
         return newWall;
     }

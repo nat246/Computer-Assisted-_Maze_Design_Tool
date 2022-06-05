@@ -176,6 +176,8 @@ public class EditorUI extends JFrame {
         mazePanel.setLayout(new GridLayout(mazeRowLength, mazeColLength));
 
 
+
+
         int rowIndex = 0, colIndex = 0;
         int totalNumCells = mazeRowLength * mazeColLength;
         // Creates the number of cells for the size of the maze
@@ -195,7 +197,9 @@ public class EditorUI extends JFrame {
         }
 
         // Centre the maze
+
         sectionInner.add(mazePanel);
+//        sectionPanel.add(maze.getMazePanel());
         sectionPanel.add(Box.createVerticalGlue());
         sectionPanel.add(sectionInner, BorderLayout.CENTER);
         sectionPanel.add(Box.createVerticalGlue());
