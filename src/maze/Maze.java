@@ -1,5 +1,9 @@
 package maze;
 
+import ui.CellComponent;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +20,7 @@ public class Maze {
     private String authorName, mazeName;
     private String dateCreated, lastEdited;
     private HashMap<List<Integer>, Cell> cells;
+    private JPanel mazePanel = new JPanel();
 
     public Maze() {
         this.cells = new HashMap<>();
@@ -30,6 +35,7 @@ public class Maze {
         this.size = Size;
         this.authorName = User;
         this.cells = new HashMap<>();
+        createMazePanel();
     }
 
     /**
@@ -174,6 +180,43 @@ public class Maze {
 
     public void addCell(Cell cell) {
         this.cells.put(cell.getPos(), cell);
+    }
+
+    public JPanel getMazePanel() {
+        return mazePanel;
+    }
+
+    private void createMazePanel() {
+        int rowLength = size[0];
+        int colLength = size[1];
+
+
+        // Gets the largest number between the size of the grid
+        int largest = Math.max(colLength, rowLength);
+
+        int preferredWidth = (mazePanel.getPreferredSize().height / largest) * colLength;
+        int preferredHeight = (mazePanel.getPreferredSize().width / largest) * rowLength;
+
+        mazePanel.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+        mazePanel.setLayout(new GridLayout(rowLength, colLength));
+
+        int rowIndex = 0, colIndex = 0;
+        int totalNumCells = rowLength * colLength;
+        // Creates the number of cells for the size of the maze
+        for (int i = 0; i < totalNumCells; i++) {
+            // Creates a new cell class and adds it to the maze class
+            Cell cell = new Cell(rowIndex, colIndex);
+
+            // Store new cell to maze
+            addCell(cell);
+
+            // Add new cell panel to the overall maze panel
+            mazePanel.add(new CellComponent(cell, this, true).newCellPanel());
+
+            // Checks whether the column has reached the end
+            colIndex++;
+            if (colIndex == colLength) { colIndex = 0; rowIndex++; }
+        }
     }
 
 }

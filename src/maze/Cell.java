@@ -14,7 +14,6 @@ public class Cell extends Grid {
     private HashMap<String, JPanel> wallUI;
     private int cellType; // 0 is normal cell, 1 is start point, 2 is end point
 
-
     /**
      *
      * @param x dimension 1 user input inherited from Grid
@@ -45,6 +44,8 @@ public class Cell extends Grid {
         walls.replace(wall, state);
     }
 
+
+
     /**
      *
      * @param type
@@ -74,10 +75,10 @@ public class Cell extends Grid {
      */
     private void initWalls() {
         walls = new HashMap<>();
-        walls.put("top", false);
-        walls.put("bottom", false);
-        walls.put("right", false);
-        walls.put("left", false);
+        walls.put("top", true);
+        walls.put("bottom", true);
+        walls.put("right", true);
+        walls.put("left", true);
     }
 
 
