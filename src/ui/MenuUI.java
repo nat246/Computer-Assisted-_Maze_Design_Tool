@@ -130,9 +130,14 @@ public class MenuUI extends JFrame {
                         JOptionPane.showConfirmDialog(menuPanel, "Please enter your username.", "Username missing", JOptionPane.CLOSED_OPTION);
                     } else {
                         user = new User();
-
                         user.setName(nameField.getText());
-                        card.show(menuPanel, "mazeP");
+                        user.setPassword(passField.getText());
+                        if (data.login(user) == false) {
+                            JOptionPane.showConfirmDialog(menuPanel, "Your login information was incorrect.", "Incorrect information", JOptionPane.CLOSED_OPTION);
+                        }
+                        else {
+                            card.show(menuPanel, "mazeP");
+                        }
                     }
                 } catch (Exception exception) {
                     System.out.println(exception);

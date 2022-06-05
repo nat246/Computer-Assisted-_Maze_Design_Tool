@@ -52,6 +52,16 @@ public class MazeDataHandler {
         return mazeData.getUser(u.getName());
     }
 
+    public boolean login(User u) {
+        if (userListModel.contains(u.getName())) {
+            if (userListModel.contains(u.getPassword())) {
+                return true;
+            }
+            else { return false; }
+        }
+        else { return false; }
+    }
+
     public void newMaze(Maze m) {
         if (!mazeListModel.contains(m.getMazeName())) {
             mazeListModel.addElement(m.getMazeName());
