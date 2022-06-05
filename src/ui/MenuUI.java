@@ -203,7 +203,8 @@ public class MenuUI extends JFrame {
                     } else if (nameField.getText().length() < 1 && passField.getText().length() >= 1) {
                         JOptionPane.showConfirmDialog(menuPanel, "Please enter your username.", "Username missing", JOptionPane.CLOSED_OPTION);
                     } else {
-
+                        user = new User();
+                        user.setName(nameField.getText());
                         card.show(menuPanel, "mazeP");
                     }
                 } catch (Exception exception) {
@@ -230,17 +231,13 @@ public class MenuUI extends JFrame {
         passPanel.add(passField);
 
         buttonPanel.add(logInButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         buttonPanel.add(registerButton);
 
         mainPanel.add(title);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         mainPanel.add(namePanel);
-        mainPanel.add(Box.createVerticalGlue());
 
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         mainPanel.add(passPanel);
-        mainPanel.add(Box.createVerticalGlue());
 
         mainPanel.add(buttonPanel);
 
@@ -307,14 +304,13 @@ public class MenuUI extends JFrame {
                 }
                 // Checks if there is at least 1 character in the text box
                 else if (nameField.getText().length() >= 1) {
-                    user = new User();
-                    user.setName(nameField.getText());
-
                     // Password too long. Must be 50 characters or under)
                     if (passField.getText().length() > 50)  {
                         JOptionPane.showConfirmDialog(menuPanel, "Please enter a password shorted than 50 characters", "Password too long", JOptionPane.CLOSED_OPTION);
                     }
                     else if (passField.getText().length() >= 1) {
+                        user = new User();
+                        user.setName(nameField.getText());
                         user.setPassword(passField.getText());
 
                         System.out.format("Created new user '%s' \n", user.getName());
@@ -341,18 +337,12 @@ public class MenuUI extends JFrame {
 
 
         buttonPanel.add(backButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         buttonPanel.add(createButton);
 
         newUserPanel.add(title);
         newUserPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         newUserPanel.add(namePanel);
-        newUserPanel.add(Box.createVerticalGlue());
-
-        newUserPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         newUserPanel.add(passPanel);
-        newUserPanel.add(Box.createVerticalGlue());
-
         newUserPanel.add(buttonPanel);
 
         return newUserPanel;
