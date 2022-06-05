@@ -35,7 +35,7 @@ public class MenuUI extends JFrame {
      * @throws IllegalAccessException
      * @throws UnsupportedLookAndFeelException
      */
-    public MenuUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    public MenuUI(MazeDataHandler data) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         super("Maze Maker");
         this.data = data;
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -73,80 +73,6 @@ public class MenuUI extends JFrame {
         getContentPane().add(menuPanel);
     }
 
-    /**
-     * The Main Menu where the User is to Select User
-     * @return mainPanel with the user choice from the menu options
-     */
-
-    /**
-    private JPanel MainMenu() {
-        // Panel
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-        mainPanel.add(Box.createVerticalGlue());
-
-        // Title
-        JLabel title = new JLabel("Maze Maker");
-        title.setFont(new Font("Monospaced", Font.PLAIN, 25));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Select User
-        JComboBox<String> selectUser = new JComboBox<>(new String[] {"Select User...", "User1", "(Create New User)"} ); // User1 is here to test (Remove later)
-        selectUser.setMaximumSize(new Dimension(240, 50));
-
-        // Continue Button
-        JButton contButton = new JButton("Continue");
-        contButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-
-        // Action Listen
-        
-        //== Continue Button Listener
-        contButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (selectUser.getSelectedItem().toString()) {
-                    case "Select User...":
-                        System.out.println("No selected user");
-                        break;
-                    case "(Create New User)":
-                        card.show(menuPanel, "userP");
-                        setTitle("Maze Maker");
-                        break;
-                    default:
-                        try {
-                            // Create new User class
-                            user = new User();
-                            user.setName(selectUser.getSelectedItem().toString());
-
-                            System.out.format("Selected: %s \n", user.getName());
-                            setTitle(String.format("Maze Maker (%s)", user.getName()));
-
-
-                            card.show(menuPanel, "mazeP");
-                        }
-                        // Also try an exception to catch if the user does not exist like if it's deleted.
-                        catch (Exception exception) {
-                            System.out.println(exception);
-                        }
-                        break;
-                }
-                
-            }
-
-        });
-
-        // Add to Panel
-        mainPanel.add(title);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        mainPanel.add(selectUser);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        mainPanel.add(contButton);
-        mainPanel.add(Box.createVerticalGlue());
-        return mainPanel;
-    }
-    */
     private JPanel MainMenu() {
         // Panel
         JPanel mainPanel = new JPanel();
@@ -313,7 +239,7 @@ public class MenuUI extends JFrame {
                         user = new User();
                         user.setName(nameField.getText());
                         user.setPassword(passField.getText());
-
+                        data.addUser(user);
                         System.out.format("Created new user '%s' \n", user.getName());
                         setTitle(String.format("Maze Maker (%s)", user.getName()));
                         card.show(menuPanel, "mazeP");
