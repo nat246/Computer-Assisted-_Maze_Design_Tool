@@ -203,17 +203,17 @@ public class CellComponent {
 
         switch (position) {
             case "top":
-                if (cell.getPos().get(0) != 0) return (verticalSize / 2) ;
-                else return verticalSize;
+                if (cell.getPos().get(0) != 0) return verticalSize ;
+                else return verticalSize * 2;
             case "bottom":
-                if (cell.getPos().get(0) != maze.getSize()[0] - 1) return (verticalSize / 2);
-                else return verticalSize;
+                if (cell.getPos().get(0) != maze.getSize()[0] - 1) return verticalSize;
+                else return verticalSize * 2;
             case "left":
-                if (cell.getPos().get(1) != 0) return (horizontalSize) / 2;
-                else return horizontalSize;
+                if (cell.getPos().get(1) != 0) return horizontalSize;
+                else return horizontalSize * 2;
             case "right":
-                if (cell.getPos().get(1) != maze.getSize()[1] - 1) return (horizontalSize / 2);
-                else return horizontalSize;
+                if (cell.getPos().get(1) != maze.getSize()[1] - 1) return horizontalSize;
+                else return horizontalSize * 2;
         }
 
         return 0;
