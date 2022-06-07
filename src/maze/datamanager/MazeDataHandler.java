@@ -44,7 +44,7 @@ public class MazeDataHandler {
     }
 
     public void removeUser(User u) {
-        userListModel.removeElement(u.getUserId());
+        userListModel.removeElement(u.getName());
         mazeData.deleteUser(u);
     }
 
@@ -60,13 +60,6 @@ public class MazeDataHandler {
             else { return false; }
         }
         else { return false; }
-    }
-
-    public void newMaze(Maze m) {
-        if (!mazeListModel.contains(m.getMazeName())) {
-            mazeListModel.addElement(m.getMazeName());
-            mazeData.addMaze(m);
-        }
     }
 
     /**
@@ -90,8 +83,11 @@ public class MazeDataHandler {
      * Saves the maze
      * @param m
      */
-    public void saveMaze(Maze m) {
-
+    public void saveAsMaze(Maze m) {
+        if (!mazeListModel.contains(m.getMazeName())) {
+            mazeListModel.addElement(m.getMazeName());
+            mazeData.addMaze(m);
+        }
     }
 
     public void persist() {

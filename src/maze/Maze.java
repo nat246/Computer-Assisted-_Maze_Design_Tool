@@ -128,9 +128,7 @@ public class Maze {
      * Sets the Maze's name/title
      * @param mazeName
      */
-    public void setMazeName(String mazeName) {
-        this.mazeName = mazeName;
-    }
+    public void setMazeName(String mazeName) { this.mazeName = mazeName; }
 
     /**
      * Gets the creation date of the Maze
