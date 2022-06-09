@@ -1,42 +1,69 @@
 package maze.imageprocess;
-
-import java.awt.FlowLayout;
-import java.awt.event.*;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class ChooseLogo extends JFrame implements ActionListener{
 
-    JButton button;
 
-    ChooseLogo(){
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new FlowLayout());
+public class ChooseLogo extends JFrame{
+    JButton button ;
+    JLabel label;
 
-        button = new JButton("Select the logo");
-        button.addActionListener(this);
+    public ChooseLogo(){
+        super("Select a logo for the image");
+        button = new JButton("Select");
+        button.setBounds(300,300,100,40);
+        label = new JLabel();
+        label.setBounds(10,10,670,250);
+        add(button);
+        add(label);
 
-        this.add(button);
-        this.pack();
-        this.setVisible(true);
+        button.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                JFileChooser file = new JFileChooser();
+                file.setCurrentDirectory(new File(System.getProperty("user.home")));
+                //filter the files
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
+                file.addChoosableFileFilter(filter);
+                int result = file.showSaveDialog(null);
+                //if the user click on save in Jfilechooser
+                if(result == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = file.getSelectedFile();
+                    String path = selectedFile.getAbsolutePath();
+                    label.setIcon(ResizeImage(path));
+                }
+                //if the user click on save in Jfilechooser
+
+
+                else if(result == JFileChooser.CANCEL_OPTION){
+                    System.out.println("No file is selected");
+                }
+            }
+        });
+
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setSize(700,400);
+        setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    // Methode to resize imageIcon with the same size of a Jlabel
+    public ImageIcon ResizeImage(String ImagePath)
+    {
+        ImageIcon MyImage = new ImageIcon(ImagePath);
+        Image img = MyImage.getImage();
+        Image newImg = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImg);
+        return image;
+    }
 
-        if(e.getSource()==button) {
-
-            JFileChooser fileChooser = new JFileChooser();
-
-            fileChooser.setCurrentDirectory(new File(".")); //sets current directory
-
-            int response = fileChooser.showOpenDialog(null); //select file to open
-            //int response = fileChooser.showSaveDialog(null); //select file to save
-
-            if(response == JFileChooser.APPROVE_OPTION) {
-                File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-                System.out.println(file);
-            }
-        }
+    public static void main(String[] args){
+        new ChooseLogo();
     }
 }

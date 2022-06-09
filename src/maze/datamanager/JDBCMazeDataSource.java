@@ -19,19 +19,19 @@ public class JDBCMazeDataSource implements MazeDataSource{
 
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE IF NOT EXISTS users ("
-                 + "id INTEGER PRIMARY KEY /* 40101 AUTO_INCREMENT */ NOT NULL UNIQUE,"
-                 + "name VARCHAR(30) , "
-                 + "password VARCHAR(30) );";
+                 + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
+                 + "name VARCHAR(30) UNIQUE , "
+                 + "password VARCHAR(30) , PRIMARY KEY (id) );";
 
     public static final String CREATE_MAZE_TABLE =
             "CREATE TABLE IF NOT EXISTS mazes ("
-                 + "id INTEGER PRIMARY KEY /* 40101 AUTO_INCREMENT */ NOT NULL UNIQUE,"
-                 + "name VARCHAR(30), "
-                 + "creator VARCHAR(30) , "
-                 + "creationTime VARCHAR(30) , "
-                 + "lastEdited (VARCHAR(30) );";
+                    + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
+                    + "name VARCHAR(30) UNIQUE , "
+                    + "creator VARCHAR(30) , "
+                    + "creationTime VARCHAR(30) , "
+                    + "lastEdited VARCHAR(30) , PRIMARY KEY (id) );";
 
-    private static final String INSERT_USER = "INSERT IF NOT EXISTS INTO users (userName, userPassword) VALUES (?, ?)";
+    private static final String INSERT_USER = "INSERT INTO users (name, password) VALUES (?, ?)";
     private static final String GET_USERID = "SELECT id FROM users WHERE name=?";
     private static final String GET_USERNAME = "SELECT name FROM users WHERE name=?";
     private static final String GET_USERPASSWORD = "SELECT password FROM users WHERE name=?";
