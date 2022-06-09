@@ -1,6 +1,7 @@
 package ui;
 
 import maze.Maze;
+import maze.datamanager.MazeDataHandler;
 import user.User;
 import maze.Cell;
 
@@ -14,6 +15,10 @@ import java.util.List;
 import java.awt.Font;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 /**
  * Class responsible for Editing the UI frames and sections
@@ -22,6 +27,8 @@ import javax.swing.*;
 public class EditorUI extends JFrame {
     private Maze maze;
     private User user; // Change to User Class after Database and User Class has been created
+
+    MazeDataHandler data;
 
     private int mazeRowLength, mazeColLength;
 
@@ -32,9 +39,9 @@ public class EditorUI extends JFrame {
      * @param user new user input for creating or accessing a maze
      * @param maze helps in creating a maze or access a randomly generated maze
      */
-    public EditorUI(User user, Maze maze) {
+    public EditorUI(User user, Maze maze, MazeDataHandler data) {
         super("Editor");
-        
+        this.data = data;
         this.user = user;
         this.maze = maze;
         this.mazeRowLength = maze.getSize()[0];
@@ -67,14 +74,18 @@ public class EditorUI extends JFrame {
 
         JMenuItem exitB = new JMenuItem("Exit to menu");
 
+        JMenuItem save = new JMenuItem("Save");
+        JMenuItem saveAs = new JMenuItem("Save as...");
+        JMenuItem exportPNG = new JMenuItem("Export as PNG");
+
         // Events
         exitB.addActionListener(e -> this.dispose());
 
         // Add to Menu Bar
         fileMenu.add("New Maze");
         fileMenu.add(new JSeparator());
-        fileMenu.add("Save");
-        fileMenu.add("Save as...");
+        fileMenu.add(save);
+        fileMenu.add(saveAs);
         fileMenu.add(new JSeparator());
         fileMenu.add("Export as PNG");
         fileMenu.add(new JSeparator());
@@ -95,6 +106,31 @@ public class EditorUI extends JFrame {
         bar.add(editMenu);
         bar.add(testMenu);
         setJMenuBar(bar);
+
+        //==Create menu item listener
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        //==Create menu item listener
+        saveAs.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Maze m = new Maze();
+                String mazename = JOptionPane.showInputDialog(saveAs, "Name:", null);
+                m.setMazeName(mazename);
+                m.setAuthorName(user.getName());
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                String currentTime = dtf.format(now).toString();
+                m.setDateCreated(currentTime);
+                m.setLastEdited(currentTime);
+                data.saveAsMaze(m);
+            }
+        });
     }
 
     /**

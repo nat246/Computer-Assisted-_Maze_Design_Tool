@@ -19,17 +19,17 @@ public class JDBCMazeDataSource implements MazeDataSource{
 
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE IF NOT EXISTS users ("
-                 + "id INTEGER PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT ,"
+                 + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
                  + "name VARCHAR(30) UNIQUE , "
-                 + "password VARCHAR(30) );";
+                 + "password VARCHAR(30) , PRIMARY KEY (id) );";
 
     public static final String CREATE_MAZE_TABLE =
             "CREATE TABLE IF NOT EXISTS mazes ("
-                    + "id INTEGER PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT ,"
+                    + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
                     + "name VARCHAR(30) UNIQUE , "
                     + "creator VARCHAR(30) , "
                     + "creationTime VARCHAR(30) , "
-                    + "lastEdited VARCHAR(30) );";
+                    + "lastEdited VARCHAR(30) , PRIMARY KEY (id) );";
 
     private static final String INSERT_USER = "INSERT INTO users (name, password) VALUES (?, ?)";
     private static final String GET_USERID = "SELECT id FROM users WHERE name=?";

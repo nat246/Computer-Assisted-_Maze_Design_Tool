@@ -136,6 +136,8 @@ public class MenuUI extends JFrame {
                             JOptionPane.showConfirmDialog(menuPanel, "Your login information was incorrect.", "Incorrect information", JOptionPane.CLOSED_OPTION);
                         }
                         else {
+                            data.getUser(user);
+                            setTitle(String.format("Maze Maker (%s)", user.getName()));
                             card.show(menuPanel, "mazeP");
                         }
                     }
@@ -227,7 +229,6 @@ public class MenuUI extends JFrame {
 
         //== Create button Listener
         createButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Name too long. Must be 50 characters long or under.
@@ -238,7 +239,7 @@ public class MenuUI extends JFrame {
                 else if (nameField.getText().length() >= 1) {
                     // Password too long. Must be 50 characters or under)
                     if (passField.getText().length() > 50)  {
-                        JOptionPane.showConfirmDialog(menuPanel, "Please enter a password shorted than 50 characters", "Password too long", JOptionPane.CLOSED_OPTION);
+                        JOptionPane.showConfirmDialog(menuPanel, "Please enter a password shorter than 50 characters", "Password too long", JOptionPane.CLOSED_OPTION);
                     }
                     else if (passField.getText().length() >= 1) {
                         user = new User();
@@ -309,7 +310,7 @@ public class MenuUI extends JFrame {
         JPanel newMazeP = new JPanel();
         newMazeP.setLayout(new BoxLayout(newMazeP, BoxLayout.Y_AXIS));
 
-        // Panel Group 1 (Settings)
+        // Panel Group 1 (Settings)1
         JPanel panelGroup1 = new JPanel();
 
         // Random generate option (inside newMazeP)
@@ -356,7 +357,6 @@ public class MenuUI extends JFrame {
 
         JCheckBox pathCheckbox = new JCheckBox("Show Maze Path  ");
 
-
         // Panel Group 2 (Buttons)
         JPanel panelGroup2 = new JPanel();
 
@@ -382,7 +382,7 @@ public class MenuUI extends JFrame {
                     int col = (int) verticalSpinner.getValue();
 
                     Maze newMaze = new Maze(new int[] {row, col}, user.getName());
-                    EditorUI editor = new EditorUI(user, newMaze);
+                    EditorUI editor = new EditorUI(user, newMaze, data);
                     setVisible(false);
                     editor.setVisible(true);
 
