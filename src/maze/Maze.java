@@ -4,6 +4,7 @@ import ui.CellComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +21,10 @@ public class Maze {
     private Boolean solvable;
     private String authorName, mazeName;
     private String dateCreated, lastEdited;
+    private int editMode;
     private HashMap<List<Integer>, Cell> cells;
     private JPanel mazePanel = new JPanel();
+    private BufferedImage image;
 
     public Maze() {
         this.cells = new HashMap<>();
@@ -186,6 +189,14 @@ public class Maze {
     public JPanel getMazePanel() {
         return mazePanel;
     }
+
+    public void setImage(BufferedImage image) { this.image = image; }
+
+    public BufferedImage getImage() { return this.image; }
+
+    public void setMode(int mode) { this.editMode = mode; }
+
+    public int getMode() { return this.editMode; }
 
     private void createMazePanel() {
         int rowLength = size[0];

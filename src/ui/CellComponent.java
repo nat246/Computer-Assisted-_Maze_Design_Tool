@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CellComponent {
 
@@ -18,6 +19,7 @@ public class CellComponent {
     private Maze maze;
 
     private JPanel cellPanel;
+    private JLabel icon;
     private Color defaultColour;
 
     public CellComponent(Cell cell, Maze maze, Boolean editorMode) {
@@ -36,6 +38,23 @@ public class CellComponent {
         cellPanel = new JPanel();
         cellPanel.setLayout(null);
         defaultColour = cellPanel.getBackground();
+
+        cellPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switch (maze.getMode()) {
+                    case 1:
+                        createImage();
+                        break;
+                    case 2:
+                        removeImage();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
 
         // Create a wall on each side
         SwingUtilities.invokeLater(() -> {
@@ -58,6 +77,8 @@ public class CellComponent {
         }
         cellPanel.setBackground(defaultColour);
     }
+
+
 
 
     private JPanel cellWall(String wallPosition, JPanel cellPanel) {
@@ -104,6 +125,7 @@ public class CellComponent {
                 break;
         }
 
+
         wall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cell.setWallPanel(wallPosition, wall);
 
@@ -127,7 +149,7 @@ public class CellComponent {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JPanel adjacentWall = new JPanel();
-
+                if (maze.getMode() != 0) return;
 //                 Change wall color to transparent
                 if (cell.getWallStatus(position)) {
                     newWall.setOpaque(false);
@@ -201,6 +223,29 @@ public class CellComponent {
         return 0;
     }
 
+    private void createImage() {
+        icon = new JLabel();
+        cellPanel.add(icon);
 
+        SwingUtilities.invokeLater(() -> {
+            icon.setSize(cellPanel.getSize());
+
+            // Set Image Size
+            try {
+                Image newImg = maze.getImage().getScaledInstance(icon.getWidth(), icon.getHeight(), Image.SCALE_SMOOTH);
+                icon.setIcon(new ImageIcon(newImg));
+            } catch (NullPointerException e) {
+                System.out.println("No Image Selected.");
+            }
+
+        });
+    }
+
+    private void removeImage() {
+        try {
+            icon.setIcon(null);
+        }
+        catch (NullPointerException e) {}
+    }
 
 }

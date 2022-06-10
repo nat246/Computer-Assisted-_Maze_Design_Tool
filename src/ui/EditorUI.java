@@ -5,18 +5,19 @@ import maze.datamanager.MazeDataHandler;
 import user.User;
 import maze.Cell;
 
-import java.awt.Dimension;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Font;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
@@ -33,6 +34,7 @@ public class EditorUI extends JFrame {
     private int mazeRowLength, mazeColLength;
 
     JPanel outer;
+
 
     /**
      *
@@ -97,14 +99,9 @@ public class EditorUI extends JFrame {
         editMenu.add("Add Image");
         editMenu.add("Set Logo Image");
 
-        // Test menu
-        JMenu testMenu = new JMenu("Test");
-        testMenu.add("Test solvable");
-
         // Add to menu bar
         bar.add(fileMenu);
         bar.add(editMenu);
-        bar.add(testMenu);
         setJMenuBar(bar);
 
         //==Create menu item listener
@@ -175,6 +172,75 @@ public class EditorUI extends JFrame {
 
         JCheckBox solutionCheckBox = new JCheckBox("Show Solution");
 
+        // Select mode
+        JPanel modePanel = new JPanel();
+        modePanel.setLayout(new BoxLayout(modePanel, BoxLayout.PAGE_AXIS));
+
+        JLabel modeTitle = new JLabel("<html><br><h1>Edit Mode</h1></html>");
+        modeTitle.setFont(new Font("SanSerif", Font.PLAIN, 20));
+
+
+        JComboBox pickMode = new JComboBox<>(new String[] {"Wall Edit", "Place Image", "Remove Image"});
+        pickMode.setMaximumSize(new Dimension(pickMode.getMaximumSize().width, 25));
+
+        // Image
+        JPanel imagePanel = new JPanel();
+
+        JButton imagePicker = new JButton("Choose Image...");
+        imagePicker.setEnabled(false);
+
+        JLabel imagePath = new JLabel("File");
+        imagePath.setMaximumSize(new Dimension(150, imagePath.getPreferredSize().height));
+
+
+        pickMode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selected = pickMode.getSelectedIndex();
+                maze.setMode(selected);
+
+                switch (selected) {
+                    case 0:
+                    case 2:
+                        imagePicker.setEnabled(false);
+                        break;
+                    case 1:
+                        imagePicker.setEnabled(true);
+                        break;
+                }
+            }
+        });
+
+        imagePicker.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser file = new JFileChooser();
+                file.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+                //filter the files
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
+                file.addChoosableFileFilter(filter);
+                int result = file.showSaveDialog(null);
+
+                if(result == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = file.getSelectedFile();
+                    String path = selectedFile.getAbsolutePath();
+
+                    try {
+                        maze.setImage(ImageIO.read(new File(path)));
+                        imagePath.setText(path);
+
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                }
+                else if(result == JFileChooser.CANCEL_OPTION){
+                    System.out.println("No file is selected");
+                }
+            }
+        });
+
         // Add to Panel
         infoPanel.add(infoTitle);
         infoPanel.add(gridSize);
@@ -182,10 +248,16 @@ public class EditorUI extends JFrame {
         infoPanel.add(deadendNum);
         infoPanel.add(isSolvable);
 
+        modePanel.add(modeTitle);
+        modePanel.add(pickMode);
+        modePanel.add(imagePicker);
+        modePanel.add(imagePath);
+
         optionsPanel.add(optionsTitle);
         optionsPanel.add(solutionCheckBox);
 
         sectionPanel.add(infoPanel);
+        sectionPanel.add(modePanel);
         sectionPanel.add(optionsPanel);
 
         return sectionPanel;
@@ -229,6 +301,7 @@ public class EditorUI extends JFrame {
             // Add new cell panel to the overall maze panel
             mazePanel.add(new CellComponent(cell, maze, true).newCellPanel());
 
+
             // Checks whether the column has reached the end
             colIndex++;
             if (colIndex == mazeColLength) { colIndex = 0; rowIndex++; }
@@ -244,5 +317,7 @@ public class EditorUI extends JFrame {
 
         return sectionPanel;
     }
+
+
     
 }
