@@ -17,10 +17,14 @@ public class CellComponent {
     private Cell cell;
     private Maze maze;
 
+    private JPanel cellPanel;
+    private Color defaultColour;
+
     public CellComponent(Cell cell, Maze maze, Boolean editorMode) {
         this.cell = cell;
         this.maze = maze;
         this.editorMode = editorMode;
+
     }
 
 
@@ -29,8 +33,9 @@ public class CellComponent {
      * @return cellPanel dimensions for creating a new cell
      */
     public JPanel newCellPanel() {
-        JPanel cellPanel = new JPanel();
+        cellPanel = new JPanel();
         cellPanel.setLayout(null);
+        defaultColour = cellPanel.getBackground();
 
         // Create a wall on each side
         SwingUtilities.invokeLater(() -> {
@@ -44,6 +49,14 @@ public class CellComponent {
         });
 
         return cellPanel;
+    }
+
+    public void setPathBackground(boolean path) {
+        if (path) {
+            cellPanel.setBackground(Color.ORANGE);
+            return;
+        }
+        cellPanel.setBackground(defaultColour);
     }
 
 
@@ -91,7 +104,7 @@ public class CellComponent {
                 break;
         }
 
-
+        wall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cell.setWallPanel(wallPosition, wall);
 
         return wall;
@@ -129,8 +142,7 @@ public class CellComponent {
                     adjacentWall = switchColor(adjacentWall,position,black, true);
                 }
 
-                newWall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                adjacentWall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
                 cell.setWallStatus(position, !cell.getWallStatus(position));
                 System.out.println(cell.getWallStatus(position));
                 System.out.println(String.format("pos: (%d, %d)", cell.getPos().get(0), cell.getPos().get(1)));
@@ -146,16 +158,16 @@ public class CellComponent {
         try {
             switch (position) {
                 case "top":
-                    wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) - 1, cell.getPos().get(1)))).getWallPanel("bottom");
+                    wall = maze.getCell(cell.getPos().get(0) - 1, cell.getPos().get(1)).getWallPanel("bottom");
                     break;
                 case "bottom":
-                    wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0) + 1, cell.getPos().get(1)))).getWallPanel("top");
+                    wall = maze.getCell(cell.getPos().get(0) + 1, cell.getPos().get(1)).getWallPanel("top");
                     break;
                 case "left":
-                    wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) - 1))).getWallPanel("right");
+                    wall = maze.getCell(cell.getPos().get(0), cell.getPos().get(1) - 1).getWallPanel("right");
                     break;
                 case "right":
-                    wall = maze.getCell(new ArrayList<Integer>(java.util.List.of(cell.getPos().get(0), cell.getPos().get(1) + 1))).getWallPanel("left");
+                    wall = maze.getCell(cell.getPos().get(0), cell.getPos().get(1) + 1).getWallPanel("left");
                     break;
             }
         } catch (NullPointerException error) {
@@ -188,5 +200,7 @@ public class CellComponent {
 
         return 0;
     }
+
+
 
 }

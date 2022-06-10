@@ -4,6 +4,7 @@ import ui.CellComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -164,10 +165,12 @@ public class Maze {
 
     /**
      * Gets the cell position
-     * @param cellPos cell position of the maze
+     * @param x x cell position of the maze
+     * @param y y cell position of the maze
      * @return cellPos
      */
-    public Cell getCell(List<Integer> cellPos) {
+    public Cell getCell(int x, int y) {
+        List<Integer> cellPos = new ArrayList<>(List.of(x, y));
         return this.cells.get(cellPos);
     }
 
