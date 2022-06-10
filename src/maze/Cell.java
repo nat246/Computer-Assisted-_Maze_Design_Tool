@@ -1,5 +1,7 @@
 package maze;
 
+import ui.CellComponent;
+
 import java.util.HashMap;
 
 import javax.swing.JPanel;
@@ -12,7 +14,7 @@ public class Cell extends Grid {
     private HashMap<String, Boolean> walls;
     private HashMap<String, JPanel> wallUI;
     private int cellType; // 0 is normal cell, 1 is start point, 2 is end point
-
+    private CellComponent cellPanel;
     /**
      *
      * @param x dimension 1 user input inherited from Grid
@@ -24,6 +26,7 @@ public class Cell extends Grid {
         wallUI = new HashMap<>();
         cellType = 0;
     }
+
 
     /**
      *
@@ -59,6 +62,14 @@ public class Cell extends Grid {
      */
     public int getType() {
         return this.cellType;
+    }
+
+    public CellComponent getCellPanel() {
+        return cellPanel;
+    }
+
+    public void setCellPanel(CellComponent cellPanel) {
+        this.cellPanel = cellPanel;
     }
 
     public void setWallPanel(String pos, JPanel wall) {

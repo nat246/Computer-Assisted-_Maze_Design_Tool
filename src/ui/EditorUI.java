@@ -1,6 +1,7 @@
 package ui;
 
 import maze.Maze;
+import maze.MazeRandomCreator;
 import maze.datamanager.MazeDataHandler;
 import user.User;
 import maze.Cell;
@@ -51,7 +52,6 @@ public class EditorUI extends JFrame {
         initEditor();
         topBar();
         outerPanel();
-        
     }
 
     /**
@@ -293,14 +293,10 @@ public class EditorUI extends JFrame {
         // Creates the number of cells for the size of the maze
         for (int i = 0; i < totalNumCells; i++) {
             // Creates a new cell class and adds it to the maze class
-            Cell cell = new Cell(rowIndex, colIndex);
-
-            // Store new cell to maze
-            maze.addCell(cell);
+            Cell cell = maze.getCell(rowIndex, colIndex);
 
             // Add new cell panel to the overall maze panel
-            mazePanel.add(new CellComponent(cell, maze, true).newCellPanel());
-
+            mazePanel.add(new CellComponent(cell, maze).newCellPanel());
 
             // Checks whether the column has reached the end
             colIndex++;
@@ -314,10 +310,9 @@ public class EditorUI extends JFrame {
         sectionPanel.add(sectionInner, BorderLayout.CENTER);
         sectionPanel.add(Box.createVerticalGlue());
 
-
         return sectionPanel;
     }
 
 
-    
+
 }

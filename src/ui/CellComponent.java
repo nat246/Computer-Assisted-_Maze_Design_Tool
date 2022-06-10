@@ -7,35 +7,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class CellComponent {
 
-    private Boolean editorMode = false;
     private Cell cell;
     private Maze maze;
+    private JPanel cellPanel = new JPanel();
 
-    private JPanel cellPanel;
     private JLabel icon;
     private Color defaultColour;
 
-    public CellComponent(Cell cell, Maze maze, Boolean editorMode) {
+    public CellComponent(Cell cell, Maze maze) {
         this.cell = cell;
         this.maze = maze;
-        this.editorMode = editorMode;
-
     }
-
 
     /**
      * Method for each cell in the maze
      * @return cellPanel dimensions for creating a new cell
      */
     public JPanel newCellPanel() {
-        cellPanel = new JPanel();
         cellPanel.setLayout(null);
         defaultColour = cellPanel.getBackground();
 
@@ -43,28 +37,20 @@ public class CellComponent {
             @Override
             public void mouseClicked(MouseEvent e) {
                 switch (maze.getMode()) {
-                    case 1:
-                        createImage();
-                        break;
-                    case 2:
-                        removeImage();
-                        break;
-                    default:
-                        break;
+                    case 1 -> createImage();
+                    case 2 -> removeImage();
+                    default -> {
+                    }
                 }
-
             }
         });
 
         // Create a wall on each side
         SwingUtilities.invokeLater(() -> {
-             cellPanel.add(cellWall("top", cellPanel));
-             cellPanel.add(cellWall("bottom", cellPanel));
-             cellPanel.add(cellWall("left", cellPanel));
-             cellPanel.add(cellWall("right", cellPanel));
-
-             // if !activateWall[right] => cellPanel.add(whiteCellWall("right, cellPanel));
-
+             cellPanel.add(cellWall("top", cell.getWallStatus("top")));
+             cellPanel.add(cellWall("bottom", cell.getWallStatus("bottom")));
+             cellPanel.add(cellWall("left", cell.getWallStatus("left")));
+             cellPanel.add(cellWall("right", cell.getWallStatus("right")));
         });
 
         return cellPanel;
@@ -79,13 +65,10 @@ public class CellComponent {
     }
 
 
-
-
-    private JPanel cellWall(String wallPosition, JPanel cellPanel) {
-
+    public JPanel cellWall(String wallPosition, boolean state) {
+        JPanel wall = new JPanel();
         // Color of the wall
-        JPanel wall = wallColor(wallPosition);
-
+        wall = wallColor(wallPosition, state);
 
         // Wall coordinates
         int topX = 0;
@@ -105,30 +88,16 @@ public class CellComponent {
         int leftWallWidth = wallThickness(cellPanel, "left");
         int rightWallWidth = wallThickness(cellPanel, "right");
 
-
         // Set wall size and coordinates
-        switch (wallPosition){
-            case "top":
-                wall.setBounds(topX, topY, horizontalWallLength, topWallWidth);
-                break;
-
-            case "bottom":
-                wall.setBounds(bottomX, bottomY, horizontalWallLength, bottomWallWidth);
-                break;
-
-            case "left":
-                wall.setBounds(leftX, leftY, leftWallWidth, verticalWallLength);
-                break;
-
-            case "right":
-                wall.setBounds(rightX, rightY, rightWallWidth, verticalWallLength);
-                break;
+        switch (wallPosition) {
+            case "top" -> wall.setBounds(topX, topY, horizontalWallLength, topWallWidth);
+            case "bottom" -> wall.setBounds(bottomX, bottomY, horizontalWallLength, bottomWallWidth);
+            case "left" -> wall.setBounds(leftX, leftY, leftWallWidth, verticalWallLength);
+            case "right" -> wall.setBounds(rightX, rightY, rightWallWidth, verticalWallLength);
         }
-
 
         wall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cell.setWallPanel(wallPosition, wall);
-
         return wall;
     }
 
@@ -138,9 +107,16 @@ public class CellComponent {
      * @param position Location of the new wall to be placed
      * @return newWall according to the user inputs
      */
-    private JPanel wallColor(String position) {
+    private JPanel wallColor(String position, boolean state) {
         JPanel newWall = new JPanel();
-        newWall.setBackground(Color.BLACK);
+
+        if (state){
+            newWall.setBackground(Color.BLACK);
+        } else {
+            newWall.setOpaque(false);
+            newWall.setBackground(new Color(0,0,0,0));
+        }
+
 
         newWall.addMouseListener(new MouseAdapter() {
             final Color transparent = new Color(0,0,0,0);
@@ -148,20 +124,21 @@ public class CellComponent {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                JPanel adjacentWall = new JPanel();
+
+
                 if (maze.getMode() != 0) return;
 //                 Change wall color to transparent
                 if (cell.getWallStatus(position)) {
                     newWall.setOpaque(false);
                     newWall.setBackground(transparent);
-                    adjacentWall = switchColor(adjacentWall, position, transparent, false);
+                    switchAdjacentColor(position, transparent, false);
 
                 }
                 // Change wall color to black
                 else {
                     newWall.setOpaque(true);
                     newWall.setBackground(black);
-                    adjacentWall = switchColor(adjacentWall,position,black, true);
+                    switchAdjacentColor(position,black, true);
                 }
 
 
@@ -175,8 +152,11 @@ public class CellComponent {
         return newWall;
     }
 
-    private JPanel switchColor(JPanel wall, String position, Color color, boolean opacity){
 
+
+
+    private void switchAdjacentColor(String position, Color color, boolean opacity){
+        JPanel wall = new JPanel();
         try {
             switch (position) {
                 case "top":
@@ -198,7 +178,7 @@ public class CellComponent {
 
         wall.setOpaque(opacity);
         wall.setBackground(color);
-        return wall;
+//        wall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private int wallThickness(JPanel panel, String position) {

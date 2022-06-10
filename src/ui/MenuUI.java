@@ -1,8 +1,6 @@
 package ui;
 
 import maze.Maze;
-import maze.datamanager.JDBCMazeDataSource;
-import maze.datamanager.MazeDataSource;
 import user.User;
 import maze.datamanager.MazeDataHandler;
 
@@ -381,7 +379,7 @@ public class MenuUI extends JFrame {
                     int row = (int) horizontalSpinner.getValue();
                     int col = (int) verticalSpinner.getValue();
 
-                    Maze newMaze = new Maze(new int[] {row, col}, user.getName());
+                    Maze newMaze = new Maze(new int[] {row, col}, user.getName(), true);
                     EditorUI editor = new EditorUI(user, newMaze, data);
                     setVisible(false);
                     editor.setVisible(true);
@@ -394,8 +392,8 @@ public class MenuUI extends JFrame {
                     });
                 });
 
-                
             }
+
             
         });
 

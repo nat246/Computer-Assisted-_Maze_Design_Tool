@@ -32,14 +32,25 @@ public class Maze {
 
     /**
      *
-     * @param Size user input size of the maze
-     * @param User prints the name of the Author of the maze
+     * @param size user input size of the maze
+     * @param user prints the name of the Author of the maze
      */
-    public Maze(int[] Size, String User) {
-        this.size = Size;
-        this.authorName = User;
+    public Maze(int[] size, String user, boolean isRandomGen) {
+        this.size = size;
+        this.authorName = user;
         this.cells = new HashMap<>();
-        createMazePanel();
+
+        int rowSize = size[0], colSize = size[1];
+        for (int row = 0; row < rowSize; row++){
+            for (int col = 0; col < colSize; col++) {
+                Cell cell = new Cell(row, col);
+                addCell(cell);
+            }
+        }
+        if (isRandomGen){
+            new MazeRandomCreator(this);
+        }
+//        createMazePanel();
     }
 
     /**
@@ -168,12 +179,12 @@ public class Maze {
 
     /**
      * Gets the cell position
-     * @param x x cell position of the maze
-     * @param y y cell position of the maze
+     * @param row x cell position of the maze
+     * @param col y cell position of the maze
      * @return cellPos
      */
-    public Cell getCell(int x, int y) {
-        List<Integer> cellPos = new ArrayList<>(List.of(x, y));
+    public Cell getCell(int row, int col) {
+        List<Integer> cellPos = new ArrayList<>(List.of(row, col));
         return this.cells.get(cellPos);
     }
 
@@ -186,6 +197,9 @@ public class Maze {
         this.cells.put(cell.getPos(), cell);
     }
 
+//    public Cell getAdjacentCell(String pos){
+//
+//    }
     public JPanel getMazePanel() {
         return mazePanel;
     }
@@ -198,38 +212,41 @@ public class Maze {
 
     public int getMode() { return this.editMode; }
 
-    private void createMazePanel() {
-        int rowLength = size[0];
-        int colLength = size[1];
-
-
-        // Gets the largest number between the size of the grid
-        int largest = Math.max(colLength, rowLength);
-
-        int preferredWidth = (mazePanel.getPreferredSize().height / largest) * colLength;
-        int preferredHeight = (mazePanel.getPreferredSize().width / largest) * rowLength;
-
-        mazePanel.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
-        mazePanel.setLayout(new GridLayout(rowLength, colLength));
-
-        int rowIndex = 0, colIndex = 0;
-        int totalNumCells = rowLength * colLength;
-        // Creates the number of cells for the size of the maze
-        for (int i = 0; i < totalNumCells; i++) {
-            // Creates a new cell class and adds it to the maze class
-            Cell cell = new Cell(rowIndex, colIndex);
-
-            // Store new cell to maze
-            addCell(cell);
-
-            // Add new cell panel to the overall maze panel
-            mazePanel.add(new CellComponent(cell, this, true).newCellPanel());
-
-            // Checks whether the column has reached the end
-            colIndex++;
-            if (colIndex == colLength) { colIndex = 0; rowIndex++; }
-        }
-    }
+//    private void createMazePanel() {
+//        int rowLength = size[0];
+//        int colLength = size[1];
+//
+//
+//        // Gets the largest number between the size of the grid
+//        int largest = Math.max(colLength, rowLength);
+//
+//        int preferredWidth = (mazePanel.getPreferredSize().height / largest) * colLength;
+//        int preferredHeight = (mazePanel.getPreferredSize().width / largest) * rowLength;
+//
+//        mazePanel.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+//        mazePanel.setLayout(new GridLayout(rowLength, colLength));
+//
+//        int rowIndex = 0, colIndex = 0;
+//        int totalNumCells = rowLength * colLength;
+//        // Creates the number of cells for the size of the maze
+//        for (int i = 0; i < totalNumCells; i++) {
+//            // Creates a new cell class and adds it to the maze class
+//            /**
+//             * TODO
+//             */
+//            Cell cell = new Cell(rowIndex, colIndex);
+//
+//            // Store new cell to maze
+//            addCell(cell);
+//
+//            // Add new cell panel to the overall maze panel
+//            mazePanel.add(new CellComponent(cell, this).newCellPanel());
+//
+//            // Checks whether the column has reached the end
+//            colIndex++;
+//            if (colIndex == colLength) { colIndex = 0; rowIndex++; }
+//        }
+//    }
 
 }
 
