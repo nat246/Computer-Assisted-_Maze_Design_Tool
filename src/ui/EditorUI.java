@@ -235,7 +235,6 @@ public class EditorUI extends JFrame {
         // Centre the maze
 
         sectionInner.add(mazePanel);
-//        sectionPanel.add(maze.getMazePanel());
         sectionPanel.add(Box.createVerticalGlue());
         sectionPanel.add(sectionInner, BorderLayout.CENTER);
         sectionPanel.add(Box.createVerticalGlue());

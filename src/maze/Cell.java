@@ -1,6 +1,5 @@
 package maze;
 
-import java.awt.*;
 import java.util.HashMap;
 
 import javax.swing.JPanel;
@@ -31,7 +30,7 @@ public class Cell extends Grid {
      * @param location gives the location of the wall
      * @return walls.location
      */
-    public Boolean wallStatus(String location) {
+    public Boolean getWallStatus(String location) {
         return walls.get(location);
     }
 
@@ -40,7 +39,7 @@ public class Cell extends Grid {
      * @param wall represents the user input used for setting up a wall
      * @param state boolean value of the state of the wall
      */
-    public void setWall(String wall, boolean state) {
+    public void setWallStatus(String wall, boolean state) {
         walls.replace(wall, state);
     }
 
