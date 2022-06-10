@@ -13,11 +13,11 @@ public class ChooseLogo extends JFrame{
     JLabel label;
 
     public ChooseLogo(){
-        super("Select a logo for the image");
+        super("Select a logo for the maze");
         button = new JButton("Select");
         button.setBounds(300,300,100,40);
         label = new JLabel();
-        label.setBounds(10,10,670,250);
+        label.setBounds(5,5,100,100);
         add(button);
         add(label);
 
