@@ -19,14 +19,14 @@ public class JDBCMazeDataSource implements MazeDataSource{
 
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE IF NOT EXISTS users ("
-                 + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
-                 + "name VARCHAR(30) UNIQUE , "
-                 + "password VARCHAR(30) , PRIMARY KEY (id) );";
+                    + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
+                    + "name VARCHAR(30) UNIQUE , "
+                    + "password VARCHAR(30) , PRIMARY KEY (id) );";
 
     public static final String CREATE_MAZE_TABLE =
             "CREATE TABLE IF NOT EXISTS mazes ("
                     + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
-                    + "name VARCHAR(30) UNIQUE , "
+                    + "name VARCHAR(30) , "
                     + "creator VARCHAR(30) , "
                     + "creationTime VARCHAR(30) , "
                     + "lastEdited VARCHAR(30) , PRIMARY KEY (id) );";
@@ -38,7 +38,8 @@ public class JDBCMazeDataSource implements MazeDataSource{
     private static final String DELETE_USER = "DELETE FROM users WHERE id=?";
     private static final String GET_USER = "SELECT * FROM users WHERE name=?";
     private static final String GET_USERS = "SELECT name FROM users";
-    private static final String INSERT_MAZE = "INSERT INTO mazes (name, creator, creationtime, lastedited) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_MAZE = "INSERT INTO mazes (name, creator, creationtime, lastedited) VALUES (?, ?, NOW(), NOW())";
+    private static final String UPDATE_MAZE = "UPDATE maze SET lastedited = NOW() WHERE id = ?;";
     private static final String GET_MAZEID = "SELECT id FROM mazes WHERE name=?";
     private static final String GET_MAZENAME = "SELECT name FROM mazes WHERE name=?";
     private static final String GET_MAZECREATOR = "SELECT creator FROM mazes WHERE name=?";
@@ -57,6 +58,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     private PreparedStatement getUser;
     private PreparedStatement getUsers;
     private PreparedStatement addMaze;
+    private PreparedStatement saveMaze;
     private PreparedStatement getMazeID;
     private PreparedStatement getMazeName;
     private PreparedStatement getMazeCreator;
@@ -82,6 +84,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
             getUsers = connection.prepareStatement(GET_USERS);
 
             addMaze = connection.prepareStatement(INSERT_MAZE);
+            saveMaze = connection.prepareStatement(UPDATE_MAZE);
             getMazeID = connection.prepareStatement(GET_MAZEID);
             getMazeName = connection.prepareStatement(GET_MAZENAME);
             getMazeCreator = connection.prepareStatement(GET_MAZECREATOR);
@@ -109,7 +112,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getUserID(User) 
+     * @see maze.datamanager.MazeDataSource#getUserID(User)
      */
     public void getUserID(User u) {
         try {
@@ -121,7 +124,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getUsername(User) 
+     * @see maze.datamanager.MazeDataSource#getUsername(User)
      */
     public void getUsername(User u) {
         try {
@@ -133,7 +136,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getPassword(User) 
+     * @see maze.datamanager.MazeDataSource#getPassword(User)
      */
     public void getPassword(User u) {
         try {
@@ -145,7 +148,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#deleteUser(User) 
+     * @see maze.datamanager.MazeDataSource#deleteUser(User)
      */
     public void deleteUser(User u) {
         try {
@@ -157,7 +160,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getUser(String) 
+     * @see maze.datamanager.MazeDataSource#getUser(String)
      */
     public User getUser(String name) {
         User u = new User();
@@ -195,14 +198,12 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#addMaze(Maze) 
+     * @see maze.datamanager.MazeDataSource#addMaze(Maze)
      */
     public void addMaze(Maze m) {
         try {
             addMaze.setString(1, m.getMazeName());
             addMaze.setString(2, m.getAuthorName());
-            addMaze.setString(3, m.getDateCreated());
-            addMaze.setString(4, m.getLastEdited());
             addMaze.execute();
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -210,11 +211,23 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getMazeID(Maze) 
+     * @see maze.datamanager.MazeDataSource#saveMaze(Maze)
+     */
+    public void saveMaze(Maze m) {
+        try {
+            saveMaze.setInt(1, m.getMazeID());
+            saveMaze.execute();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * @see maze.datamanager.MazeDataSource#getMazeID(Maze)
      */
     public void getMazeID(Maze m) {
         try {
-            getMazeID.setString(1, m.getMazeName());
+            getMazeID.setInt(1, m.getMazeID());
             getMazeID.execute();
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -222,7 +235,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getMazeName(Maze) 
+     * @see maze.datamanager.MazeDataSource#getMazeName(Maze)
      */
     public void getMazeName(Maze m) {
         try {
@@ -234,7 +247,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getMazeCreator(Maze) 
+     * @see maze.datamanager.MazeDataSource#getMazeCreator(Maze)
      */
     public void getMazeCreator(Maze m) {
         try {
@@ -246,7 +259,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getMazeCreationDate(Maze) 
+     * @see maze.datamanager.MazeDataSource#getMazeCreationDate(Maze)
      */
     public void getMazeCreationDate(Maze m) {
         try {

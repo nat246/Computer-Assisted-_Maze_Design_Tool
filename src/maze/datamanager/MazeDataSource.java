@@ -56,6 +56,12 @@ public interface MazeDataSource {
     void addMaze(Maze m);
 
     /**
+     * Save the maze to the database
+     * @param m Maze to save
+     */
+    public void saveMaze(Maze m);
+
+    /**
      * Gets the maze ID
      * @param m Maze ID to get
      */

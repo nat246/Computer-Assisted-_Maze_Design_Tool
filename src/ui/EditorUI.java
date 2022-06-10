@@ -111,6 +111,13 @@ public class EditorUI extends JFrame {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Maze m = new Maze();
+                m.setMazeID(m.getMazeID());
+                if (m.getMazeName() == "NULL") {
+                    String mazename = JOptionPane.showInputDialog(saveAs, "Name:", null);
+                    m.setMazeName(mazename);
+                }
+                data.saveMaze(m);
 
             }
         });
@@ -123,11 +130,6 @@ public class EditorUI extends JFrame {
                 String mazename = JOptionPane.showInputDialog(saveAs, "Name:", null);
                 m.setMazeName(mazename);
                 m.setAuthorName(user.getName());
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                String currentTime = dtf.format(now).toString();
-                m.setDateCreated(currentTime);
-                m.setLastEdited(currentTime);
                 data.saveAsMaze(m);
             }
         });

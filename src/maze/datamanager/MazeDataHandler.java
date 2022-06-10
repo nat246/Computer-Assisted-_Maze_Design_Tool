@@ -80,13 +80,29 @@ public class MazeDataHandler {
     }
 
     /**
-     * Saves the maze
+     * Saves the maze that already exists on the database
+     * @param m
+     */
+    public void saveMaze(Maze m) {
+        if (!mazeListModel.contains(m.getMazeName())) {
+            mazeData.saveMaze(m);
+        }
+        else {
+            saveAsMaze(m);
+        }
+    }
+
+    /**
+     * Saves the maze and allows users to name the maze
      * @param m
      */
     public void saveAsMaze(Maze m) {
-        if (!mazeListModel.contains(m.getMazeName())) {
-            mazeListModel.addElement(m.getMazeName());
+        if (!mazeListModel.contains(m.getMazeID())) {
+            mazeListModel.addElement(m.getMazeID());
             mazeData.addMaze(m);
+        }
+        else {
+            mazeData.saveMaze(m);
         }
     }
 
