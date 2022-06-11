@@ -33,7 +33,7 @@ class CellTest {
         /**
          * Checks for the size of the cell
          */
-        assertEquals(1,cellTest.getSize(),"Smallest cell size starts at 1");
+        assertEquals(1,cellTest.getSize(),"Default size is set at 1");
     }
 
     @Test
