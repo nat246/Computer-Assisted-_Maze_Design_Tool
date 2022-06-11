@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WallsEvent {
-    private List<CellListener> cellListener;
+    private final List<CellListener> cellListener;
 
     public WallsEvent() {
         this.cellListener = new ArrayList<CellListener>();
