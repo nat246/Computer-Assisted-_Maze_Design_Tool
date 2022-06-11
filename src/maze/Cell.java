@@ -1,8 +1,10 @@
 package maze;
 
+import events.CellListener;
 import ui.CellComponent;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -10,10 +12,10 @@ import javax.swing.JPanel;
  * Child class inheriting Grid mainly responsible for creating the walls and cells of a maze
  */
 public class Cell extends Grid {
-
     private HashMap<String, Boolean> walls;
     private HashMap<String, JPanel> wallUI;
     private int cellType; // 0 is normal cell, 1 is start point, 2 is end point
+    private int wallsActive;
     private CellComponent cellPanel;
     /**
      *
@@ -78,6 +80,16 @@ public class Cell extends Grid {
 
     public JPanel getWallPanel(String pos) {
         return wallUI.get(pos);
+    }
+
+    public int getWallsActive() {
+        wallsActive = 0;
+
+        for (boolean wallStatus:
+                walls.values()) {
+            if (wallStatus) wallsActive++;
+        }
+        return wallsActive;
     }
 
     /**

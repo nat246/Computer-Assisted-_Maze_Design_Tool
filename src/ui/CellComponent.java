@@ -13,9 +13,9 @@ import java.util.Objects;
 
 public class CellComponent {
 
-    private Cell cell;
-    private Maze maze;
-    private JPanel cellPanel = new JPanel();
+    private final Cell cell;
+    private final Maze maze;
+    private final JPanel cellPanel;
 
     private JLabel icon;
     private Color defaultColour;
@@ -23,6 +23,7 @@ public class CellComponent {
     public CellComponent(Cell cell, Maze maze) {
         this.cell = cell;
         this.maze = maze;
+        cellPanel = new JPanel();
     }
 
     /**
@@ -58,36 +59,33 @@ public class CellComponent {
             if (maze.getStartPos().equals(cell.getPos())) { setType(1); }
             if (maze.getEndPos().equals(cell.getPos())) { setType(2); }
         });
-
+        maze.updateDeadEnd();
         return cellPanel;
     }
 
     public void setType(int typeID) {
         switch (typeID) {
-            case 1: // Start Point
+            case 1 -> { // Start Point
                 maze.getCell(maze.getStartPos().get(0), maze.getStartPos().get(1)).getCellPanel().setType(0);
                 maze.setStartPos(cell.getPos().get(0), cell.getPos().get(1));
                 cellPanel.setBackground(Color.GREEN);
-                break;
-            case 2: // End Point
+            }
+            case 2 -> { // End Point
                 maze.getCell(maze.getEndPos().get(0), maze.getEndPos().get(1)).getCellPanel().setType(0);
                 maze.setEndPos(cell.getPos().get(0), cell.getPos().get(1));
                 cellPanel.setBackground(Color.RED);
-                break;
-            case 3: // Path
-                cellPanel.setBackground(Color.PINK);
-                break;
-            default: // Default
-                cellPanel.setBackground(defaultColour);
-                break;
+            }
+            case 3 -> // Path
+                    cellPanel.setBackground(Color.PINK);
+            default -> // Default
+                    cellPanel.setBackground(defaultColour);
         }
     }
 
 
     public JPanel cellWall(String wallPosition, boolean state) {
-        JPanel wall = new JPanel();
         // Color of the wall
-        wall = wallColor(wallPosition, state);
+        JPanel wall = wallColor(wallPosition, state);
 
         // Wall coordinates
         int topX = 0;
@@ -117,6 +115,7 @@ public class CellComponent {
 
         wall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cell.setWallPanel(wallPosition, wall);
+        maze.updateDeadEnd();
         return wall;
     }
 
@@ -128,42 +127,31 @@ public class CellComponent {
      */
     private JPanel wallColor(String position, boolean state) {
         JPanel newWall = new JPanel();
+        final Color transparent = new Color(0,0,0,0);
+        final Color black = Color.BLACK;
 
         if (state){
-            newWall.setBackground(Color.BLACK);
+            newWall.setBackground(black);
         } else {
             newWall.setOpaque(false);
-            newWall.setBackground(new Color(0,0,0,0));
+            newWall.setBackground(transparent);
         }
 
-
         newWall.addMouseListener(new MouseAdapter() {
-            final Color transparent = new Color(0,0,0,0);
-            final Color black = Color.BLACK;
-
             @Override
             public void mouseClicked(MouseEvent e) {
-
-
                 if (maze.getMode() != 0) return;
-//                 Change wall color to transparent
-                if (cell.getWallStatus(position)) {
-                    newWall.setOpaque(false);
-                    newWall.setBackground(transparent);
-                    switchAdjacentColor(position, transparent, false);
 
-                }
-                // Change wall color to black
-                else {
-                    newWall.setOpaque(true);
-                    newWall.setBackground(black);
-                    switchAdjacentColor(position,black, true);
-                }
-
-
+                System.out.println("clicked");
                 cell.setWallStatus(position, !cell.getWallStatus(position));
-                System.out.println(cell.getWallStatus(position));
-                System.out.println(String.format("pos: (%d, %d)", cell.getPos().get(0), cell.getPos().get(1)));
+                boolean wallStatus = cell.getWallStatus(position);
+
+                newWall.setOpaque(wallStatus);
+                newWall.setBackground((wallStatus) ? black : transparent);
+                switchAdjacentColor(position, (wallStatus) ? black : transparent, wallStatus);
+
+                maze.updateDeadEnd();
+                maze.getWallsEvent().setState(state);
 
             }
         });
@@ -172,24 +160,34 @@ public class CellComponent {
     }
 
 
-
-
     private void switchAdjacentColor(String position, Color color, boolean opacity){
+        Cell adjCell;
+        String pos;
         JPanel wall = new JPanel();
         try {
             switch (position) {
-                case "top":
-                    wall = maze.getCell(cell.getPos().get(0) - 1, cell.getPos().get(1)).getWallPanel("bottom");
-                    break;
-                case "bottom":
-                    wall = maze.getCell(cell.getPos().get(0) + 1, cell.getPos().get(1)).getWallPanel("top");
-                    break;
-                case "left":
-                    wall = maze.getCell(cell.getPos().get(0), cell.getPos().get(1) - 1).getWallPanel("right");
-                    break;
-                case "right":
-                    wall = maze.getCell(cell.getPos().get(0), cell.getPos().get(1) + 1).getWallPanel("left");
-                    break;
+                case "top" -> {
+                    adjCell = maze.getCell(cell.getPos().get(0) - 1, cell.getPos().get(1));
+                    pos = "bottom";
+                    wall = adjCell.getWallPanel(pos);
+                    adjCell.setWallStatus(pos, cell.getWallStatus(position));
+                }
+                case "bottom" -> {
+                    adjCell = maze.getCell(cell.getPos().get(0) + 1, cell.getPos().get(1));
+                    pos = "top";
+                    wall = adjCell.getWallPanel(pos);
+                    adjCell.setWallStatus(pos, cell.getWallStatus(position));
+                } case "left" -> {
+                    adjCell = maze.getCell(cell.getPos().get(0), cell.getPos().get(1) - 1);
+                    pos = "right";
+                    wall = adjCell.getWallPanel(pos);
+                    adjCell.setWallStatus(pos, cell.getWallStatus(position));
+                } case "right" -> {
+                    adjCell = maze.getCell(cell.getPos().get(0), cell.getPos().get(1) + 1);
+                    pos = "left";
+                    wall = adjCell.getWallPanel(pos);
+                    adjCell.setWallStatus(pos, cell.getWallStatus(position));
+                }
             }
         } catch (NullPointerException error) {
             System.out.println("wall not found");
@@ -197,7 +195,6 @@ public class CellComponent {
 
         wall.setOpaque(opacity);
         wall.setBackground(color);
-//        wall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private int wallThickness(JPanel panel, String position) {
@@ -243,7 +240,7 @@ public class CellComponent {
         try {
             icon.setIcon(null);
         }
-        catch (NullPointerException e) {}
+        catch (NullPointerException ignored) {}
     }
 
 }

@@ -1,5 +1,6 @@
 package ui;
 
+import events.CellListener;
 import maze.Maze;
 import maze.MazeRandomCreator;
 import maze.datamanager.MazeDataHandler;
@@ -160,7 +161,7 @@ public class EditorUI extends JFrame {
         JLabel infoTitle = new JLabel("<html><h1>Maze Information</h1></html>");
         JLabel gridSize = new JLabel(String.format("<html><strong>Maze Size:</strong> [ X: %d, Y: %d ]</html>", maze.getSize()[0], maze.getSize()[1]));
         JLabel cellExplore = new JLabel(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", 50));
-        JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", 4));
+        JLabel deadendNum = new JLabel(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", (maze.getSize()[0] * maze.getSize()[1])));
         JLabel isSolvable = new JLabel(String.format("<html><strong>Solvable:</strong> %b</html>", true));
 
         // Options
@@ -184,13 +185,15 @@ public class EditorUI extends JFrame {
         pickMode.setMaximumSize(new Dimension(pickMode.getMaximumSize().width, 25));
 
         // Image
-        JPanel imagePanel = new JPanel();
-
         JButton imagePicker = new JButton("Choose Image...");
         imagePicker.setEnabled(false);
 
         JLabel imagePath = new JLabel("File");
         imagePath.setMaximumSize(new Dimension(150, imagePath.getPreferredSize().height));
+
+        maze.getWallsEvent().addCellListener(() -> {
+            deadendNum.setText(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", maze.getDeadEnds()));
+        });
 
 
         pickMode.addActionListener(new ActionListener() {
@@ -310,7 +313,6 @@ public class EditorUI extends JFrame {
 
         return sectionPanel;
     }
-
 
 
 }

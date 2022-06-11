@@ -1,5 +1,6 @@
 package maze;
 
+import events.WallsEvent;
 import ui.CellComponent;
 
 import javax.swing.*;
@@ -8,6 +9,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Responsible for Creating and storing various maze details such as size, MazeID, AuthorName etc
@@ -25,9 +29,13 @@ public class Maze {
     // Start and End points of the maze
     private List<Integer> startPos, endPos;
 
+    private int deadEnds;
+
 
     // Editor mode
     private int editMode;
+
+    private WallsEvent wallsEvent;
 
     // GUI elements
     private HashMap<List<Integer>, Cell> cells;
@@ -49,6 +57,7 @@ public class Maze {
         this.cells = new HashMap<>();
         setStartPos(0, 0);
         setEndPos(size[0] - 1, size[1] - 1);
+        wallsEvent = new WallsEvent(true);
 
         int rowSize = size[0], colSize = size[1];
         for (int row = 0; row < rowSize; row++){
@@ -61,7 +70,6 @@ public class Maze {
             new MazeRandomCreator(this);
         }
 
-//        createMazePanel();
     }
 
     /**
@@ -234,6 +242,19 @@ public class Maze {
     }
 
     public List<Integer> getEndPos() { return this.endPos; }
+
+    public void updateDeadEnd() {
+        List<Integer> deadEndMap = cells.values().stream().map((Cell::getWallsActive)).collect(Collectors.toList());
+        deadEnds = deadEndMap.stream().reduce(0, (subtotal, element) -> subtotal + ((element > 2) ? 1 : 0));
+    }
+
+    public int getDeadEnds() {
+        return this.deadEnds;
+    }
+
+    public WallsEvent getWallsEvent() {
+        return wallsEvent;
+    }
 
 
 
