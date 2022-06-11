@@ -4,7 +4,7 @@ import javax.swing.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
+/**
 JUnit Testing for the basic functionality of Cell class
  */
 class CellTest {
