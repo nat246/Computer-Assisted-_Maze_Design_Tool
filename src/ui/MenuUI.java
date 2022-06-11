@@ -379,7 +379,8 @@ public class MenuUI extends JFrame {
                     int row = (int) horizontalSpinner.getValue();
                     int col = (int) verticalSpinner.getValue();
 
-                    Maze newMaze = new Maze(new int[] {row, col}, user.getName(), true);
+
+                    Maze newMaze = new Maze(new int[] {row, col}, user.getName(), randomRadio.isSelected());
                     EditorUI editor = new EditorUI(user, newMaze, data);
                     setVisible(false);
                     editor.setVisible(true);
