@@ -17,6 +17,9 @@ public class Cell extends Grid {
     private int cellType; // 0 is normal cell, 1 is start point, 2 is end point
     private int wallsActive;
     private CellComponent cellPanel;
+
+    private boolean isPartOfTrail;
+
     /**
      *
      * @param x dimension 1 user input inherited from Grid
@@ -90,6 +93,14 @@ public class Cell extends Grid {
             if (wallStatus) wallsActive++;
         }
         return wallsActive;
+    }
+
+    public boolean isPartOfTrail() {
+        return isPartOfTrail;
+    }
+
+    public void setPartOfTrail(boolean partOfTrail) {
+        isPartOfTrail = partOfTrail;
     }
 
     /**

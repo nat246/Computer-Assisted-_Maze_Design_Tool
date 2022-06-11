@@ -7,9 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class CellComponent {
 
@@ -82,8 +79,7 @@ public class CellComponent {
         }
     }
 
-
-    public JPanel cellWall(String wallPosition, boolean state) {
+    private JPanel cellWall(String wallPosition, boolean state) {
         // Color of the wall
         JPanel wall = wallColor(wallPosition, state);
 
@@ -118,7 +114,6 @@ public class CellComponent {
         maze.updateDeadEnd();
         return wall;
     }
-
 
     /**
      * Creates a singular wall
@@ -158,7 +153,6 @@ public class CellComponent {
 
         return newWall;
     }
-
 
     private void switchAdjacentColor(String position, Color color, boolean opacity){
         Cell adjCell;

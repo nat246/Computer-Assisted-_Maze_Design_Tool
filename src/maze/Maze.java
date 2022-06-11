@@ -39,7 +39,7 @@ public class Maze {
 
     // GUI elements
     private HashMap<List<Integer>, Cell> cells;
-    private JPanel mazePanel = new JPanel();
+
     private BufferedImage image;
 
     public Maze() {
@@ -59,6 +59,14 @@ public class Maze {
         setEndPos(size[0] - 1, size[1] - 1);
         wallsEvent = new WallsEvent(true);
 
+        initCells();
+
+        if (isRandomGen){
+            new MazeRandomCreator(this);
+        }
+    }
+
+    public void initCells(){
         int rowSize = size[0], colSize = size[1];
         for (int row = 0; row < rowSize; row++){
             for (int col = 0; col < colSize; col++) {
@@ -66,10 +74,6 @@ public class Maze {
                 addCell(cell);
             }
         }
-        if (isRandomGen){
-            new MazeRandomCreator(this);
-        }
-
     }
 
     /**
@@ -211,16 +215,8 @@ public class Maze {
      * Adds a cell
      * @param cell adds a new cell for the maze
      */
-
     public void addCell(Cell cell) {
         this.cells.put(cell.getPos(), cell);
-    }
-
-//    public Cell getAdjacentCell(String pos){
-//
-//    }
-    public JPanel getMazePanel() {
-        return mazePanel;
     }
 
     public void setImage(BufferedImage image) { this.image = image; }

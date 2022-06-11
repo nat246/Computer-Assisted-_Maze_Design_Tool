@@ -8,11 +8,16 @@ import java.util.*;
  */
 public class MazeRandomCreator{
     private final List<Cell> visitedCells = new ArrayList<>();
-    private final Stack<Cell> trailStack = new Stack<Cell>();
+    private final Stack<Cell> trailStack = new Stack<>();
     private final Maze maze;
     private final int rowSize, colSize;
     private Cell cellExplorer;
 
+    public MazeRandomCreator() {
+        this.maze = new Maze();
+        this.rowSize = 1;
+        this.colSize = 1;
+    }
 
     public MazeRandomCreator(Maze maze){
         this.maze = maze;
@@ -20,7 +25,22 @@ public class MazeRandomCreator{
         rowSize = maze.getSize()[0];
         colSize = maze.getSize()[1];
 
-        cellExplorer = maze.getCell(0,0);
+        // initialise start and end cells
+        int randStartRow = new Random().nextInt(rowSize);
+        int randEndRow = new Random().nextInt(rowSize);
+        int randStartCol = new Random().nextInt(colSize);
+        int randEndCol = new Random().nextInt(colSize);
+        while (randStartCol == randEndCol && randStartRow == randEndRow){
+            if (rowSize == 1 && colSize == 1){
+                break;
+            }
+            randEndRow = new Random().nextInt(rowSize);
+            randStartCol = new Random().nextInt(colSize);
+        }
+        cellExplorer = maze.getCell(randStartRow,randStartCol);
+        maze.setStartPos(randStartRow, randStartCol);
+        maze.setEndPos(randEndRow, randEndCol);
+
         visitedCells.add(cellExplorer);
         trailStack.add(cellExplorer);
 
@@ -39,9 +59,9 @@ public class MazeRandomCreator{
                 System.out.println(availableN + " random Index:" + randNeighbour + " list size:" + availableN.size());
 
                 removeWall(availableN.get(randNeighbour).get(1).toString());
-                visitedCells.add((Cell) availableN.get(randNeighbour).get(0));
-                trailStack.add((Cell) availableN.get(randNeighbour).get(0));
                 cellExplorer = (Cell) availableN.get(randNeighbour).get(0);
+                visitedCells.add(cellExplorer);
+                trailStack.add(cellExplorer);
             } else{
                 trailStack.pop();
                 cellExplorer = trailStack.lastElement();
@@ -83,7 +103,7 @@ public class MazeRandomCreator{
         }
 
         if (leftN == null){
-            System.out.println("left is nuill");
+            System.out.println("left is null");
             leftNotVisited = false;
         } else {
             leftNotVisited = !visitedCells.contains(leftN);
@@ -114,7 +134,6 @@ public class MazeRandomCreator{
         return neighbours;
     }
     /**
-     * TODO change method name to removeWallPanel/placeWallPanel?
      * @param position Takes in the wall position
      */
     private void removeWall(String position){

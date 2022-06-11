@@ -3,6 +3,7 @@ package ui;
 import events.CellListener;
 import maze.Maze;
 import maze.MazeRandomCreator;
+import maze.MazeSolver;
 import maze.datamanager.MazeDataHandler;
 import user.User;
 import maze.Cell;
@@ -22,6 +23,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 /**
  * Class responsible for Editing the UI frames and sections
@@ -286,9 +288,6 @@ public class EditorUI extends JFrame {
         mazePanel.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
         mazePanel.setLayout(new GridLayout(mazeRowLength, mazeColLength));
 
-
-
-
         int rowIndex = 0, colIndex = 0;
         int totalNumCells = mazeRowLength * mazeColLength;
         // Creates the number of cells for the size of the maze
@@ -305,11 +304,18 @@ public class EditorUI extends JFrame {
         }
 
         // Centre the maze
-
         sectionInner.add(mazePanel);
         sectionPanel.add(Box.createVerticalGlue());
         sectionPanel.add(sectionInner, BorderLayout.CENTER);
         sectionPanel.add(Box.createVerticalGlue());
+
+        System.out.println("INIT SOLVER SECTION ==============================================");
+        try{
+            new MazeSolver(maze).colorPath();
+        } catch (NoSuchElementException err) {
+            System.out.println("error");
+        }
+
 
         return sectionPanel;
     }
