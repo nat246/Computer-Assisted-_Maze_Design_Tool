@@ -30,7 +30,9 @@ public class CellComponent {
      * @return cellPanel dimensions for creating a new cell
      */
     public JPanel newCellPanel() {
+        cell.setCellPanel(this);
         cellPanel.setLayout(null);
+        icon = new JLabel();
         defaultColour = cellPanel.getBackground();
 
         cellPanel.addMouseListener(new MouseAdapter() {
@@ -39,8 +41,9 @@ public class CellComponent {
                 switch (maze.getMode()) {
                     case 1 -> createImage();
                     case 2 -> removeImage();
-                    default -> {
-                    }
+                    case 3 -> setType(1);
+                    case 4 -> setType(2);
+                    default -> {}
                 }
             }
         });
@@ -51,17 +54,33 @@ public class CellComponent {
              cellPanel.add(cellWall("bottom", cell.getWallStatus("bottom")));
              cellPanel.add(cellWall("left", cell.getWallStatus("left")));
              cellPanel.add(cellWall("right", cell.getWallStatus("right")));
+
+            if (maze.getStartPos().equals(cell.getPos())) { setType(1); }
+            if (maze.getEndPos().equals(cell.getPos())) { setType(2); }
         });
 
         return cellPanel;
     }
 
-    public void setPathBackground(boolean path) {
-        if (path) {
-            cellPanel.setBackground(Color.ORANGE);
-            return;
+    public void setType(int typeID) {
+        switch (typeID) {
+            case 1: // Start Point
+                maze.getCell(maze.getStartPos().get(0), maze.getStartPos().get(1)).getCellPanel().setType(0);
+                maze.setStartPos(cell.getPos().get(0), cell.getPos().get(1));
+                cellPanel.setBackground(Color.GREEN);
+                break;
+            case 2: // End Point
+                maze.getCell(maze.getEndPos().get(0), maze.getEndPos().get(1)).getCellPanel().setType(0);
+                maze.setEndPos(cell.getPos().get(0), cell.getPos().get(1));
+                cellPanel.setBackground(Color.RED);
+                break;
+            case 3: // Path
+                cellPanel.setBackground(Color.PINK);
+                break;
+            default: // Default
+                cellPanel.setBackground(defaultColour);
+                break;
         }
-        cellPanel.setBackground(defaultColour);
     }
 
 
@@ -204,7 +223,6 @@ public class CellComponent {
     }
 
     private void createImage() {
-        icon = new JLabel();
         cellPanel.add(icon);
 
         SwingUtilities.invokeLater(() -> {

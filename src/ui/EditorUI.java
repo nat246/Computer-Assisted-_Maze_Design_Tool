@@ -180,7 +180,7 @@ public class EditorUI extends JFrame {
         modeTitle.setFont(new Font("SanSerif", Font.PLAIN, 20));
 
 
-        JComboBox pickMode = new JComboBox<>(new String[] {"Wall Edit", "Place Image", "Remove Image"});
+        JComboBox pickMode = new JComboBox<>(new String[] {"Wall Edit", "Place Image", "Remove Image", "Set Start", "Set End"});
         pickMode.setMaximumSize(new Dimension(pickMode.getMaximumSize().width, 25));
 
         // Image
@@ -199,15 +199,13 @@ public class EditorUI extends JFrame {
                 int selected = pickMode.getSelectedIndex();
                 maze.setMode(selected);
 
-                switch (selected) {
-                    case 0:
-                    case 2:
-                        imagePicker.setEnabled(false);
-                        break;
-                    case 1:
-                        imagePicker.setEnabled(true);
-                        break;
+                if (selected == 1) {
+                    imagePicker.setEnabled(true);
+                    return;
                 }
+
+                imagePicker.setEnabled(false);
+
             }
         });
 
