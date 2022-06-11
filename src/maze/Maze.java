@@ -57,7 +57,7 @@ public class Maze {
         this.cells = new HashMap<>();
         setStartPos(0, 0);
         setEndPos(size[0] - 1, size[1] - 1);
-        wallsEvent = new WallsEvent(true);
+        wallsEvent = new WallsEvent();
 
         initCells();
 

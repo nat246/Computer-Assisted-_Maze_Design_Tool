@@ -302,7 +302,7 @@ public class EditorUI extends JFrame {
         // Trail
         updateTrail();
         maze.updateDeadEnd();
-        maze.getWallsEvent().setState(true);
+        maze.getWallsEvent().update();
         return sectionPanel;
     }
 

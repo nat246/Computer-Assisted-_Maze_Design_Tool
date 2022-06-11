@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WallsEvent {
-    private boolean state;
     private List<CellListener> cellListener;
 
-    public WallsEvent(boolean state) {
-        this.state = state;
+    public WallsEvent() {
         this.cellListener = new ArrayList<CellListener>();
     }
 
@@ -16,8 +14,7 @@ public class WallsEvent {
         this.cellListener.add(listener);
     }
 
-    public void setState(boolean state) {
-        this.state = state;
+    public void update() {
         cellListener.forEach(CellListener::wallChanged);
     }
 }

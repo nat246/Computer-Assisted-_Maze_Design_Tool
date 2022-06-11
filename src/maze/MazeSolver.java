@@ -126,4 +126,5 @@ public class MazeSolver{
     public Stack<Cell> getTrailStack() {
         return trailStack;
     }
+
 }

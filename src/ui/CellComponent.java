@@ -36,6 +36,7 @@ public class CellComponent {
         cellPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                maze.getWallsEvent().update();
                 switch (maze.getMode()) {
                     case 1 -> createImage();
                     case 2 -> removeImage();
@@ -146,7 +147,7 @@ public class CellComponent {
                 switchAdjacentColor(position, (wallStatus) ? black : transparent, wallStatus);
 
                 maze.updateDeadEnd();
-                maze.getWallsEvent().setState(state);
+                maze.getWallsEvent().update();
 
             }
         });
