@@ -1,8 +1,6 @@
 package ui;
 
-import events.CellListener;
 import maze.Maze;
-import maze.MazeRandomCreator;
 import maze.MazeSolver;
 import maze.datamanager.MazeDataHandler;
 import user.User;
@@ -10,19 +8,12 @@ import maze.Cell;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
@@ -33,15 +24,9 @@ import java.util.Stack;
 public class EditorUI extends JFrame {
     private Maze maze;
     private User user; // Change to User Class after Database and User Class has been created
-
     MazeDataHandler data;
-
     private int mazeRowLength, mazeColLength;
-
-    private Stack<Cell> trailStack = new Stack<>();
-
-    JPanel outer;
-
+    private Stack<Cell> cellTrailHolder = new Stack<>();
 
     /**
      *
@@ -314,23 +299,21 @@ public class EditorUI extends JFrame {
         sectionPanel.add(sectionInner, BorderLayout.CENTER);
         sectionPanel.add(Box.createVerticalGlue());
 
-        System.out.println("INIT SOLVER SECTION ==============================================");
+        // Trail
         updateTrail();
-
         maze.updateDeadEnd();
-
         return sectionPanel;
     }
 
     private void updateTrail(){
         try{
             for (Cell cell :
-                    trailStack) {
+                    cellTrailHolder) {
                 cell.getCellPanel().setType(0);
             }
             MazeSolver mazeSolver = new MazeSolver(maze);
             mazeSolver.colorPath();
-            trailStack = mazeSolver.getTrailStack();
+            cellTrailHolder = mazeSolver.getTrailStack();
         } catch (NoSuchElementException err) {
             System.out.println("error");
         }

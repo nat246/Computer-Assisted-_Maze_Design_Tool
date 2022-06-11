@@ -56,7 +56,6 @@ public class MazeRandomCreator{
 
             if (availableN.size() != 0){
                 int randNeighbour = new Random().nextInt(availableN.size());
-                System.out.println(availableN + " random Index:" + randNeighbour + " list size:" + availableN.size());
 
                 removeWall(availableN.get(randNeighbour).get(1).toString());
                 cellExplorer = (Cell) availableN.get(randNeighbour).get(0);
@@ -66,13 +65,7 @@ public class MazeRandomCreator{
                 trailStack.pop();
                 cellExplorer = trailStack.lastElement();
             }
-
-            System.out.println("row:"+explorerRow + " col: " + explorerCol);
-            System.out.println("trail:"+trailStack);
-
         }
-
-        System.out.println(visitedCells);
     }
 
 
@@ -88,14 +81,12 @@ public class MazeRandomCreator{
 
 
         if (topN == null){
-            System.out.println("Top is null");
             topNotVisited = false;
         } else {
             topNotVisited = !visitedCells.contains(topN);
         }
 
         if (bottomN == null){
-            System.out.println("bottom is null");
             bottomNotVisited = false;
 
         } else {
@@ -103,14 +94,12 @@ public class MazeRandomCreator{
         }
 
         if (leftN == null){
-            System.out.println("left is null");
             leftNotVisited = false;
         } else {
             leftNotVisited = !visitedCells.contains(leftN);
         }
 
         if (rightN == null){
-            System.out.println("right is null");
             rightNotVisited = false;
         } else {
             rightNotVisited = !visitedCells.contains(rightN);

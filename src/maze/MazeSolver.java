@@ -41,7 +41,6 @@ public class MazeSolver{
 
             if (availableN.size() != 0){
                 int randNeighbour = new Random().nextInt(availableN.size());
-                System.out.println(availableN.get(randNeighbour).get(1));
 
                 cellExplorer = (Cell) availableN.get(randNeighbour).get(0);
                 visitedCells.add(cellExplorer);
@@ -52,8 +51,6 @@ public class MazeSolver{
             }
         }
 
-        System.out.println("Success");
-        System.out.println(trailStack.size());
     }
 
     private List<List<Object>> availableNeighbours(int explorerRow, int explorerCol){
@@ -73,28 +70,24 @@ public class MazeSolver{
 
 
         if (topN == null){
-            System.out.println("Top is null");
             topNotVisited = false;
         } else {
             topNotVisited = !visitedCells.contains(topN);
         }
 
         if (bottomN == null){
-            System.out.println("bottom is null");
             bottomNotVisited = false;
         } else {
             bottomNotVisited = !visitedCells.contains(bottomN);
         }
 
         if (leftN == null){
-            System.out.println("left is null");
             leftNotVisited = false;
         } else {
             leftNotVisited = !visitedCells.contains(leftN);
         }
 
         if (rightN == null){
-            System.out.println("right is null");
             rightNotVisited = false;
         } else {
             rightNotVisited = !visitedCells.contains(rightN);

@@ -94,14 +94,6 @@ public class Cell extends Grid {
         return wallsActive;
     }
 
-    public boolean isPartOfTrail() {
-        return isPartOfTrail;
-    }
-
-    public void setPartOfTrail(boolean partOfTrail) {
-        isPartOfTrail = partOfTrail;
-    }
-
     /**
      * Responsible for handling walls on top,bottom,left and right side of the mazes
      */
