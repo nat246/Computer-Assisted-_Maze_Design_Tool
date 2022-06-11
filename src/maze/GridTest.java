@@ -1,11 +1,12 @@
 package maze;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import javax.swing.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  JUnit Testing for the basic functionality of Grid class
