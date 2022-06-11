@@ -12,11 +12,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.io.Serializable;
 
 /**
  * Responsible for Creating and storing various maze details such as size, MazeID, AuthorName etc
  */
-public class Maze {
+public class Maze implements Serializable{
 
 
     private int[] size;
@@ -251,7 +252,6 @@ public class Maze {
     public WallsEvent getWallsEvent() {
         return wallsEvent;
     }
-
 
 
 }

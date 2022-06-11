@@ -16,12 +16,13 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.NoSuchElementException;
 import java.util.Stack;
+import java.io.Serializable;
 
 /**
  * Class responsible for Editing the UI frames and sections
  */ 
 
-public class EditorUI extends JFrame {
+public class EditorUI extends JFrame implements Serializable{
     private Maze maze;
     private User user; // Change to User Class after Database and User Class has been created
     MazeDataHandler data;
@@ -95,6 +96,7 @@ public class EditorUI extends JFrame {
         bar.add(editMenu);
         setJMenuBar(bar);
 
+        /**
         //==Create menu item listener
         save.addActionListener(new ActionListener() {
             @Override
@@ -102,23 +104,21 @@ public class EditorUI extends JFrame {
                 Maze m = new Maze();
                 m.setMazeID(m.getMazeID());
                 if (m.getMazeName() == "NULL") {
-                    String mazename = JOptionPane.showInputDialog(saveAs, "Name:", null);
-                    m.setMazeName(mazename);
+                    m.setMazeName(JOptionPane.showInputDialog(saveAs, "Name:", null));
                 }
                 data.saveMaze(m);
 
             }
         });
+         */
 
         //==Create menu item listener
         saveAs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Maze m = new Maze();
-                String mazename = JOptionPane.showInputDialog(saveAs, "Name:", null);
-                m.setMazeName(mazename);
-                m.setAuthorName(user.getName());
-                data.saveAsMaze(m);
+                maze.setMazeName(JOptionPane.showInputDialog(saveAs, "Name:", null));
+                maze.setAuthorName(user.getName());
+                data.saveAsMaze(maze);
             }
         });
     }
@@ -198,9 +198,7 @@ public class EditorUI extends JFrame {
                     imagePicker.setEnabled(true);
                     return;
                 }
-
                 imagePicker.setEnabled(false);
-
             }
         });
 

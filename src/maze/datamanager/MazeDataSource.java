@@ -87,9 +87,14 @@ public interface MazeDataSource {
 
     /**
      * Gets the date and time the laze was last edited by a user
-     * @param m gets date and time last edited
+     * @param id gets date and time last edited
      */
-    void getMazeLastEdited(Maze m);
+    void getMazeLastEdited(Integer id);
+
+    /**
+     * Gets the current date and time
+     */
+    public void getTime();
 
     /**
      * Deletes the maze from the database
@@ -99,16 +104,16 @@ public interface MazeDataSource {
 
     /**
      * Gets and returns the maze from the database
-     * @param mazeName Name of the maze to get
+     * @param id Name of the maze to get
      * @return Maze
      */
-    Maze getMaze(String mazeName);
+    Maze getMaze(Integer id);
 
     /**
      *
      * @return set of mazes
      */
-    Set<String> mazeSet();
+    Set<Integer> mazeSet();
 
     /**
      * Finalises any resources used by the data source and ensures data is persisted

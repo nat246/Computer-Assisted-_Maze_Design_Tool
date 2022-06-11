@@ -4,19 +4,19 @@ import maze.Maze;
 import user.User;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.HashSet;
+import java.util.Set;
+import java.io.Serializable;
 
 /**
  * Creates a new maze
  */
-public class MazeDataHandler {
+public class MazeDataHandler implements Serializable{
 
     DefaultListModel userListModel;
     DefaultListModel mazeListModel;
@@ -31,7 +31,7 @@ public class MazeDataHandler {
             userListModel.addElement(user);
         }
 
-        for(String maze: mazeData.mazeSet()) {
+        for(Integer maze: mazeData.mazeSet()) {
             mazeListModel.addElement(maze);
         }
     }
@@ -72,11 +72,11 @@ public class MazeDataHandler {
     }
     /**
      * Gets the maze from the database
-     * @param m
+     * @param id
      * @return maze from specific ID
      */
-    public Maze getMaze(Maze m) {
-        return mazeData.getMaze(m.getMazeName());
+    public Maze getMaze(Integer id) {
+        return mazeData.getMaze(id);
     }
 
     /**
@@ -85,6 +85,7 @@ public class MazeDataHandler {
      */
     public void saveMaze(Maze m) {
         if (!mazeListModel.contains(m.getMazeName())) {
+            mazeListModel.addElement(m.getMazeID());
             mazeData.saveMaze(m);
         }
         else {
@@ -106,7 +107,35 @@ public class MazeDataHandler {
         }
     }
 
+    public int getMazeCount() {
+        return mazeListModel.getSize();
+    }
+
+    public void getTime() {
+        mazeData.getTime();
+    }
+
     public void persist() {
         mazeData.close();
+    }
+
+    public byte[] mazeSerialisation(Maze m) {
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        try (ObjectOutputStream os = new ObjectOutputStream(bs)) {
+            os.writeObject(m);
+            return bs.toByteArray();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        throw new RuntimeException();
+    }
+
+    public Object mazeDeserialisation(byte[] bytes) {
+        try {
+            return new ObjectInputStream(
+                    new ByteArrayInputStream(bytes)).readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new IllegalArgumentException(ex);
+        }
     }
 }

@@ -8,22 +8,21 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
+import java.io.Serializable;
 
 /**.
  * UI class responsible for creating the menu options
  */
-public class MenuUI extends JFrame {
+public class MenuUI extends JFrame implements Serializable{
     private User user;
     private CardLayout card;
     private JPanel menuPanel;
-
     MazeDataHandler data;
 
     /**
@@ -37,6 +36,7 @@ public class MenuUI extends JFrame {
         super("Maze Maker");
         this.data = data;
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        addClosingListener(new ClosingListener());
         initGUI();
         MenuComponents();
     }
@@ -392,10 +392,7 @@ public class MenuUI extends JFrame {
                         }
                     });
                 });
-
             }
-
-            
         });
 
         // Add to Panel
@@ -444,19 +441,26 @@ public class MenuUI extends JFrame {
         
         // Button Panel
         JPanel buttonPanel = new JPanel();
-        
 
         // Create Table
-        String[] columnNames = {"Maze Title", "Size", "Author", "Date Created", "Last Modified"};
+        String[] columnNames = {"Maze Title", "Author", "Date Created", "Last Modified"};
 
         // Table data
-        Object[][] data = {
-            // Currently test data
-            {"Maze1", "50x50", "Name1", "2022-07-07", "2022-07-07"},
-            {"Maze2", "55x55", "Name2", "2022-07-08", "2022-07-13"},
-        };
+        String[][] mData= new String[data.getMazeCount()][4];
 
-        JTable mazeTable = new JTable(data, columnNames);
+        for (int i = 0; i < data.getMazeCount(); i++) {
+            Maze mz = data.getMaze(i + 1);
+            System.out.println(mz.getMazeName());
+            System.out.println(mz.getAuthorName());
+            System.out.println(mz.getDateCreated());
+            System.out.println(mz.getLastEdited());
+            mData[i][0] = mz.getMazeName();
+            mData[i][1] = mz.getAuthorName();
+            mData[i][2] = mz.getDateCreated();
+            mData[i][3] = mz.getLastEdited();
+        }
+
+        JTable mazeTable = new JTable(mData, columnNames);
         mazeTable.setPreferredScrollableViewportSize(new Dimension(500, 210));
         mazeTable.setFillsViewportHeight(true);
         mazeTable.setColumnSelectionAllowed(false);
@@ -477,6 +481,9 @@ public class MenuUI extends JFrame {
 
         // Open Button
         JButton openButton = new JButton("Open Maze");
+
+        // Delete Button
+        JButton deleteButton = new JButton("Delete Maze");
 
         // Action Listeners
 
@@ -499,5 +506,14 @@ public class MenuUI extends JFrame {
         openPanel.add(buttonPanel);
 
         return openPanel;
+    }
+
+    private void addClosingListener(WindowListener listener) {addWindowListener(listener);}
+
+    private class ClosingListener extends WindowAdapter {
+        public void windowClosing(WindowEvent e) {
+            data.persist();
+            System.exit(0);
+        }
     }
 }

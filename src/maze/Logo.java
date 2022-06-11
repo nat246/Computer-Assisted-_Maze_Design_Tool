@@ -1,9 +1,9 @@
 package maze;
-
+import java.io.Serializable;
 /**
  * Class responsible for setting up a logo in a maze
  */
-public class Logo extends ImageStamp{
+public class Logo extends ImageStamp implements Serializable{
 
     private int dimensions;
 

@@ -2,12 +2,13 @@ package maze;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Abstract class used for creating cells and walls of the maze
  */
 
-public abstract class Grid {
+public abstract class Grid implements Serializable{
     private int x, y;
     private int size;
 

@@ -7,11 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JPanel;
+import java.io.Serializable;
 
 /**
  * Child class inheriting Grid mainly responsible for creating the walls and cells of a maze
  */
-public class Cell extends Grid {
+public class Cell extends Grid implements Serializable{
     private HashMap<String, Boolean> walls;
     private HashMap<String, JPanel> wallUI;
     private int cellType; // 0 is normal cell, 1 is start point, 2 is end point

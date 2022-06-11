@@ -2,8 +2,9 @@ package events;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class WallsEvent {
+public class WallsEvent implements Serializable{
     private final List<CellListener> cellListener;
 
     public WallsEvent() {
