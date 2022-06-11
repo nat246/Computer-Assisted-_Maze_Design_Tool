@@ -1,74 +1,131 @@
 package maze;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * used for creating a random generated maze
  * Class is purely functions, no objects
  */
 public class MazeRandomCreator{
-    private final List<List<Object>> visitedCells = new ArrayList<>();
-    private final ArrayList<ArrayList<Integer>> pathStack = new ArrayList<ArrayList<Integer>>();
+    private final List<Cell> visitedCells = new ArrayList<>();
+    private final Stack<Cell> trailStack = new Stack<Cell>();
     private final Maze maze;
     private final int rowSize, colSize;
+    private Cell cellExplorer;
+
+
     public MazeRandomCreator(Maze maze){
         this.maze = maze;
+
         rowSize = maze.getSize()[0];
         colSize = maze.getSize()[1];
+
+        cellExplorer = maze.getCell(0,0);
+        visitedCells.add(cellExplorer);
+        trailStack.add(cellExplorer);
+
         initRandomMaze();
     }
 
     private void initRandomMaze(){
+        while (visitedCells.size() != (rowSize*colSize)){
+            int explorerRow = cellExplorer.getPos().get(0);
+            int explorerCol = cellExplorer.getPos().get(1);
 
-        for (int i = 0; i < 100; i++){
-            int row = new Random().nextInt(rowSize);
-            int col = new Random().nextInt(colSize);
+            List<List<Object>> availableN = availableNeighbours(explorerRow, explorerCol);
 
-            String wallSelection;
-            int randSelection = new Random().nextInt(4);
-            switch (randSelection) {
-                case 1 -> wallSelection = "top";
-                case 2 -> wallSelection = "bottom";
-                case 3 -> wallSelection = "left";
-                default -> wallSelection = "right";
+            if (availableN.size() != 0){
+                int randNeighbour = new Random().nextInt(availableN.size());
+                System.out.println(availableN + " random Index:" + randNeighbour + " list size:" + availableN.size());
+
+                removeWall(availableN.get(randNeighbour).get(1).toString());
+                visitedCells.add((Cell) availableN.get(randNeighbour).get(0));
+                trailStack.add((Cell) availableN.get(randNeighbour).get(0));
+                cellExplorer = (Cell) availableN.get(randNeighbour).get(0);
+            } else{
+                trailStack.pop();
+                cellExplorer = trailStack.lastElement();
             }
 
-            ArrayList<Object> contain = new ArrayList<>();
-            contain.add(row);
-            contain.add(col);
-            contain.add(wallSelection);
-            if (visitedCells.contains(contain)){
-                System.out.println("Already visited");
-                continue;
-            } else {
-                visitedCells.add(contain);
-            }
+            System.out.println("row:"+explorerRow + " col: " + explorerCol);
+            System.out.println("trail:"+trailStack);
 
-
-            switchWallPanel(wallSelection, row, col);
         }
+
         System.out.println(visitedCells);
     }
 
+
+    private List<List<Object>> availableNeighbours(int explorerRow, int explorerCol){
+        List<List<Object>> neighbours = new ArrayList<>();
+
+        boolean topNotVisited, bottomNotVisited, leftNotVisited, rightNotVisited;
+
+        Cell topN = maze.getCell(explorerRow-1, explorerCol);
+        Cell bottomN = maze.getCell(explorerRow+1, explorerCol);
+        Cell leftN = maze.getCell(explorerRow, explorerCol-1);
+        Cell rightN = maze.getCell(explorerRow, explorerCol+1);
+
+
+        if (topN == null){
+            System.out.println("Top is null");
+            topNotVisited = false;
+        } else {
+            topNotVisited = !visitedCells.contains(topN);
+        }
+
+        if (bottomN == null){
+            System.out.println("bottom is null");
+            bottomNotVisited = false;
+
+        } else {
+            bottomNotVisited = !visitedCells.contains(bottomN);
+        }
+
+        if (leftN == null){
+            System.out.println("left is nuill");
+            leftNotVisited = false;
+        } else {
+            leftNotVisited = !visitedCells.contains(leftN);
+        }
+
+        if (rightN == null){
+            System.out.println("right is null");
+            rightNotVisited = false;
+        } else {
+            rightNotVisited = !visitedCells.contains(rightN);
+        }
+
+
+        if (topNotVisited){
+            neighbours.add(new ArrayList<>(List.of(topN, "top")));
+        }
+        if (bottomNotVisited){
+            neighbours.add(new ArrayList<>(List.of(bottomN, "bottom")));
+        }
+        if (leftNotVisited){
+            neighbours.add(new ArrayList<>(List.of(leftN, "left")));
+        }
+        if (rightNotVisited){
+            neighbours.add(new ArrayList<>(List.of(rightN, "right")));
+
+        }
+
+        return neighbours;
+    }
     /**
      * TODO change method name to removeWallPanel/placeWallPanel?
-     * @param position Takes in the wall possition
-     * @param row Takes in the row index
-     * @param col Takes in the column index
+     * @param position Takes in the wall position
      */
-    private void switchWallPanel(String position, int row, int col){
-        Cell cell = maze.getCell(row,col);
-        cell.setWallStatus(position, false);
-
-        switchAdjacentWallPanel(cell,position);
+    private void removeWall(String position){
+        cellExplorer.setWallStatus(position, false);
+        removeAdjacentWall(position);
     }
 
-    private void switchAdjacentWallPanel(Cell cell, String position){
-        boolean adjacentState = cell.getWallStatus(position);
-        int rowI = cell.getPos().get(0);
-        int colI = cell.getPos().get(1);
+    private void removeAdjacentWall(String position){
+        boolean adjacentState = cellExplorer.getWallStatus(position);
+        int rowI = cellExplorer.getPos().get(0);
+        int colI = cellExplorer.getPos().get(1);
 
         try {
             switch (position) {
