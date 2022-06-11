@@ -24,6 +24,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Stack;
 
 /**
  * Class responsible for Editing the UI frames and sections
@@ -36,6 +37,8 @@ public class EditorUI extends JFrame {
     MazeDataHandler data;
 
     private int mazeRowLength, mazeColLength;
+
+    private Stack<Cell> trailStack = new Stack<>();
 
     JPanel outer;
 
@@ -196,11 +199,7 @@ public class EditorUI extends JFrame {
         // Update Side Panel information
         maze.getWallsEvent().addCellListener(() -> {
             deadendNum.setText(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", maze.getDeadEnds()));
-            try{
-                new MazeSolver(maze).colorPath();
-            } catch (NoSuchElementException err) {
-                System.out.println("error");
-            }
+            updateTrail();
         });
 
 
@@ -316,17 +315,25 @@ public class EditorUI extends JFrame {
         sectionPanel.add(Box.createVerticalGlue());
 
         System.out.println("INIT SOLVER SECTION ==============================================");
-        try{
-            new MazeSolver(maze).colorPath();
-        } catch (NoSuchElementException err) {
-            System.out.println("error");
-        }
-
+        updateTrail();
 
         maze.updateDeadEnd();
 
         return sectionPanel;
     }
 
+    private void updateTrail(){
+        try{
+            for (Cell cell :
+                    trailStack) {
+                cell.getCellPanel().setType(0);
+            }
+            MazeSolver mazeSolver = new MazeSolver(maze);
+            mazeSolver.colorPath();
+            trailStack = mazeSolver.getTrailStack();
+        } catch (NoSuchElementException err) {
+            System.out.println("error");
+        }
+    }
 
 }
