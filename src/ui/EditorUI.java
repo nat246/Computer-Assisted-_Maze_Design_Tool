@@ -184,7 +184,7 @@ public class EditorUI extends JFrame {
         // Update Side Panel information
         maze.getWallsEvent().addCellListener(() -> {
             deadendNum.setText(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", maze.getDeadEnds()));
-            updateTrail();
+            isSolvable.setText(String.format("<html><strong>Solvable:</strong> %b</html>", updateTrail()));
         });
 
 
@@ -302,10 +302,11 @@ public class EditorUI extends JFrame {
         // Trail
         updateTrail();
         maze.updateDeadEnd();
+        maze.getWallsEvent().setState(true);
         return sectionPanel;
     }
 
-    private void updateTrail(){
+    private boolean updateTrail() {
         try{
             for (Cell cell :
                     cellTrailHolder) {
@@ -315,8 +316,9 @@ public class EditorUI extends JFrame {
             mazeSolver.colorPath();
             cellTrailHolder = mazeSolver.getTrailStack();
         } catch (NoSuchElementException err) {
-            System.out.println("error");
+            return false;
         }
+        return true;
     }
 
 }
