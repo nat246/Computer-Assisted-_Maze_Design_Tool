@@ -193,8 +193,14 @@ public class EditorUI extends JFrame {
         JLabel imagePath = new JLabel("File");
         imagePath.setMaximumSize(new Dimension(150, imagePath.getPreferredSize().height));
 
+        // Update Side Panel information
         maze.getWallsEvent().addCellListener(() -> {
             deadendNum.setText(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", maze.getDeadEnds()));
+            try{
+                new MazeSolver(maze).colorPath();
+            } catch (NoSuchElementException err) {
+                System.out.println("error");
+            }
         });
 
 
@@ -316,6 +322,8 @@ public class EditorUI extends JFrame {
             System.out.println("error");
         }
 
+
+        maze.updateDeadEnd();
 
         return sectionPanel;
     }
