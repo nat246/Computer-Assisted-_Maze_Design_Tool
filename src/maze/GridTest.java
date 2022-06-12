@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
 /**
- JUnit Testing for the basic functionality of Grid class
+ JUnit Testing for the basic functionality of Grid class.
  */
 class GridTest {
 

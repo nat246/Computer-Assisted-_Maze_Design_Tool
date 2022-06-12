@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * /**
- * JUnit Testing for the basic functionality of Cell class
+ * JUnit Testing for the basic functionality of Cell class.
  *  */
 
 class MazeTest {
