@@ -13,6 +13,7 @@ package maze.Test;
 
         public MazeException(String message) {
             super(message);
+
         }
 
     }
