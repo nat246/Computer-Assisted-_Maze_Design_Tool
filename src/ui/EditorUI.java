@@ -1,11 +1,8 @@
 package ui;
 
-import maze.Maze;
-import maze.MazeRandomCreator;
-import maze.MazeSolver;
+import maze.*;
 import maze.datamanager.MazeDataHandler;
 import user.User;
-import maze.Cell;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -290,27 +287,12 @@ public class EditorUI extends JFrame implements Serializable{
 
         JPanel sectionInner = new JPanel();
 
-        JPanel mazePanel = new JPanel();
+        JPanel mazePanel = new MazeCreator(maze).mazePanel();
         int preferredWidth = (sectionPanel.getPreferredSize().height / largest) * mazeColLength;
         int preferredHeight = (sectionPanel.getPreferredSize().width / largest) * mazeRowLength;
 
         mazePanel.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
         mazePanel.setLayout(new GridLayout(mazeRowLength, mazeColLength));
-
-        int rowIndex = 0, colIndex = 0;
-        int totalNumCells = mazeRowLength * mazeColLength;
-        // Creates the number of cells for the size of the maze
-        for (int i = 0; i < totalNumCells; i++) {
-            // Creates a new cell class and adds it to the maze class
-            Cell cell = maze.getCell(rowIndex, colIndex);
-
-            // Add new cell panel to the overall maze panel
-            mazePanel.add(new CellComponent(cell, maze).newCellPanel());
-
-            // Checks whether the column has reached the end
-            colIndex++;
-            if (colIndex == mazeColLength) { colIndex = 0; rowIndex++; }
-        }
 
         // Centre the maze
         sectionInner.add(mazePanel);
@@ -318,10 +300,7 @@ public class EditorUI extends JFrame implements Serializable{
         sectionPanel.add(sectionInner, BorderLayout.CENTER);
         sectionPanel.add(Box.createVerticalGlue());
 
-
-//        randomGenerateMaze();
         // Trail
-
         updateTrail();
         return sectionPanel;
     }
