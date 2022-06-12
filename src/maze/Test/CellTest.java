@@ -21,7 +21,7 @@ class CellTest {
          */
         cellTest = new Cell(2,4);
     }
-
+//
     @Test
     public void testCellType()throws MazeException {
         /**
