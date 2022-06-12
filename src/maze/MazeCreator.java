@@ -34,6 +34,8 @@ public class MazeCreator {
             colIndex++;
             if (colIndex == colSize) { colIndex = 0; rowIndex++; }
         }
+
+        maze.setMazePanel(mazePanel);
         return mazePanel;
     }
 

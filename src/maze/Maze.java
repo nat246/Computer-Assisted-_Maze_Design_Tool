@@ -1,6 +1,8 @@
 package maze;
 
 import events.WallsEvent;
+
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ public class Maze implements Serializable{
     private String dateCreated, lastEdited;
     private List<Integer> startPos, endPos;
     private int deadEnds;
+    private JPanel mazePanel;
 
 
     // Editor mode
@@ -248,6 +251,14 @@ public class Maze implements Serializable{
 
     public boolean isRandomGen() {
         return isRandomGen;
+    }
+
+    public JPanel getMazePanel() {
+        return mazePanel;
+    }
+
+    public void setMazePanel(JPanel mazePanel) {
+        this.mazePanel = mazePanel;
     }
 }
 
