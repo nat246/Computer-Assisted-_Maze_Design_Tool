@@ -1,10 +1,8 @@
 package maze;
 
-import events.CellListener;
 import ui.CellComponent;
 
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.JPanel;
 import java.io.Serializable;
@@ -22,7 +20,6 @@ public class Cell extends Grid implements Serializable{
     private boolean isPartOfTrail;
 
     /**
-     *
      * @param x dimension 1 user input inherited from Grid
      * @param y dimension 2 user input inherited from Grid
      */
@@ -35,7 +32,6 @@ public class Cell extends Grid implements Serializable{
 
 
     /**
-     *
      * @param location gives the location of the wall
      * @return walls.location
      */
@@ -44,8 +40,7 @@ public class Cell extends Grid implements Serializable{
     }
 
     /**
-     *
-     * @param wall represents the user input used for setting up a wall
+     * @param wall  represents the user input used for setting up a wall
      * @param state boolean value of the state of the wall
      */
     public void setWallStatus(String wall, boolean state) {
@@ -54,7 +49,6 @@ public class Cell extends Grid implements Serializable{
 
 
     /**
-     *
      * @param type
      */
     public void setType(int type) {
@@ -62,7 +56,6 @@ public class Cell extends Grid implements Serializable{
     }
 
     /**
-     *
      * @return
      */
     public int getType() {
@@ -88,7 +81,7 @@ public class Cell extends Grid implements Serializable{
     public int getWallsActive() {
         wallsActive = 0;
 
-        for (boolean wallStatus:
+        for (boolean wallStatus :
                 walls.values()) {
             if (wallStatus) wallsActive++;
         }
@@ -105,10 +98,4 @@ public class Cell extends Grid implements Serializable{
         walls.put("right", true);
         walls.put("left", true);
     }
-
-
-
-
-
-    
 }

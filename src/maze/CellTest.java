@@ -22,7 +22,7 @@ class CellTest {
     @Test
     void testCellType(){
         /**
-         * Checks for the cell type
+         * Checks for if cell type starts from 0
          */
         assertEquals(0, cellTest.getType(),"Cell starts at 0");
     }
@@ -37,11 +37,18 @@ class CellTest {
     }
 
     @Test
-    void testGetWallPanel() {
+    void testWallPanel() {
         /**
          * Verifies the position of the wall panel
          */
         final JPanel result = cellTest.getWallPanel("pos");
 
+    }
+    @Test
+    void testWallStatus(){
+        /**
+         * Checks if the active status of the wall is at 0
+         */
+        assertEquals(0,cellTest.getWallsActive(),"The wall is active at 0");
     }
 }
