@@ -336,9 +336,11 @@ public class EditorUI extends JFrame implements Serializable{
 
             MazeSolver mazeSolver = new MazeSolver(maze);
 
-            if (showSolution) mazeSolver.colorPath();
+            if (showSolution){
+                mazeSolver.colorPath();
+                cellTrailPlaceHolder = mazeSolver.getTrailStack();
+            }
 
-            cellTrailPlaceHolder = mazeSolver.getTrailStack();
         } catch (NoSuchElementException err) {
             return false;
         }

@@ -126,8 +126,6 @@ public class MazeSolver implements Serializable {
     }
 
     public Stack<Cell> getTrailStack() {
-        trailStack.remove(0);
-        trailStack.remove(goalCell);
         return trailStack;
     }
 
