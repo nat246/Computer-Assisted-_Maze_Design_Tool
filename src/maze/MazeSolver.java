@@ -31,7 +31,6 @@ public class MazeSolver implements Serializable {
         trailStack.add(cellExplorer);
 
         initSolver();
-
     }
 
     private void initSolver() {
@@ -116,7 +115,7 @@ public class MazeSolver implements Serializable {
     public void colorPath(){
         // Removing these from the list doesn't interfere with start and end colours
         trailStack.remove(0);
-        trailStack.remove(trailStack.lastElement());
+        trailStack.remove(goalCell);
 
         // Sets color to each cell in trail
         for (Cell cell :

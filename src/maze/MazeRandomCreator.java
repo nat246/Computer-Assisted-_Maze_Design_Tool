@@ -1,5 +1,7 @@
 package maze;
 
+import ui.CellComponent;
+
 import java.util.*;
 
 /**
@@ -144,6 +146,13 @@ public class MazeRandomCreator{
             }
         } catch (NullPointerException error) {
             System.out.println("Adjacent wall does not exist");
+        }
+    }
+
+    public void changeMaze(){
+        for (Cell cell :
+                visitedCells) {
+            cell.getCellPanel().newCellPanel();
         }
     }
 

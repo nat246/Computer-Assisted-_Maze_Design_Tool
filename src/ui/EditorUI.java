@@ -1,6 +1,7 @@
 package ui;
 
 import maze.Maze;
+import maze.MazeRandomCreator;
 import maze.MazeSolver;
 import maze.datamanager.MazeDataHandler;
 import user.User;
@@ -27,7 +28,7 @@ public class EditorUI extends JFrame implements Serializable{
     private User user; // Change to User Class after Database and User Class has been created
     MazeDataHandler data;
     private int mazeRowLength, mazeColLength;
-    private Stack<Cell> cellTrailHolder = new Stack<>();
+    private Stack<Cell> cellTrailPlaceHolder = new Stack<>();
 
     /**
      *
@@ -44,6 +45,11 @@ public class EditorUI extends JFrame implements Serializable{
         initEditor();
         topBar();
         outerPanel();
+
+        // If random maze
+        if (maze.isRandomGen()){
+            new MazeRandomCreator(maze).changeMaze();
+        }
     }
 
     /**
@@ -297,6 +303,8 @@ public class EditorUI extends JFrame implements Serializable{
         sectionPanel.add(sectionInner, BorderLayout.CENTER);
         sectionPanel.add(Box.createVerticalGlue());
 
+
+
         // Trail
         updateTrail();
         maze.updateDeadEnd();
@@ -304,15 +312,17 @@ public class EditorUI extends JFrame implements Serializable{
         return sectionPanel;
     }
 
-    private boolean updateTrail() {
+    private boolean updateTrail()  {
         try{
             for (Cell cell :
-                    cellTrailHolder) {
+                    cellTrailPlaceHolder) {
                 cell.getCellPanel().setType(0);
             }
+
             MazeSolver mazeSolver = new MazeSolver(maze);
             mazeSolver.colorPath();
-            cellTrailHolder = mazeSolver.getTrailStack();
+
+            cellTrailPlaceHolder = mazeSolver.getTrailStack();
         } catch (NoSuchElementException err) {
             return false;
         }

@@ -43,6 +43,8 @@ public class Maze implements Serializable{
 
     private BufferedImage image;
 
+    private boolean isRandomGen;
+
     public Maze() {
         this.cells = new HashMap<>();
     }
@@ -62,8 +64,10 @@ public class Maze implements Serializable{
 
         initCells();
 
+        this.isRandomGen = isRandomGen;
+
         if (isRandomGen){
-            new MazeRandomCreator(this);
+//            new MazeRandomCreator(this);
         }
     }
 
@@ -253,6 +257,8 @@ public class Maze implements Serializable{
         return wallsEvent;
     }
 
-
+    public boolean isRandomGen() {
+        return isRandomGen;
+    }
 }
 
