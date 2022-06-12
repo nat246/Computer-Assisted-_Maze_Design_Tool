@@ -3,7 +3,6 @@ package maze.Test;
 import javax.swing.*;
 
 import maze.Cell;
-import maze.MazeException;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package maze;
+package maze.Test;
 
     /**
      * Exception Class used for the Maze package for various class programs

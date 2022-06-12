@@ -2,7 +2,6 @@ package maze.Test;
 
 
 import maze.Grid;
-import maze.MazeException;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

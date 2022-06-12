@@ -1,9 +1,6 @@
 package maze.Test;
 
-import javax.swing.*;
-
 import maze.Maze;
-import maze.MazeException;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
