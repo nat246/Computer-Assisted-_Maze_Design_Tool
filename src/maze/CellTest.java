@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
-JUnit Testing for the basic functionality of Cell class
+JUnit Testing for the basic functionality of Cell class.
  */
 class CellTest {
 
@@ -20,7 +20,7 @@ class CellTest {
     }
 
     @Test
-    void testCellType(){
+    public void testCellType()throws MazeException{
         /**
          * Checks for if cell type starts from 0
          */
@@ -29,7 +29,7 @@ class CellTest {
 
 
     @Test
-    void testCellSize(){
+    void testCellSize()throws MazeException{
         /**
          * Checks for the size of the cell
          */
@@ -37,7 +37,7 @@ class CellTest {
     }
 
     @Test
-    void testWallPanel() {
+    void testWallPanel()throws MazeException{
         /**
          * Verifies the position of the wall panel
          */
@@ -45,10 +45,10 @@ class CellTest {
 
     }
     @Test
-    void testWallStatus(){
+    void testWallStatus()throws MazeException{
         /**
-         * Checks if the active status of the wall is at 0
+         * Checks if the active status of the wall is at 4 using the user input
          */
-        assertEquals(0,cellTest.getWallsActive(),"The wall is active at 0");
+        assertEquals(4,cellTest.getWallsActive(),"The wall is active at 0");
     }
 }

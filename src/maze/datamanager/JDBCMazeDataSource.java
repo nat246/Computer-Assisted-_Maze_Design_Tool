@@ -362,6 +362,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
         return mazes;
     }
 
+
     /**
      * @see maze.datamanager.MazeDataSource#close()
      */
