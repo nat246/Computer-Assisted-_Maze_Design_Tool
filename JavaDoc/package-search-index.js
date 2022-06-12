@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"maze"},{"l":"maze.datamanager"},{"l":"maze.imageprocess"},{"l":"ui"},{"l":"user"},{"l":"user.datamanager"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"events"},{"l":"maze"},{"l":"maze.datamanager"},{"l":"maze.imageprocess"},{"l":"maze.Test"},{"l":"ui"},{"l":"user"},{"l":"user.datamanager"}];updateSearchResults();
