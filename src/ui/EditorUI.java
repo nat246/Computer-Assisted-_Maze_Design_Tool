@@ -43,10 +43,12 @@ public class EditorUI extends JFrame implements Serializable{
         this.maze = maze;
         this.mazeRowLength = maze.getSize()[0];
         this.mazeColLength = maze.getSize()[1];
+    }
+
+    public void startEditor() {
         initEditor();
         topBar();
         outerPanel();
-
     }
 
     public void showPath() {
@@ -63,6 +65,8 @@ public class EditorUI extends JFrame implements Serializable{
         pack();
         setLocationRelativeTo(null);
     }
+
+
 
     /**
      * Menu Bar
@@ -169,6 +173,7 @@ public class EditorUI extends JFrame implements Serializable{
         optionsTitle.setFont(new Font("SanSerif", Font.PLAIN, 20));
 
         JCheckBox solutionCheckBox = new JCheckBox("Show Solution");
+        solutionCheckBox.setSelected(showSolution);
 
         // Select mode
         JPanel modePanel = new JPanel();

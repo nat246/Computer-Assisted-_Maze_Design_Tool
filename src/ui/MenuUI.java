@@ -382,7 +382,8 @@ public class MenuUI extends JFrame implements Serializable{
                     Maze newMaze = new Maze(new int[] {row, col}, user.getName(), randomRadio.isSelected());
                     EditorUI editor = new EditorUI(user, newMaze, data);
                     setVisible(false);
-                    editor.showPath();
+                    if (pathCheckbox.isSelected()) editor.showPath();
+                    editor.startEditor();
                     editor.setVisible(true);
 
 
