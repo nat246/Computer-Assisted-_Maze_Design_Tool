@@ -34,6 +34,7 @@ public class CellComponent implements Serializable {
         icon = new JLabel();
         defaultColour = cellPanel.getBackground();
 
+        // Event to check if the cell has been clicked
         cellPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -50,11 +51,12 @@ public class CellComponent implements Serializable {
 
         // Create a wall on each side
         SwingUtilities.invokeLater(() -> {
-             cellPanel.add(cellWall("top", cell.getWallStatus("top")));
-             cellPanel.add(cellWall("bottom", cell.getWallStatus("bottom")));
-             cellPanel.add(cellWall("left", cell.getWallStatus("left")));
-             cellPanel.add(cellWall("right", cell.getWallStatus("right")));
+            cellPanel.add(cellWall("top", cell.getWallStatus("top")));
+            cellPanel.add(cellWall("bottom", cell.getWallStatus("bottom")));
+            cellPanel.add(cellWall("left", cell.getWallStatus("left")));
+            cellPanel.add(cellWall("right", cell.getWallStatus("right")));
 
+            // Determines the positions of the Start and End points
             if (maze.getStartPos().equals(cell.getPos())) { setType(1); }
             if (maze.getEndPos().equals(cell.getPos())) { setType(2); }
         });
@@ -113,6 +115,7 @@ public class CellComponent implements Serializable {
 
         wall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cell.setWallPanel(wallPosition, wall);
+
         maze.updateDeadEnd();
         return wall;
     }
@@ -134,6 +137,7 @@ public class CellComponent implements Serializable {
             newWall.setBackground(transparent);
         }
 
+        // Adds a click event to turn the walls on/off
         newWall.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -159,6 +163,7 @@ public class CellComponent implements Serializable {
         Cell adjCell;
         String pos;
         JPanel wall = new JPanel();
+        // Checks for adjacent walls by getting the opposite
         try {
             switch (position) {
                 case "top" -> {

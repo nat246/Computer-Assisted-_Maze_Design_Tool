@@ -322,12 +322,6 @@ public class MenuUI extends JFrame implements Serializable{
         buttongp.add(blankRadio);
         buttongp.add(randomRadio);
 
-        // Include Logo
-        JPanel includeLogoP = new JPanel();
-        includeLogoP.setBorder(BorderFactory.createTitledBorder("Logo"));
-
-        JCheckBox logoCheckbox = new JCheckBox("Include Logo");
-
         // Maze Size
         JPanel mazeSizeP = new JPanel();
         mazeSizeP.setBorder(BorderFactory.createTitledBorder("Maze Dimensions"));
@@ -337,14 +331,14 @@ public class MenuUI extends JFrame implements Serializable{
 
         //== Maze Size X
         JPanel horizontalSize = new JPanel();
-        JLabel horizontalLabel = new JLabel("X: ");
+        JLabel horizontalLabel = new JLabel("Rows: ");
         JSpinner horizontalSpinner = new JSpinner(spinModel1);
         horizontalSize.add(horizontalLabel);
         horizontalSize.add(horizontalSpinner);
 
         //== Maze Size Y
         JPanel verticalSize = new JPanel();
-        JLabel verticalLabel = new JLabel("Y: ");
+        JLabel verticalLabel = new JLabel("Columns: ");
         JSpinner verticalSpinner = new JSpinner(spinModel2);
         verticalSize.add(verticalLabel);
         verticalSize.add(verticalSpinner);
@@ -401,8 +395,6 @@ public class MenuUI extends JFrame implements Serializable{
         generationP.add(blankRadio);
         generationP.add(randomRadio);
 
-        includeLogoP.add(logoCheckbox);
-
         mazeSizeP.add(horizontalSize);
         mazeSizeP.add(verticalSize);
 
@@ -411,11 +403,9 @@ public class MenuUI extends JFrame implements Serializable{
         //== Add to Panel Group 1
         panelGroup1.add(generationP);
         panelGroup1.add(Box.createRigidArea(new Dimension(10, 0)));
-        panelGroup1.add(includeLogoP);
+        panelGroup1.add(mazePath);
         panelGroup1.add(Box.createRigidArea(new Dimension(10, 0)));
         panelGroup1.add(mazeSizeP);
-        panelGroup1.add(Box.createRigidArea(new Dimension(10, 0)));
-        panelGroup1.add(mazePath);
 
 
         //== Add to Panel Group 2

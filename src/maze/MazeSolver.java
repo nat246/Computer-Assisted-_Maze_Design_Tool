@@ -11,20 +11,18 @@ import java.io.Serializable;
  * Provides the solution and solves the mazes saved in the database
  */
 public class MazeSolver implements Serializable {
-    private Maze maze;
-    private final int rowSize, colSize;
-    private Cell startCell, goalCell, cellExplorer;
+    private final Maze maze;
+    private final Cell startCell, goalCell;
+    private Cell cellExplorer;
 
     private final List<Cell> visitedCells = new ArrayList<>();
     private final Stack<Cell> trailStack = new Stack<>();
 
     public MazeSolver(Maze maze) {
-        this.maze = maze;
-        this.rowSize = maze.getSize()[0];
-        this.colSize = maze.getSize()[1];
+        this.maze    = maze;
 
         this.startCell = maze.getCell(maze.getStartPos().get(0), maze.getStartPos().get(1));
-        this.goalCell = maze.getCell(maze.getEndPos().get(0), maze.getEndPos().get(1));
+        this.goalCell  = maze.getCell(maze.getEndPos().get(0), maze.getEndPos().get(1));
 
         this.cellExplorer = startCell;
         visitedCells.add(cellExplorer);
@@ -114,7 +112,7 @@ public class MazeSolver implements Serializable {
 
     public void colorPath(){
         // Removing these from the list doesn't interfere with start and end colours
-        trailStack.remove(0);
+        trailStack.remove(startCell);
         trailStack.remove(goalCell);
 
         // Sets color to each cell in trail
