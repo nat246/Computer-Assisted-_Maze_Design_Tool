@@ -24,9 +24,9 @@ class CellTest {
     @Test
     public void testCellType()throws MazeException {
         /**
-         * Checks for if cell type starts from 0
+         * Checks for the Incorrect cell type
          */
-        assertEquals(0, cellTest.getType(),"Cell starts at 0");
+        assertEquals("234", cellTest.getType(),"Incorrect cell type");
     }
 
 
@@ -49,8 +49,8 @@ class CellTest {
     @Test
     void testWallStatus()throws MazeException{
         /**
-         * Checks if the active status of the wall is at 4 using the user input
+         * Checks for incorrect active wall status
          */
-        assertEquals(4,cellTest.getWallsActive(),"The wall is active at 0");
+        assertEquals(0,cellTest.getWallsActive(),"The active wall status is 4");
     }
 }
