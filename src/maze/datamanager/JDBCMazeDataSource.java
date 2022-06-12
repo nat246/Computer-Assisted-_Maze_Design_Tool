@@ -3,6 +3,9 @@ package maze.datamanager;
 import maze.Maze;
 import user.User;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -28,8 +31,9 @@ public class JDBCMazeDataSource implements MazeDataSource{
                     + "id INTEGER NOT NULL UNIQUE AUTO_INCREMENT ,"
                     + "name VARCHAR(30) , "
                     + "creator VARCHAR(30) , "
-                    + "creationTime VARCHAR(30) , "
-                    + "lastEdited VARCHAR(30) , PRIMARY KEY (id) );";
+                    + "creationtime VARCHAR(30) , "
+                    + "lastedited VARCHAR(30) , "
+                    + "object BLOB , PRIMARY KEY (id) );";
 
     private static final String INSERT_USER = "INSERT INTO users (name, password) VALUES (?, ?)";
     private static final String GET_USERID = "SELECT id FROM users WHERE name=?";
@@ -38,16 +42,17 @@ public class JDBCMazeDataSource implements MazeDataSource{
     private static final String DELETE_USER = "DELETE FROM users WHERE id=?";
     private static final String GET_USER = "SELECT * FROM users WHERE name=?";
     private static final String GET_USERS = "SELECT name FROM users";
-    private static final String INSERT_MAZE = "INSERT INTO mazes (name, creator, creationtime, lastedited) VALUES (?, ?, NOW(), NOW())";
+    private static final String INSERT_MAZE = "INSERT INTO mazes (name, creator, creationtime, lastedited, object) VALUES (?, ?, NOW(), NOW(), ?)";
     private static final String UPDATE_MAZE = "UPDATE maze SET lastedited = NOW() WHERE id = ?;";
-    private static final String GET_MAZEID = "SELECT id FROM mazes WHERE name=?";
-    private static final String GET_MAZENAME = "SELECT name FROM mazes WHERE name=?";
-    private static final String GET_MAZECREATOR = "SELECT creator FROM mazes WHERE name=?";
-    private static final String GET_MAZECREATEDATE = "SELECT creationtime FROM mazes WHERE name=?";
-    private static final String GET_MAZEEDITDATE = "SELECT lastedited FROM mazes WHERE name=?";
+    private static final String GET_MAZEID = "SELECT id FROM mazes WHERE id=?";
+    private static final String GET_MAZENAME = "SELECT name FROM mazes WHERE id=?";
+    private static final String GET_MAZECREATOR = "SELECT creator FROM mazes WHERE id=?";
+    private static final String GET_MAZECREATEDATE = "SELECT creationtime FROM mazes WHERE id=?";
+    private static final String GET_MAZEEDITDATE = "SELECT lastedited FROM mazes WHERE id=?";
     private static final String DELETE_MAZE = "DELETE FROM maze WHERE id =?";
-    private static final String GET_MAZE = "SELECT * FROM mazes WHERE name=?";
-    private static final String GET_MAZES = "SELECT name FROM mazes";
+    private static final String GET_MAZE = "SELECT object FROM mazes WHERE id=?";
+    private static final String GET_MAZES = "SELECT id FROM mazes";
+    private static final String GET_TIME = "SELECT NOW();";
 
     private Connection connection;
     private PreparedStatement addUser;
@@ -67,6 +72,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
     private PreparedStatement deleteMaze;
     private PreparedStatement getMaze;
     private PreparedStatement getMazes;
+    private PreparedStatement getTime;
 
     public JDBCMazeDataSource() {
         connection = MazeDB.getInstance();
@@ -93,6 +99,7 @@ public class JDBCMazeDataSource implements MazeDataSource{
             deleteMaze = connection.prepareStatement(DELETE_MAZE);
             getMaze = connection.prepareStatement(GET_MAZE);
             getMazes = connection.prepareStatement(GET_MAZES);
+            getTime = connection.prepareStatement(GET_TIME);
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
@@ -204,9 +211,16 @@ public class JDBCMazeDataSource implements MazeDataSource{
         try {
             addMaze.setString(1, m.getMazeName());
             addMaze.setString(2, m.getAuthorName());
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(bs);
+            os.writeObject(m);
+            byte[] data = bs.toByteArray();
+            addMaze.setBytes(5, data);
             addMaze.execute();
         } catch(SQLException ex) {
             ex.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -271,12 +285,27 @@ public class JDBCMazeDataSource implements MazeDataSource{
     }
 
     /**
-     * @see maze.datamanager.MazeDataSource#getMazeLastEdited(Maze)
+     * @see maze.datamanager.MazeDataSource#getMazeLastEdited(Integer) 
      */
-    public void getMazeLastEdited(Maze m) {
+    public void getMazeLastEdited(Integer id) {
+        Maze m = new Maze();
+        ResultSet rs = null;
         try {
-            getMazeLastEdited.setString(1, m.getMazeName());
-            getMazeLastEdited.execute();
+            getMazeLastEdited.setInt(1, m.getMazeID());
+            rs = getMaze.executeQuery();
+            rs.next();
+            m.setLastEdited(rs.getString("lastedited"));
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * @see MazeDataSource#getTime()
+     */
+    public void getTime() {
+        try {
+            getTime.execute();
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
@@ -297,18 +326,18 @@ public class JDBCMazeDataSource implements MazeDataSource{
     /**
      * @see maze.datamanager.MazeDataSource#getMaze
      */
-    public Maze getMaze(String mazeName) {
+    public Maze getMaze(Integer id) {
         Maze m = new Maze();
         ResultSet rs = null;
         try {
-            getMaze.setString(1, m.getMazeName());
+            getMaze.setInt(1, m.getMazeID());
             rs = getMaze.executeQuery();
             rs.next();
             m.setMazeID(rs.getInt("id"));
             m.setMazeName(rs.getString("name"));
             m.setAuthorName(rs.getString("creator"));
-            m.setDateCreated(rs.getString("creationTime"));
-            m.setLastEdited(rs.getString("lastEdited"));
+            m.setDateCreated(rs.getString("creationtime"));
+            m.setLastEdited(rs.getString("lastedited"));
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
@@ -318,14 +347,14 @@ public class JDBCMazeDataSource implements MazeDataSource{
     /**
      * @see maze.datamanager.MazeDataSource#mazeSet()
      */
-    public Set<String> mazeSet() {
-        Set<String> mazes = new TreeSet<String>();
+    public Set<Integer> mazeSet() {
+        Set<Integer> mazes = new TreeSet<Integer>();
         ResultSet rs= null;
 
         try {
             rs = getMazes.executeQuery();
             while (rs.next()){
-                mazes.add(rs.getString("name"));
+                mazes.add(rs.getInt("id"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

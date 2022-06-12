@@ -1,6 +1,6 @@
 package maze;
-
-public class ImageStamp {
+import java.io.Serializable;
+public class ImageStamp implements Serializable{
     private String image;
 
     /**

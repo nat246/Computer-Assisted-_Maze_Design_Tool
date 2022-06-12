@@ -7,8 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-public class CellComponent {
+public class CellComponent implements Serializable {
 
     private final Cell cell;
     private final Maze maze;
