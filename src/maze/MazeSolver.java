@@ -1,14 +1,16 @@
 package maze;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
+import java.io.Serializable;
 
 /**
  * Provides the solution and solves the mazes saved in the database
  */
-public class MazeSolver{
+public class MazeSolver implements Serializable {
     private Maze maze;
     private final int rowSize, colSize;
     private Cell startCell, goalCell, cellExplorer;

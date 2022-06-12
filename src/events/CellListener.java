@@ -1,5 +1,5 @@
 package events;
 
-public interface CellListener {
+public interface CellListener{
     void wallChanged();
 }
