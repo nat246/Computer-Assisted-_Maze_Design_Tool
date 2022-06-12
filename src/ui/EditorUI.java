@@ -188,6 +188,12 @@ public class EditorUI extends JFrame implements Serializable{
         maze.getWallsEvent().addCellListener(() -> {
             deadendNum.setText(String.format("<html><strong>No. Dead Cells:</strong> %d</html>", maze.getDeadEnds()));
             isSolvable.setText(String.format("<html><strong>Solvable:</strong> %b</html>", updateTrail()));
+
+            // Update cell exploration percent
+            double explore =  ((double) cellTrailPlaceHolder.size() / (maze.getSize()[0] * maze.getSize()[1]));
+            int percent = (int)(explore * 100);
+            cellExplore.setText(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", percent));
+
         });
 
 

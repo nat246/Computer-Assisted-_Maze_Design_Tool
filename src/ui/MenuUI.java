@@ -130,7 +130,7 @@ public class MenuUI extends JFrame implements Serializable{
                         user = new User();
                         user.setName(nameField.getText());
                         user.setPassword(passField.getText());
-                        if (data.login(user) == false) {
+                        if (!data.login(user)) {
                             JOptionPane.showConfirmDialog(menuPanel, "Your login information was incorrect.", "Incorrect information", JOptionPane.CLOSED_OPTION);
                         }
                         else {
@@ -378,7 +378,6 @@ public class MenuUI extends JFrame implements Serializable{
 
                     int row = (int) horizontalSpinner.getValue();
                     int col = (int) verticalSpinner.getValue();
-
 
                     Maze newMaze = new Maze(new int[] {row, col}, user.getName(), randomRadio.isSelected());
                     EditorUI editor = new EditorUI(user, newMaze, data);
