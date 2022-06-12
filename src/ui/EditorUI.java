@@ -6,6 +6,7 @@ import user.User;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -64,8 +65,6 @@ public class EditorUI extends JFrame implements Serializable{
         setLocationRelativeTo(null);
     }
 
-
-
     /**
      * Menu Bar
      */
@@ -88,29 +87,13 @@ public class EditorUI extends JFrame implements Serializable{
         fileMenu.add(save);
         fileMenu.add(saveAs);
         fileMenu.add(new JSeparator());
-        fileMenu.add("Export as PNG");
+        fileMenu.add(exportPNG);
         fileMenu.add(new JSeparator());
         fileMenu.add(exitB);
 
         // Add to menu bar
         bar.add(fileMenu);
         setJMenuBar(bar);
-
-        /**
-        //==Create menu item listener
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Maze m = new Maze();
-                m.setMazeID(m.getMazeID());
-                if (m.getMazeName() == "NULL") {
-                    m.setMazeName(JOptionPane.showInputDialog(saveAs, "Name:", null));
-                }
-                data.saveMaze(m);
-
-            }
-        });
-         */
 
         //==Create menu item listener
         saveAs.addActionListener(new ActionListener() {
@@ -121,6 +104,34 @@ public class EditorUI extends JFrame implements Serializable{
                 data.saveAsMaze(maze);
             }
         });
+
+        exportPNG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveScreenshot(maze.getMazePanel());
+            }
+        });
+    }
+
+    private void saveScreenshot(JPanel panel) {
+        JFileChooser file = new JFileChooser();
+        file.setFileFilter(new FileNameExtensionFilter("*.Images", "png", "jpg", "gif"));
+        file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+        BufferedImage img = new BufferedImage(panel.getSize().width, panel.getSize().height, BufferedImage.TYPE_INT_RGB);
+        panel.paint(img.createGraphics());
+        int result = file.showSaveDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = file.getSelectedFile();
+            try {
+                ImageIO.write(img, "PNG", selectedFile.getAbsoluteFile());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("No file is selected");
+        }
     }
 
     /**
