@@ -46,10 +46,7 @@ public class EditorUI extends JFrame implements Serializable{
         topBar();
         outerPanel();
 
-        // If random maze
-        if (maze.isRandomGen()){
-            new MazeRandomCreator(maze).changeMaze();
-        }
+
     }
 
     /**
@@ -304,7 +301,7 @@ public class EditorUI extends JFrame implements Serializable{
         sectionPanel.add(Box.createVerticalGlue());
 
 
-
+        randomGenerateMaze();
         // Trail
         updateTrail();
         maze.updateDeadEnd();
@@ -327,6 +324,12 @@ public class EditorUI extends JFrame implements Serializable{
             return false;
         }
         return true;
+    }
+    private void randomGenerateMaze() {
+        // If random maze
+        if (maze.isRandomGen()){
+            new MazeRandomCreator(maze).changeMaze();
+        }
     }
 
 }
