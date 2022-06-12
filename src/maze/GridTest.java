@@ -17,7 +17,7 @@ class GridTest {
     /**
      * Initialises to the default grid dimensions of 1x1
      */
-    void setUp() {
+    void setUpGrid() throws MazeException {
         gridTest = new Grid(1, 1) {
         };
     }
@@ -26,7 +26,7 @@ class GridTest {
     /**
      * Checks for the initial position of the maze which is set at 1x1
      */
-    void testGetPos() {
+    void testGetPos() throws MazeException {
         assertEquals(List.of(1,1), gridTest.getPos(),"The initial position of the grid is set for 1 x 1");
     }
 }
