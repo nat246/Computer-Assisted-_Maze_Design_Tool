@@ -87,8 +87,6 @@ public class EditorUI extends JFrame implements Serializable{
         exitB.addActionListener(e -> this.dispose());
 
         // Add to Menu Bar
-        fileMenu.add("New Maze");
-        fileMenu.add(new JSeparator());
         fileMenu.add(save);
         fileMenu.add(saveAs);
         fileMenu.add(new JSeparator());
@@ -96,15 +94,8 @@ public class EditorUI extends JFrame implements Serializable{
         fileMenu.add(new JSeparator());
         fileMenu.add(exitB);
 
-        // Edit menu
-        JMenu editMenu = new JMenu("Edit");
-
-        editMenu.add("Add Image");
-        editMenu.add("Set Logo Image");
-
         // Add to menu bar
         bar.add(fileMenu);
-        bar.add(editMenu);
         setJMenuBar(bar);
 
         /**
@@ -152,7 +143,7 @@ public class EditorUI extends JFrame implements Serializable{
      */
     private JPanel sidePanel() {
         JPanel sectionPanel = new JPanel();
-        sectionPanel.setLayout(new BoxLayout(sectionPanel, BoxLayout.PAGE_AXIS));
+        sectionPanel.setLayout(new GridLayout(6, 0));
         sectionPanel.setMinimumSize(new Dimension(175, 10));
 
         // Information
@@ -179,19 +170,22 @@ public class EditorUI extends JFrame implements Serializable{
         JPanel modePanel = new JPanel();
         modePanel.setLayout(new BoxLayout(modePanel, BoxLayout.PAGE_AXIS));
 
+        JPanel modeInnerPanel = new JPanel();
+        modeInnerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         JLabel modeTitle = new JLabel("<html><br><h1>Edit Mode</h1></html>");
         modeTitle.setFont(new Font("SanSerif", Font.PLAIN, 20));
 
-
         JComboBox<String> pickMode = new JComboBox<>(new String[] {"Wall Edit", "Place Image", "Remove Image", "Set Start", "Set End"});
         pickMode.setMaximumSize(new Dimension(pickMode.getMaximumSize().width, 25));
+        pickMode.setPreferredSize(new Dimension(pickMode.getPreferredSize().width + 20, 25));
 
         // Image
         JButton imagePicker = new JButton("Choose Image...");
         imagePicker.setEnabled(false);
 
-        JLabel imagePath = new JLabel("File");
-        imagePath.setMaximumSize(new Dimension(150, imagePath.getPreferredSize().height));
+        JLabel imagePath = new JLabel("No Image Chosen");
+//        imagePath.setMaximumSize(new Dimension(150, imagePath.getPreferredSize().height));
 
         // Update Side Panel information
         maze.getWallsEvent().addCellListener(() -> {
@@ -203,7 +197,6 @@ public class EditorUI extends JFrame implements Serializable{
             int percent = (int)(explore * 100);
             cellExplore.setText(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", percent));
         });
-
 
         pickMode.addActionListener(new ActionListener() {
             @Override
@@ -264,10 +257,12 @@ public class EditorUI extends JFrame implements Serializable{
         infoPanel.add(deadendNum);
         infoPanel.add(isSolvable);
 
+        modeInnerPanel.add(pickMode);
+        modeInnerPanel.add(imagePicker);
+
         modePanel.add(modeTitle);
-        modePanel.add(pickMode);
-        modePanel.add(imagePicker);
         modePanel.add(imagePath);
+        modePanel.add(modeInnerPanel);
 
         optionsPanel.add(optionsTitle);
         optionsPanel.add(solutionCheckBox);
