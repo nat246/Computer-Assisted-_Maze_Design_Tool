@@ -345,11 +345,5 @@ public class EditorUI extends JFrame implements Serializable{
         }
         return true;
     }
-    private void randomGenerateMaze() {
-        // If random maze
-        if (maze.isRandomGen()){
-            new MazeRandomCreator(maze).changeMaze();
-        }
-    }
 
 }

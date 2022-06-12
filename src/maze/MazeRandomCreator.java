@@ -70,7 +70,6 @@ public class MazeRandomCreator{
         }
     }
 
-
     private List<List<Object>> availableNeighbours(int explorerRow, int explorerCol){
         List<List<Object>> neighbours = new ArrayList<>();
 
@@ -148,14 +147,5 @@ public class MazeRandomCreator{
             System.out.println("Adjacent wall does not exist");
         }
     }
-
-    public void changeMaze(){
-        for (Cell cell :
-                visitedCells) {
-            cell.getCellPanel().newCellPanel();
-        }
-    }
-
-
 
 }

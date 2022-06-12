@@ -1,17 +1,11 @@
 package maze;
 
 import events.WallsEvent;
-import ui.CellComponent;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.io.Serializable;
 
 /**
@@ -19,17 +13,13 @@ import java.io.Serializable;
  */
 public class Maze implements Serializable{
 
-
     private int[] size;
     private int mazeID;
     private String logo;
     private Boolean solvable;
     private String authorName, mazeName;
     private String dateCreated, lastEdited;
-
-    // Start and End points of the maze
     private List<Integer> startPos, endPos;
-
     private int deadEnds;
 
 
@@ -39,7 +29,7 @@ public class Maze implements Serializable{
     private WallsEvent wallsEvent;
 
     // GUI elements
-    private HashMap<List<Integer>, Cell> cells;
+    private final HashMap<List<Integer>, Cell> cells;
 
     private BufferedImage image;
 
@@ -57,26 +47,25 @@ public class Maze implements Serializable{
     public Maze(int[] size, String user, boolean isRandomGen) {
         this.size = size;
         this.authorName = user;
-        this.cells = new HashMap<>();
+        this.isRandomGen = isRandomGen;
+
+        this.cells = new HashMap<>(size[0] * size[1]);
         setStartPos(0, 0);
         setEndPos(size[0] - 1, size[1] - 1);
         wallsEvent = new WallsEvent();
 
         initCells();
 
-//        this.isRandomGen = isRandomGen;
-
-        if (isRandomGen){
-            new MazeRandomCreator(this);
-        }
+        if (isRandomGen) new MazeRandomCreator(this);
     }
 
     public void initCells(){
         int rowSize = size[0], colSize = size[1];
+
         for (int row = 0; row < rowSize; row++){
             for (int col = 0; col < colSize; col++) {
                 Cell cell = new Cell(row, col);
-                addCell(cell);
+                cells.put(new ArrayList<>(List.of(row,col)),cell);
             }
         }
     }
