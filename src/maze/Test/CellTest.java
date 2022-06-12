@@ -1,18 +1,21 @@
-package maze;
+package maze.Test;
 
 import javax.swing.*;
+
+import maze.Cell;
+import maze.MazeException;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
-JUnit Testing for the basic functionality of Cell class
+ JUnit Testing for the basic functionality of Cell class
  */
 class CellTest {
 
     private Cell cellTest;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws MazeException{
         /**
          * Initialises the dimensions before testing
          */
@@ -20,7 +23,7 @@ class CellTest {
     }
 
     @Test
-    public void testCellType()throws MazeException{
+    public void testCellType()throws MazeException {
         /**
          * Checks for if cell type starts from 0
          */

@@ -1,4 +1,4 @@
-jdbc.url=jdbc:mariadb://localhost:3307
+jdbc.url=jdbc:mariadb://localhost:3306
 jdbc.schema=mazedatabase
 jdbc.username=root
-jdbc.password=root
+jdbc.password=
