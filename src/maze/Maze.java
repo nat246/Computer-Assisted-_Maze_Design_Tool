@@ -64,10 +64,10 @@ public class Maze implements Serializable{
 
         initCells();
 
-        this.isRandomGen = isRandomGen;
+//        this.isRandomGen = isRandomGen;
 
         if (isRandomGen){
-//            new MazeRandomCreator(this);
+            new MazeRandomCreator(this);
         }
     }
 

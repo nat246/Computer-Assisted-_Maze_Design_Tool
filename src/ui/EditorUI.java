@@ -301,7 +301,7 @@ public class EditorUI extends JFrame implements Serializable{
         sectionPanel.add(Box.createVerticalGlue());
 
 
-        randomGenerateMaze();
+//        randomGenerateMaze();
         // Trail
         updateTrail();
         maze.updateDeadEnd();
