@@ -101,7 +101,6 @@ public class EditorUI extends JFrame implements Serializable{
             public void actionPerformed(ActionEvent e) {
                 maze.setMazeName(JOptionPane.showInputDialog(saveAs, "Name:", null));
                 maze.setAuthorName(user.getName());
-                data.saveAsMaze(maze);
             }
         });
 
@@ -115,7 +114,7 @@ public class EditorUI extends JFrame implements Serializable{
 
     private void saveScreenshot(JPanel panel) {
         JFileChooser file = new JFileChooser();
-        file.setFileFilter(new FileNameExtensionFilter("*.Images", "png", "jpg", "gif"));
+        file.setFileFilter(new FileNameExtensionFilter("*.Images", ".png", "jpg", "gif"));
         file.setFileSelectionMode(JFileChooser.FILES_ONLY);
         file.setCurrentDirectory(new File(System.getProperty("user.home")));
         BufferedImage img = new BufferedImage(panel.getSize().width, panel.getSize().height, BufferedImage.TYPE_INT_RGB);
@@ -123,6 +122,7 @@ public class EditorUI extends JFrame implements Serializable{
         int result = file.showSaveDialog(null);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = file.getSelectedFile();
+
             try {
                 ImageIO.write(img, "PNG", selectedFile.getAbsoluteFile());
             } catch (Exception ex) {
