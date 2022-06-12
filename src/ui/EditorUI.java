@@ -28,6 +28,7 @@ public class EditorUI extends JFrame implements Serializable{
     private User user; // Change to User Class after Database and User Class has been created
     MazeDataHandler data;
     private int mazeRowLength, mazeColLength;
+    private boolean showSolution;
     private Stack<Cell> cellTrailPlaceHolder = new Stack<>();
 
     /**
@@ -46,7 +47,10 @@ public class EditorUI extends JFrame implements Serializable{
         topBar();
         outerPanel();
 
+    }
 
+    public void showPath() {
+        showSolution = true;
     }
 
     /**
@@ -174,7 +178,7 @@ public class EditorUI extends JFrame implements Serializable{
         modeTitle.setFont(new Font("SanSerif", Font.PLAIN, 20));
 
 
-        JComboBox pickMode = new JComboBox<>(new String[] {"Wall Edit", "Place Image", "Remove Image", "Set Start", "Set End"});
+        JComboBox<String> pickMode = new JComboBox<>(new String[] {"Wall Edit", "Place Image", "Remove Image", "Set Start", "Set End"});
         pickMode.setMaximumSize(new Dimension(pickMode.getMaximumSize().width, 25));
 
         // Image
@@ -193,7 +197,6 @@ public class EditorUI extends JFrame implements Serializable{
             double explore =  ((double) cellTrailPlaceHolder.size() / (maze.getSize()[0] * maze.getSize()[1]));
             int percent = (int)(explore * 100);
             cellExplore.setText(String.format("<html><strong>Cell Exploration:</strong> %d%%</html>", percent));
-
         });
 
 
@@ -238,6 +241,14 @@ public class EditorUI extends JFrame implements Serializable{
                 else if(result == JFileChooser.CANCEL_OPTION){
                     System.out.println("No file is selected");
                 }
+            }
+        });
+
+        solutionCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showSolution = solutionCheckBox.isSelected();
+                maze.getWallsEvent().update();
             }
         });
 
@@ -309,6 +320,7 @@ public class EditorUI extends JFrame implements Serializable{
 
 //        randomGenerateMaze();
         // Trail
+
         updateTrail();
         maze.updateDeadEnd();
         maze.getWallsEvent().update();
@@ -323,7 +335,8 @@ public class EditorUI extends JFrame implements Serializable{
             }
 
             MazeSolver mazeSolver = new MazeSolver(maze);
-            mazeSolver.colorPath();
+
+            if (showSolution) mazeSolver.colorPath();
 
             cellTrailPlaceHolder = mazeSolver.getTrailStack();
         } catch (NoSuchElementException err) {
