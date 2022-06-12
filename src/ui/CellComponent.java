@@ -43,7 +43,7 @@ public class CellComponent implements Serializable {
                     case 2 -> removeImage();
                     case 3 -> setType(1);
                     case 4 -> setType(2);
-                    default -> {}
+                    default -> { return; }
                 }
                 maze.getWallsEvent().update();
             }

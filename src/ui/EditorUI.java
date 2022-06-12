@@ -24,10 +24,10 @@ import java.io.Serializable;
  */ 
 
 public class EditorUI extends JFrame implements Serializable{
-    private Maze maze;
-    private User user; // Change to User Class after Database and User Class has been created
+    private final Maze maze;
+    private final User user; // Change to User Class after Database and User Class has been created
     MazeDataHandler data;
-    private int mazeRowLength, mazeColLength;
+    private final int mazeRowLength, mazeColLength;
     private boolean showSolution;
     private Stack<Cell> cellTrailPlaceHolder = new Stack<>();
 
@@ -323,8 +323,6 @@ public class EditorUI extends JFrame implements Serializable{
         // Trail
 
         updateTrail();
-        maze.updateDeadEnd();
-        maze.getWallsEvent().update();
         return sectionPanel;
     }
 
