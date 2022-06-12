@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserTest {
     /**
      * Junit test class for verifying the user login details
-     */
+     **/
 
     private User userTest;
 
