@@ -49,6 +49,7 @@ public class EditorUI extends JFrame implements Serializable{
         initEditor();
         topBar();
         outerPanel();
+        maze.getWallsEvent().update();
     }
 
     public void showPath() {
