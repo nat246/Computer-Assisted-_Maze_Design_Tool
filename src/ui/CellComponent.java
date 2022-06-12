@@ -139,7 +139,6 @@ public class CellComponent implements Serializable {
             public void mouseClicked(MouseEvent e) {
                 if (maze.getMode() != 0) return;
 
-                System.out.println("clicked");
                 cell.setWallStatus(position, !cell.getWallStatus(position));
                 boolean wallStatus = cell.getWallStatus(position);
 
