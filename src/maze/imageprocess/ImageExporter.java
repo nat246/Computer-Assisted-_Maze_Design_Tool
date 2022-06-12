@@ -3,46 +3,30 @@ package maze.imageprocess;
  * Class responsible for exporting the maze in different formats
  */
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import javax.swing.*;
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
 
-public class ImageExporter extends JPanel
-{
 
-    public ImageExporter()
-    {
-        JFrame frame = new JFrame("TheFrame");
-        frame.add(this);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400,400);
-        frame.setVisible(true);
-
+public class ImageExporter extends JPanel {
+    JLabel jLabel1;
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt){
         try
         {
-            BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-            Graphics2D graphics2D = image.createGraphics();
-            frame.paint(graphics2D);
-            ImageIO.write(image,"jpeg", new File(System.getProperty("user.home")));
-        }
-        catch(Exception exception)
-        {
-            //code
-        }
-    }
+            Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+            BufferedImage capture = new Robot().createScreenCapture(screenRect);
+            ImageIcon icon  = new ImageIcon(capture);
+            jLabel1.setIcon(icon);
 
-    protected void paintComponent(Graphics g)
-    {
-        g.drawRect(50,50,50,50);
-    }
+            ImageIO.write(capture,"png",new File("C:\\Users\\MyPC\\Desktop\\screenShot.png"));
 
-    public static void main(String[] args)
-    {
-        new ImageExporter();
-       // new ChooseLogo();
+        }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(null,ex);
+        }
     }
+    public static void main(String[] args){new ImageExporter();}
 }
