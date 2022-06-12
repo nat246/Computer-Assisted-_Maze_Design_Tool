@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
+/**
+ * Responsible for adding / updating the status of the cells in a maze
+ */
 public class WallsEvent implements Serializable{
     private final List<CellListener> cellListener;
 

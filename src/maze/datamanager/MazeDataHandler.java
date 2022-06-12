@@ -14,7 +14,7 @@ import java.util.Set;
 import java.io.Serializable;
 
 /**
- * Creates a new maze
+ * Creates a new maze and allows the user to edit the existing mazes in the database
  */
 public class MazeDataHandler implements Serializable{
 

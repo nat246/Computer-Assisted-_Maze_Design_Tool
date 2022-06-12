@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Class for retrieving data from the XML file holding the user and maze informaiton.
+ * Class for retrieving data from the XML file holding the user and maze information.
  */
 
 public class JDBCMazeDataSource implements MazeDataSource{

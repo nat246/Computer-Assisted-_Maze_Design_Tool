@@ -5,6 +5,10 @@ import user.User;
 
 import java.util.Set;
 
+/**
+ * Class responsible for fetching the user details required to be stored in the database
+ */
+
 public interface MazeDataSource {
     /**
      * Adds user to list if not already in it

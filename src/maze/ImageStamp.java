@@ -1,5 +1,9 @@
 package maze;
 import java.io.Serializable;
+
+/**
+ * Class responsible for getting and setting an image in the maze
+ */
 public class ImageStamp implements Serializable{
     private String image;
 
